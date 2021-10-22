@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Welcome to QuantumChaos’s documentation! &#8212; QuantumChaos October 2021 documentation</title>
+    <title>Welcome to QuantumChaos’s documentation! &#8212; QuantumChaos v1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -27,7 +27,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">QuantumChaos October 2021 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="#">QuantumChaos v1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Welcome to QuantumChaos’s documentation!</a></li> 
       </ul>
     </div>  
@@ -138,6 +138,60 @@
 </dd></dl>
 
 </section>
+<section id="module-utils">
+<span id="utils"></span><h1>Utils<a class="headerlink" href="#module-utils" title="Permalink to this headline">¶</a></h1>
+<p>For utils used in more than one module</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.bittoint">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">bittoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordbits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.bittoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bits ‘order’ to integers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ordbits</strong> (<em>str</em>) – a list of bits that represents the spins (1 = spin pointing up, 0 = down)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of integers</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ordtobit">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">ordtobit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.ordtobit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integers ‘order’ to bits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ord</strong> (<em>str</em>) – a list of integers that represents the spins</p></li>
+<li><p><strong>n</strong> – number of spins in the chain</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of bits that represents the spins (1 = spin pointing up, 0 = down)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.ptime">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">ptime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tz</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.ptime" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tz</strong> (<em>float</em>) – a time.time() output</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a string with the time it took since the initial counter tz</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 
 
             <div class="clearer"></div>
@@ -152,6 +206,7 @@
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 <li><a class="reference internal" href="#math-intro">Math Intro</a></li>
 <li><a class="reference internal" href="#module-build_hamiltonian">Building Heff</a></li>
+<li><a class="reference internal" href="#module-utils">Utils</a></li>
 </ul>
 
   <div role="note" aria-label="source link">
@@ -184,7 +239,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">QuantumChaos October 2021 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="#">QuantumChaos v1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Welcome to QuantumChaos’s documentation!</a></li> 
       </ul>
     </div>

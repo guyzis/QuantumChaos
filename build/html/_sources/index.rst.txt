@@ -28,3 +28,9 @@ Building Heff
 ================
 .. automodule:: build_hamiltonian
     :members:
+
+
+Utils
+================
+.. automodule:: utils
+    :members:

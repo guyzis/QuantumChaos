@@ -22,7 +22,7 @@ copyright = '2021, Guy Zisling'
 author = 'Guy Zisling'
 
 # The full version, including alpha/beta/rc tags
-release = 'October 2021'
+release = 'v1'
 
 
 # -- General configuration ---------------------------------------------------
