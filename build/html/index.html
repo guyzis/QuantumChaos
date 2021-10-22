@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Welcome to QuantumChaos’s documentation! &#8212; QuantumChaos October 2021 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]]}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">QuantumChaos October 2021 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to QuantumChaos’s documentation!</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="welcome-to-quantumchaos-s-documentation">
+<h1>Welcome to QuantumChaos’s documentation!<a class="headerlink" href="#welcome-to-quantumchaos-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>This repo can be used for two purposes:</p>
+<ol class="arabic simple">
+<li><p>Generate Magnus expanssions expressions (or builders) of an arbitrary time dependent Hamiltonian</p></li>
+<li><p>Generate Magnus expension Hamiltonian (i.e matrices) from that builders.</p></li>
+</ol>
+<p>The code was originally written to solve the following Hamiltonian <div class="math notranslate nohighlight">
+\[\hat{H}\left(t\right)=\hat{H}_{0}+e^{-i\eta t}\hat{V}+e^{i\eta t}\hat{V}^{\dagger},\]</div>
+ hence will <strong>definitely need modifications</strong> to generate expressions for other time-dependent Hamiltonian.</p>
+<p><code class="docutils literal notranslate"><span class="pre">magnus_generator_classic</span></code> was written to generate more arbitrary time-dependent Hamiltonians, while <code class="docutils literal notranslate"><span class="pre">magnus_generator</span></code> and <code class="docutils literal notranslate"><span class="pre">magnus_generator_parts</span></code> were written specifically for the Hamiltonian above.</p>
+<p>To generate the effective Hamiltonian (i.e matrix) one could use the <code class="docutils literal notranslate"><span class="pre">build_heff</span></code> module. <code class="docutils literal notranslate"><span class="pre">stark_utils</span></code> module is used for generating the Stark Hamiltonian matrix, and is used for testing purposes.</p>
+<p>Docs can be found in this <code class="docutils literal notranslate"><span class="pre">_build/html/index.html</span></code></p>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+<section id="math-intro">
+<h1>Math Intro<a class="headerlink" href="#math-intro" title="Permalink to this headline">¶</a></h1>
+<p>The evolution of a time-dependent Hamiltonian requires considerable computational resources, as it evolves building the time-dependent Hamiltonian for each time step. For periodically driven Hamiltonians a rather simpler numerical approach that can be used is the Magnus expansion [<a class="reference external" href="https://doi.org/10.1016/j.physrep.2008.11.001">Ref</a>]. In this approach, one calculates an effective static Hamiltonian which approximates the dynamics of the system in multiples of the period T, up to some time. The static effective Hamiltonian is obtained as an expansion in <span class="math notranslate nohighlight">\(T\)</span>, where <span class="math notranslate nohighlight">\(T\)</span> is considered as the small parameter. For example, the first order in Magnus expansion would be <div class="math notranslate nohighlight">
+\[\hat{H}^{\left(0\right)}=\frac{1}{T}\int_{0}^{T}\hat{H}\left(t_{1}\right)dt_{1},\]</div>
+ and the second term,<div class="math notranslate nohighlight">
+\[\hat{H}_{\text{ }}^{\left(1\right)}=\frac{1}{2T}\int_{0}^{T}\int_{0}^{t_{1}}\left[\hat{H}\left(t_{1}\right),\hat{H}\left(t_{2}\right)\right]dt_{1}dt_{2}.\]</div>
+ The effective Hamiltonian is then obtained by summing all the orders,<div class="math notranslate nohighlight">
+\[\hat{H}_{\text{eff}}^{\left(n\right)}=\sum_{k=0}^{n}\hat{H}^{\left(k\right)},\]</div>
+ and one can assess the time evolution of the Hamiltonian at each period by (stroboscopic time evolution) <div class="math notranslate nohighlight">
+\[\hat{U}\left(T\right)=e^{-i\hat{H}_{\text{eff}}^{\left(n\right)}T}\approx\mathcal{T}\exp\left[-i\int_{0}^{T}\mathrm{d}\bar{t}\hat{H}\left(\bar{t}\right)\right],\]</div>
+ where <span class="math notranslate nohighlight">\(\mathcal{T}\)</span> corresponds to time-ordering. While the first four orders of the Magnus expansion can be written in a simple form, to construct higher terms in the Magnus series one should use a recursive generator shown in <a class="reference external" href="https://doi.org/10.1016/j.physrep.2008.11.001">Ref</a>. One defines <span class="math notranslate nohighlight">\(\hat{S}_{n}^{\left(j\right)}\)</span> matrices by the following recursive construction, (here we are starting from <span class="math notranslate nohighlight">\(n=1\)</span> so <span class="math notranslate nohighlight">\(\hat{H}^{(0)}\equiv\hat{\Omega}^{(1)}\)</span>)</p>
+<p><div class="math notranslate nohighlight">
+\[\hat{S}_{n}^{\left(j\right)}\sum_{m=1}^{n-j}\left[\hat{\Omega}^{\left(m\right)},\hat{S}_{n-m}^{\left(j-1\right)}\right],\hspace{1em}2\leq j\leq n-1\]</div>
+ <div class="math notranslate nohighlight">
+\[\hat{S}_{n}^{\left(1\right)}=\left[\hat{\Omega}^{\left(n-1\right)},\hat{\Omega}^{\left(1\right)}\right],\hspace{1em}\hat{S}_{n}^{\left(n-1\right)}=\text{ad}_{\hat{\Omega}^{\left(1\right)}}^{n-1}\left(\hat{\Omega}_{1}\right)\]</div>
+ while <span class="math notranslate nohighlight">\(\text{ad}_{\hat{\Omega}}^{k}\)</span> is defined as following <div class="math notranslate nohighlight">
+\[\text{ad}_{\hat{\Omega}}^{0}\left(A\right)=A,\hspace{1em}\text{ad}_{\hat{\Omega}}^{k+1}\left(A\right)=\left[\hat{\Omega},\text{ad}_{\hat{\Omega}}^{k}\left(A\right)\right]\]</div>
+ The expansion is then obtained by <div class="math notranslate nohighlight">
+\[\hat{\Omega}^{\left(n\right)}=\sum_{j=1}^{n}\frac{(-i)^jB_{j}}{j!}\int_{0}^{t}\hat{S}_{n}^{\left(j\right)}\left(\tau\right)d\tau,\hspace{1em}n\geq1.\]</div>
+ Even with this simplification the number of terms in the expansion grows exponentially, which makes it rather difficult to get to higher orders.</p>
+</section>
+<section id="module-build_hamiltonian">
+<span id="building-heff"></span><h1>Building Heff<a class="headerlink" href="#module-build_hamiltonian" title="Permalink to this headline">¶</a></h1>
+<p>Utils used to generate the Stark Hamiltonian Matrices</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="build_hamiltonian.block0">
+<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">block0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.block0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the zero magnetization block ‘order’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – the number of spins</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the block0 ‘order’ in integers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="build_hamiltonian.matth0">
+<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">matth0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.matth0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the H_0 matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – number of spins in the chain</p></li>
+<li><p><strong>Jz</strong> (<em>float</em>) – zz coupling</p></li>
+<li><p><strong>ord</strong> (<em>array</em>) – an array of integers represents the spins sub-space</p></li>
+<li><p><strong>bc</strong> (<em>0</em><em> or </em><em>1</em>) – boundary conditions 0 = open, 1 = close</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The matrix H_0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="build_hamiltonian.mattv">
+<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">mattv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.mattv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the V matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – number of spins in the chain</p></li>
+<li><p><strong>Jx</strong> (<em>float</em>) – xx coupling</p></li>
+<li><p><strong>ord</strong> (<em>array</em>) – an array of integers represents the spins sub-space</p></li>
+<li><p><strong>bc</strong> (<em>0</em><em> or </em><em>1</em>) – boundary conditions 0 = open, 1 = close</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the matrix V</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to QuantumChaos’s documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#math-intro">Math Intro</a></li>
+<li><a class="reference internal" href="#module-build_hamiltonian">Building Heff</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">QuantumChaos October 2021 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to QuantumChaos’s documentation!</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Guy Zisling.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>
