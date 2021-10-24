@@ -9,9 +9,9 @@ Welcome to QuantumChaos's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
+   
 .. include:: readme.md
-
+   
 Indices and tables
 ==================
 
