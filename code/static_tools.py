@@ -31,12 +31,20 @@ from build_hamiltonian import *
 
 
 def rfold(H):
-    """
+    r"""
+    A chaos matrix the arises from the eigenvalues spacing statstics
+
+    Defining the level spacing $s_{\alpha}=E_{\alpha+1}-E_{\alpha}$ one can define the 'r-metric' by $$r_{\alpha}=\min\left(\frac{s_{\alpha}}{s_{\alpha-1}},\frac{s_{\alpha-1}}{s_{\alpha}}\right),$$
+    where $$\left\langle r\right\rangle \approx\begin{cases}
+    0.39 & \text{Poisson dist.}\\
+    0.536 & \text{Wigner Dyson dist.}
+    \end{cases}$$
 
     Args:
-        H:
+        H (np.array): matrix or eigenvalues
 
     Returns:
+        (float): $\langle r \rangle$
 
     """
     t = time.time()
@@ -69,13 +77,15 @@ def sumheavy(E, x):
 
 def unfold(H, cut=2000, normed=False):
     """
+    Returns the unfolded eigenvalues
 
     Args:
-        H:
-        cut:
-        normed:
+        H (np.array): a matrix or the eigenvalues of it
+        cut (int): how many eigenvales to cut
+        normed (bool): normalize the density of staes
 
     Returns:
+        (np.array): unfolded eigenvalues
 
     """
     if H.ndim == 2:
@@ -101,6 +111,7 @@ def unfold(H, cut=2000, normed=False):
 
 def num_var(H, l_min=1e-1, dots_number=1000, cut=1000, window=1, normed=False):
     """
+
 
     Args:
         H:
@@ -161,12 +172,12 @@ def offdiag(H0, n, l, dw=0.05, de=0.05, is_unfold=False):
     """
 
     Args:
-        H0:
-        n:
+        H0: Hamiltonian or eigenvalues and eigenvectors
+        n (int): number of spins
         l:
-        dw:
-        de:
-        is_unfold:
+        dw (float): size of frequency bins
+        de (float): partial part of the spectrum that is being examined (from 0 to 1)
+        is_unfold (bool): take unfolded eigenvalues
 
     Returns:
 

@@ -31,10 +31,9 @@ def block0(n):
     return ord
 
 
-
 def matth0(n, Jz, ord, bc):
     """
-    Creates the H_0 matrix
+    Creates the $\hat{H}_0$ matrix for the Magnus expension in the Stark model
 
     Args:
         n (int): number of spins in the chain
@@ -58,10 +57,9 @@ def matth0(n, Jz, ord, bc):
     return H
 
 
-
 def mattv(n, Jx, ord, c):
     """
-    Creates the V matrix
+    Creates the $\hat{V}$ matrix for the Magnus expension in the Stark model
 
     Args:
         n (int): number of spins in the chain
@@ -89,15 +87,17 @@ def mattv(n, Jx, ord, c):
     print("\nmattv time was: %s" % ptime(t))
     return H
 
-def mattaddjz(H0, n, Jz, ord, c):
+
+def mattaddjz(H0, n, Jz, ord, bc):
     """
+    Adds $\hat{S}^z_i\hat{S}^z_{i+1}$ interaction for an existing Hamiltonian
 
     Args:
-        H0:
-        n:
-        Jz:
+        H0 (sparse matrix): existing Hamiltonian
+        n (int): number of spins in the chain
+        Jz (float): interaction strength
         ord:
-        c:
+        bc (0 or 1): boundary conditions 0 = open, 1 = close
 
     Returns:
 
@@ -106,21 +106,23 @@ def mattaddjz(H0, n, Jz, ord, c):
     H = H0.copy()
     l = np.flipud(ordtobit(ord, n))
     # H = H.tocsr()
-    for i in range(0, n - 1 + c):
+    for i in range(0, n - 1 + bc):
         H.setdiag(H.diagonal() + Jz * (l[:, i] - 0.5) * (l[:, np.mod(i + 1, n)] - 0.5))
     print("\nmattaddjz time was: %s" % ptime(t))
     return H
 
-def mattaddstark(H0, n, f, a, ord, c):
+
+def mattaddstark(H0, n, f, a, ord, bc):
     """
+    Add a linear field of strength ``f`` to an existing Hamiltonian (stark potential)
 
     Args:
-        H0:
-        n:
-        f:
-        a:
+        H0 (sparse matrix): existing Hamiltonian
+        n (int): number of spins in the chain
+        f (float): linear potential strength
+        a (float): curvature strength
         ord:
-        c:
+        bc (0 or 1): boundary conditions 0 = open, 1 = close
 
     Returns:
 
@@ -131,31 +133,33 @@ def mattaddstark(H0, n, f, a, ord, c):
     pot_arr = f * np.arange(n) + a * np.arange(n) ** 2 / float(n - 1) ** 2
     pot_arr = pot_arr - np.mean(pot_arr)
     H = H.tocsr()
-    if c == 1:
+    if bc == 1:
         cc = n
     else:
         cc = n - 1
     for i in range(0, cc):
         H.setdiag(H.diagonal() + pot_arr[i] * (l[:, i] - 0.5))
-    if c == 0:
+    if bc == 0:
         # H[j, j] = H[j, j] + (f * (n - 1) / 2 - a * ((n - 1) / n) ** 2) * (l[j, n - 1] - 0.5)
         H.setdiag(H.diagonal() + pot_arr[n - 1] * (l[:, n - 1] - 0.5))  # * 0.5
     print("\nmattaddstark time was: %s" % ptime(t))
     return H
 
 
-def matt_stark(n, Jx, Jz, f, a, ord, c, shift=True):
+def matt_stark(n, Jx, Jz, f, a, ord, bc, shift=True):
     """
+    Generates the Stark Hamiltonian (xxz chain with linear potential)
 
     Args:
-        n:
-        Jx:
-        Jz:
-        f:
-        a:
+        n (int): number of spins
+        Jx (float): xx interaction strength
+        Jz (float): zz interaction strength
+        f (float):
+        f (float): linear potential strength
+        a (float): curvature strength
         ord:
-        c:
-        shift:
+        bc (0 or 1): boundary conditions 0 = open, 1 = close
+        shift (bool): shift the potential to be concentrade in the middle
 
     Returns:
 
@@ -166,7 +170,7 @@ def matt_stark(n, Jx, Jz, f, a, ord, c, shift=True):
     pot_arr = f * np.arange(n) + a * np.arange(n) ** 2 / float(n - 1) ** 2
     if shift:
         pot_arr = pot_arr - np.mean(pot_arr)
-    if c == 1:
+    if bc == 1:
         cc = n
     else:
         cc = n - 1
@@ -188,19 +192,21 @@ def matt_stark(n, Jx, Jz, f, a, ord, c, shift=True):
                 k2 = int(np.argwhere(bittoint(l2) == np.flip(ord)))
                 H[k2, j] = H[k2, j] + Jx * 0.5
     for j in range(0, ord.shape[0]):
-        if c == 0:
+        if bc == 0:
             # H[j, j] = H[j, j] + (f * (n - 1) / 2 - a * ((n - 1) / n) ** 2) * (l[j, n - 1] - 0.5)
             H[j, j] = H[j, j] + 1 * pot_arr[n - 1] * (l[j, n - 1] - 0.5)
     print("\nmatt32 time was: %s" % ptime(t))
     return H
 
+
 def mattaddimp3(H0, imp, h, l):
     """
+    Add a magentic impurity at a specific site of the chain $h\hat{S}^z_{\text{imp}}$
 
     Args:
-        H0:
-        imp:
-        h:
+        H0 (sparse matrix): existing Hamiltonian
+        imp (int): impurity location
+        h (float): impurity strength
         l:
 
     Returns:
@@ -212,11 +218,13 @@ def mattaddimp3(H0, imp, h, l):
     print("\nmattaddimp3 time was: %s" % ptime(tz))
     return H.todok()
 
+
 def matt0sz(i, l):
     """
+    Generate the operator $\hat{S}^z_i$
 
     Args:
-        i:
+        i (int): location of the operator
         l:
 
     Returns:
@@ -229,17 +237,19 @@ def matt0sz(i, l):
 
 def matt3sz(n, i, ord):
     """
+    Generate the operator $\hat{S}^z_i$
 
     Args:
-        n:
-        i:
+        n (int): number of spins
+        i (int): location of the operator
         ord:
 
     Returns:
+        (sparse matrix): $\hat{S}^z_i$
 
     """
     if i < 0:
-        return 1 / 0
+        raise ValueError('matt3sz got an input i out of the chain')
     tz = time.time()
     # H = np.zeros([ord.shape[0], ord.shape[0]])
     # H = spr.dok_matrix((ord.shape[0], ord.shape[0]))

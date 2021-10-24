@@ -29,13 +29,15 @@ from build_hamiltonian import *
 
 def entropy(v, n, ord):
     """
+    Calculates the entanglement entropy of a vector ``v``
 
     Args:
-        v:
-        n:
+        v (np.array): vector
+        n (int): number of spins in the chain
         ord:
 
     Returns:
+        (float): entanglment entropy
 
     """
     l = ordtobit(ord, n)
@@ -49,32 +51,37 @@ def entropy(v, n, ord):
 
 
 def evolkryl3(H, v, dt, T):
-    """
+    r"""
+    Calculates the time evolution of a vector using Krylov sub-space
+    $$\vec{v}(t) = e^{-i\hat{H}t}\vec{v}$$
 
     Args:
-        H:
-        v:
-        dt:
-        T:
+        H (sparse matrix): Hamiltonian
+        v (np.array): starting vector
+        dt (float): time interval
+        T (int): number of steps
 
     Returns:
+        (np.array): vector
 
     """
     for i in range(0, T):
-        v = las.expm_multiply(-1j * H * dt, v)
+        v = las.expm_multiply(-1j * H * dt, v)  # this loop is necessary for the convergence of expm_multiply
     return v
 
 
 def msd99(H, n, ord, t, k, dt, seed=False, neel=False):
-    """
-
+    r"""
+    Calculates the spins mean square displacement after a spin flip in the middle of the chain
+    $$G_{n}\left(t\right)=\frac{1}{\mathcal{D}}\textrm{Tr}\left[\hat{S}_{n}^{z}\left(t\right)\hat{S}_{L/2}^{z}\right]$$
+    $$x^{2}\left(t\right)=\sum_{n}n^{2}\left(G_{n}\left(t\right)-G_{n}\left(0\right)\right)$$
     Args:
-        H:
-        n:
+        H (sparse matrix): Hamiltonian
+        n (int): number of spins in the chain
         ord:
-        t:
-        k:
-        dt:
+        t (float): ending time of the calculation
+        k (int): number of point to sample in time
+        dt (float): time intervals for the Krylov time evolution
         seed:
         neel:
 
@@ -117,14 +124,16 @@ def msd99(H, n, ord, t, k, dt, seed=False, neel=False):
 
 def msd99ent(H, n, ord, t, k, dt):
     """
+    Calculate the entanglement entropy
+
 
     Args:
-        H:
-        n:
+        H (sparse matrix): Hamiltonian
+        n (int): number of spins in the chain
         ord:
-        t:
-        k:
-        dt:
+        t (float): ending time of the calculation
+        k (int): number of point to sample in time
+        dt (float): time intervals for the Krylov time evolution
 
     Returns:
 
