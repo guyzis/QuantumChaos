@@ -1,4 +1,6 @@
 """
+Dynamics
+
 .. include:: dynamics.md
 """
 import numpy as np
@@ -16,11 +18,11 @@ from scipy.linalg import expm, sinm, cosm
 from scipy import optimize
 from scipy import stats
 import os
-from sympy.utilities.iterables import multiset_permutations
+# from sympy.utilities.iterables import multiset_permutations
 import h5py
-import sympy as sym
+# import sympy as sym
 import itertools
-from sympy.core import sympify
+# from sympy.core import sympify
 import sys
 
 from utils import *

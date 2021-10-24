@@ -115,16 +115,6 @@ where <span class="math notranslate nohighlight">\(\hat{S}^{\{x,y,z\}}\)</span> 
 </section>
 <section id="module-build_hamiltonian">
 <span id="building-hamiltonians"></span><h1>Building Hamiltonians<a class="headerlink" href="#module-build_hamiltonian" title="Permalink to this headline">¶</a></h1>
-<p>This repo contains samples of the code used to write the following articles:</p>
-<ul class="simple">
-<li><p>Guy Zisling, Lea F. Santos, and Yevgeny Bar Lev, <strong>How many particles make up a chaotic many-body quantum system?</strong> <a class="reference external" href="https://doi.org/10.21468/SciPostPhys.10.4.088">SciPost Phys. 10, 88 (2021)</a>.</p></li>
-<li><p>Guy Zisling, Dante M. Kennes, and Yevegeny Bar Lev, <strong>Transport in Stark Many Body Localized Systems</strong> <a class="reference external" href="https://arxiv.org/abs/2109.06196">arXiv:2109.06196</a> <em>(under review in PRL)</em>.</p></li>
-</ul>
-<p><strong>The code can be used for two main purposes:</strong></p>
-<ol class="arabic simple">
-<li><p>Build Hamiltonian’s (matrix representations) of spin-chain systems (mainly “XXZ” chain).</p></li>
-<li><p>Examine the statical and dynamical properties of those Hamiltonian’s.</p></li>
-</ol>
 <dl class="py function">
 <dt class="sig sig-object py" id="build_hamiltonian.block0">
 <span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">block0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.block0" title="Permalink to this definition">¶</a></dt>
@@ -234,6 +224,7 @@ where <span class="math notranslate nohighlight">\(\hat{S}^{\{x,y,z\}}\)</span> 
 </section>
 <section id="module-dynamical_tools">
 <span id="dynamical-tools"></span><h1>Dynamical Tools<a class="headerlink" href="#module-dynamical_tools" title="Permalink to this headline">¶</a></h1>
+<p>Dynamics</p>
 <p>The cheapest way to calculate the time evolution of some operator <span class="math notranslate nohighlight">\(\hat{O}\)</span>  is to use the ‘Dynamical Typicality’ concept (see <a class="reference external" href="https://arxiv.org/pdf/1610.08993.pdf">Ref</a>): <div class="math notranslate nohighlight">
 \[\frac{1}{\mathcal{D}}\text{Tr}\hat{O}\approx\left\langle{\psi}\right .\left|{\hat{O}}\right| \left .{\psi}\right \rangle,\]</div>
 
@@ -242,33 +233,7 @@ and to use the Krylov time-space evolution, explained in the following <a class=
 </section>
 <section id="module-static_tools">
 <span id="static-tools"></span><h1>Static Tools<a class="headerlink" href="#module-static_tools" title="Permalink to this headline">¶</a></h1>
-<p>newcommand{ket}[1]{left|{#1}rightrangle}
-newcommand{bra}[1]{leftlangle{#1}right|}
-newcommand{braket}[2]{left.leftlangle {#1}right|{#2}rightrangle}
-newcommand{obracket}[3]{leftlangle {#1}right|{#2}left|{#3}rightrangle}
-newcommand{proj}[2]{left.left.left|{#1}rightrangle rightlangle{#2}right|}</p>
-<p>The “XXZ” chain can be written in terms of spin matrices using
-<div class="math notranslate nohighlight">
-\[\hat{H}=\sum_{j=1}^{L-1}\frac{J_{xy}}{2}\left(\hat{S}_{j}^{x}\hat{S}_{j+1}^{x} + \hat{S}_{j}^{y}\hat{S}_{j+1}^{y}\right)+J_{z}\hat{S}_{j}^{z}\hat{S}_{j+1}^{z},\]</div>
-
-where <span class="math notranslate nohighlight">\(\hat{S}^{\{x,y,z\}}\)</span> are the Pauli matrices times a factor of <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span>.</p>
-<p>Usually, this type of systems can be classified into two classes:</p>
-<ol class="arabic simple">
-<li><p>Many-body localized systems (MBL).</p></li>
-<li><p>Quantum Chaotic systems ( thermalizing systems).</p></li>
-</ol>
-<p>Some key differences are:</p>
-<p>Feature | Quantum Chaotic   | Many-body localized |
-| :———– | ———– | ———– |
-Memory of initial conditions | None   | Some |
-Eigenvalues | Correlated  | Uncorrelated  |
-Off-diagonal elements distribution | Normal  |  Sharp distribution |
-Transport | Super-diffusive  | Sub-diffusive  |
-Entanglement entropy spreading | Power-law  | Logarithmic  |</p>
-<ul class="simple">
-<li><p><strong>Static properties</strong> are usually examined by using the Hamiltonian eigen-basis, where <span class="math notranslate nohighlight">\(E_\alpha = \obracket{\phi_\alpha}{\hat{H}}{\phi_\alpha}\)</span>.</p></li>
-<li><p><strong>Dynamical properties</strong> are usually examined by using the time evolution operator <span class="math notranslate nohighlight">\(\hat{U}(t)=e^{-i\hat{H}t}\)</span>.</p></li>
-</ul>
+<p><strong>Static properties</strong> are usually examined by using the Hamiltonian eigen-basis, where <span class="math notranslate nohighlight">\(E_\alpha = \obracket{\phi_\alpha}{\hat{H}}{\phi_\alpha}\)</span>.</p>
 </section>
 <section id="module-legacy_utils">
 <span id="legacy-utils"></span><h1>Legacy Utils<a class="headerlink" href="#module-legacy_utils" title="Permalink to this headline">¶</a></h1>
