@@ -19,7 +19,7 @@ from scipy import optimize
 from scipy import stats
 import os
 # from sympy.utilities.iterables import multiset_permutations
-import h5py
+# import h5py
 # import sympy as sym
 import itertools
 # from sympy.core import sympify
