@@ -10,7 +10,7 @@ Welcome to QuantumChaos's documentation!
    :maxdepth: 2
    :caption: Contents:
    
-.. include:: readme.md
+.. include:: intro.md
    
 Indices and tables
 ==================
