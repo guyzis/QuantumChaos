@@ -1,3 +1,6 @@
+"""
+.. include:: dynamics.md
+"""
 import numpy as np
 import numpy.linalg as la
 from mpl_toolkits.mplot3d import Axes3D

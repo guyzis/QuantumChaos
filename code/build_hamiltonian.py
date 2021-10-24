@@ -1,5 +1,5 @@
 """
-Utils used to generate the Stark Hamiltonian Matrices
+.. include:: build_hamiltonian.md
 """
 
 import numpy as np

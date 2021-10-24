@@ -41,17 +41,16 @@
 <h1>Welcome to QuantumChaos’s documentation!<a class="headerlink" href="#welcome-to-quantumchaos-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<p>This repo can be used for two purposes:</p>
+<p>This repo contains samples of the code used to write the following articles:</p>
+<ul class="simple">
+<li><p>Guy Zisling, Lea F. Santos, and Yevgeny Bar Lev, <strong>How many particles make up a chaotic many-body quantum system?</strong> <a class="reference external" href="https://doi.org/10.21468/SciPostPhys.10.4.088">SciPost Phys. 10, 88 (2021)</a>.</p></li>
+<li><p>Guy Zisling, Dante M. Kennes, and Yevegeny Bar Lev, <strong>Transport in Stark Many Body Localized Systems</strong> <a class="reference external" href="https://arxiv.org/abs/2109.06196">arXiv:2109.06196</a> <em>(under review in PRL)</em>.</p></li>
+</ul>
+<p><strong>The code can be used for two main purposes:</strong></p>
 <ol class="arabic simple">
-<li><p>Generate Magnus expanssions expressions (or builders) of an arbitrary time dependent Hamiltonian</p></li>
-<li><p>Generate Magnus expension Hamiltonian (i.e matrices) from that builders.</p></li>
+<li><p>Build Hamiltonian’s (matrix representations) of spin-chain systems (mainly “XXZ” chain).</p></li>
+<li><p>Examine the statical and dynamical properties of those Hamiltonian’s.</p></li>
 </ol>
-<p>The code was originally written to solve the following Hamiltonian ![img](<a class="reference external" href="http://www.sciweavers.org/tex2img.php?eq=%5Chat%7BH%7D%5Cleft%28t%5Cright%29%3D%5Chat%7BH%7D_%7B0%7D%2Be%5E%7B-i%5Ceta%20t%7D%5Chat%7BV%7D%2Be%5E%7Bi%5Ceta%20t%7D%5Chat%7BV%7D%5E%7B%5Cdagger%7D%2C&amp;bc=White&amp;fc=Black&amp;im=jpg&amp;fs=12&amp;ff=arev&amp;edit=0">http://www.sciweavers.org/tex2img.php?eq=%5Chat%7BH%7D%5Cleft%28t%5Cright%29%3D%5Chat%7BH%7D_%7B0%7D%2Be%5E%7B-i%5Ceta%20t%7D%5Chat%7BV%7D%2Be%5E%7Bi%5Ceta%20t%7D%5Chat%7BV%7D%5E%7B%5Cdagger%7D%2C&amp;bc=White&amp;fc=Black&amp;im=jpg&amp;fs=12&amp;ff=arev&amp;edit=0</a>)<div class="math notranslate nohighlight">
-\[\hat{H}\left(t\right)=\hat{H}_{0}+e^{-i\eta t}\hat{V}+e^{i\eta t}\hat{V}^{\dagger},\]</div>
- hence will <strong>definitely need modifications</strong> to generate expressions for other time-dependent Hamiltonian.</p>
-<p><code class="docutils literal notranslate"><span class="pre">magnus_generator_classic</span></code> was written to generate more arbitrary time-dependent Hamiltonians, while <code class="docutils literal notranslate"><span class="pre">magnus_generator</span></code> and <code class="docutils literal notranslate"><span class="pre">magnus_generator_parts</span></code> were written specifically for the Hamiltonian above.</p>
-<p>To generate the effective Hamiltonian (i.e matrix) one could use the <code class="docutils literal notranslate"><span class="pre">build_heff</span></code> module. <code class="docutils literal notranslate"><span class="pre">stark_utils</span></code> module is used for generating the Stark Hamiltonian matrix, and is used for testing purposes.</p>
-<p>Docs can be found in this <code class="docutils literal notranslate"><span class="pre">_build/html/index.html</span></code></p>
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -63,28 +62,69 @@
 </section>
 <section id="math-intro">
 <h1>Math Intro<a class="headerlink" href="#math-intro" title="Permalink to this headline">¶</a></h1>
-<p>The evolution of a time-dependent Hamiltonian requires considerable computational resources, as it evolves building the time-dependent Hamiltonian for each time step. For periodically driven Hamiltonians a rather simpler numerical approach that can be used is the Magnus expansion [<a class="reference external" href="https://doi.org/10.1016/j.physrep.2008.11.001">Ref</a>]. In this approach, one calculates an effective static Hamiltonian which approximates the dynamics of the system in multiples of the period T, up to some time. The static effective Hamiltonian is obtained as an expansion in <span class="math notranslate nohighlight">\(T\)</span>, where <span class="math notranslate nohighlight">\(T\)</span> is considered as the small parameter. For example, the first order in Magnus expansion would be <div class="math notranslate nohighlight">
-\[\hat{H}^{\left(0\right)}=\frac{1}{T}\int_{0}^{T}\hat{H}\left(t_{1}\right)dt_{1},\]</div>
- and the second term,<div class="math notranslate nohighlight">
-\[\hat{H}_{\text{ }}^{\left(1\right)}=\frac{1}{2T}\int_{0}^{T}\int_{0}^{t_{1}}\left[\hat{H}\left(t_{1}\right),\hat{H}\left(t_{2}\right)\right]dt_{1}dt_{2}.\]</div>
- The effective Hamiltonian is then obtained by summing all the orders,<div class="math notranslate nohighlight">
-\[\hat{H}_{\text{eff}}^{\left(n\right)}=\sum_{k=0}^{n}\hat{H}^{\left(k\right)},\]</div>
- and one can assess the time evolution of the Hamiltonian at each period by (stroboscopic time evolution) <div class="math notranslate nohighlight">
-\[\hat{U}\left(T\right)=e^{-i\hat{H}_{\text{eff}}^{\left(n\right)}T}\approx\mathcal{T}\exp\left[-i\int_{0}^{T}\mathrm{d}\bar{t}\hat{H}\left(\bar{t}\right)\right],\]</div>
- where <span class="math notranslate nohighlight">\(\mathcal{T}\)</span> corresponds to time-ordering. While the first four orders of the Magnus expansion can be written in a simple form, to construct higher terms in the Magnus series one should use a recursive generator shown in <a class="reference external" href="https://doi.org/10.1016/j.physrep.2008.11.001">Ref</a>. One defines <span class="math notranslate nohighlight">\(\hat{S}_{n}^{\left(j\right)}\)</span> matrices by the following recursive construction, (here we are starting from <span class="math notranslate nohighlight">\(n=1\)</span> so <span class="math notranslate nohighlight">\(\hat{H}^{(0)}\equiv\hat{\Omega}^{(1)}\)</span>)</p>
-<p><div class="math notranslate nohighlight">
-\[\hat{S}_{n}^{\left(j\right)}\sum_{m=1}^{n-j}\left[\hat{\Omega}^{\left(m\right)},\hat{S}_{n-m}^{\left(j-1\right)}\right],\hspace{1em}2\leq j\leq n-1\]</div>
- <div class="math notranslate nohighlight">
-\[\hat{S}_{n}^{\left(1\right)}=\left[\hat{\Omega}^{\left(n-1\right)},\hat{\Omega}^{\left(1\right)}\right],\hspace{1em}\hat{S}_{n}^{\left(n-1\right)}=\text{ad}_{\hat{\Omega}^{\left(1\right)}}^{n-1}\left(\hat{\Omega}_{1}\right)\]</div>
- while <span class="math notranslate nohighlight">\(\text{ad}_{\hat{\Omega}}^{k}\)</span> is defined as following <div class="math notranslate nohighlight">
-\[\text{ad}_{\hat{\Omega}}^{0}\left(A\right)=A,\hspace{1em}\text{ad}_{\hat{\Omega}}^{k+1}\left(A\right)=\left[\hat{\Omega},\text{ad}_{\hat{\Omega}}^{k}\left(A\right)\right]\]</div>
- The expansion is then obtained by <div class="math notranslate nohighlight">
-\[\hat{\Omega}^{\left(n\right)}=\sum_{j=1}^{n}\frac{(-i)^jB_{j}}{j!}\int_{0}^{t}\hat{S}_{n}^{\left(j\right)}\left(\tau\right)d\tau,\hspace{1em}n\geq1.\]</div>
- Even with this simplification the number of terms in the expansion grows exponentially, which makes it rather difficult to get to higher orders.</p>
+<p>The “XXZ” chain can be written in terms of spin matrices using
+<div class="math notranslate nohighlight">
+\[\hat{H}=\sum_{j=1}^{L-1}\frac{J_{xy}}{2}\left(\hat{S}_{j}^{x}\hat{S}_{j+1}^{x} + \hat{S}_{j}^{y}\hat{S}_{j+1}^{y}\right)+J_{z}\hat{S}_{j}^{z}\hat{S}_{j+1}^{z},\]</div>
+
+where <span class="math notranslate nohighlight">\(\hat{S}^{\{x,y,z\}}\)</span> are the Pauli matrices times a factor of <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span>.</p>
+<p>Usually, this type of systems can be <strong>classified into two distinct classes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Many-body localized systems (MBL).</p></li>
+<li><p>Quantum Chaotic systems (thermalizing systems).</p></li>
+</ol>
+<p>Some key differences are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 26%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Feature</strong></p></th>
+<th class="head"><p><strong>Quantum Chaotic</strong></p></th>
+<th class="head"><p><strong>Many-body Localized</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Memory of initial conditions</p></td>
+<td><p>None</p></td>
+<td><p>Some</p></td>
+</tr>
+<tr class="row-odd"><td><p>Eigenvalues</p></td>
+<td><p>Correlated</p></td>
+<td><p>Uncorrelated</p></td>
+</tr>
+<tr class="row-even"><td><p>Off-diagonal elements distribution</p></td>
+<td><p>Normal</p></td>
+<td><p>Sharp distribution</p></td>
+</tr>
+<tr class="row-odd"><td><p>Transport</p></td>
+<td><p>Super-diffusive</p></td>
+<td><p>Sub-diffusive</p></td>
+</tr>
+<tr class="row-even"><td><p>Entanglement entropy spreading</p></td>
+<td><p>Power-law</p></td>
+<td><p>Logarithmic</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><strong>Static properties</strong> are usually examined by using the Hamiltonian eigen-basis, where <span class="math notranslate nohighlight">\(E_\alpha = \left\langle {\phi_\alpha}\right .\left|{\hat{H}}\right|\left .{\phi_\alpha}\right \rangle\)</span>.</p></li>
+<li><p><strong>Dynamical properties</strong> are examined using the time evolution operator <span class="math notranslate nohighlight">\(\hat{U}(t)=e^{-i\hat{H}t}\)</span>.</p></li>
+</ul>
 </section>
 <section id="module-build_hamiltonian">
-<span id="building-heff"></span><h1>Building Heff<a class="headerlink" href="#module-build_hamiltonian" title="Permalink to this headline">¶</a></h1>
-<p>Utils used to generate the Stark Hamiltonian Matrices</p>
+<span id="building-hamiltonians"></span><h1>Building Hamiltonians<a class="headerlink" href="#module-build_hamiltonian" title="Permalink to this headline">¶</a></h1>
+<p>This repo contains samples of the code used to write the following articles:</p>
+<ul class="simple">
+<li><p>Guy Zisling, Lea F. Santos, and Yevgeny Bar Lev, <strong>How many particles make up a chaotic many-body quantum system?</strong> <a class="reference external" href="https://doi.org/10.21468/SciPostPhys.10.4.088">SciPost Phys. 10, 88 (2021)</a>.</p></li>
+<li><p>Guy Zisling, Dante M. Kennes, and Yevegeny Bar Lev, <strong>Transport in Stark Many Body Localized Systems</strong> <a class="reference external" href="https://arxiv.org/abs/2109.06196">arXiv:2109.06196</a> <em>(under review in PRL)</em>.</p></li>
+</ul>
+<p><strong>The code can be used for two main purposes:</strong></p>
+<ol class="arabic simple">
+<li><p>Build Hamiltonian’s (matrix representations) of spin-chain systems (mainly “XXZ” chain).</p></li>
+<li><p>Examine the statical and dynamical properties of those Hamiltonian’s.</p></li>
+</ol>
 <dl class="py function">
 <dt class="sig sig-object py" id="build_hamiltonian.block0">
 <span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">block0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.block0" title="Permalink to this definition">¶</a></dt>
@@ -192,6 +232,52 @@
 </dd></dl>
 
 </section>
+<section id="module-dynamical_tools">
+<span id="dynamical-tools"></span><h1>Dynamical Tools<a class="headerlink" href="#module-dynamical_tools" title="Permalink to this headline">¶</a></h1>
+<p>The cheapest way to calculate the time evolution of some operator <span class="math notranslate nohighlight">\(\hat{O}\)</span>  is to use the ‘Dynamical Typicality’ concept (see <a class="reference external" href="https://arxiv.org/pdf/1610.08993.pdf">Ref</a>): <div class="math notranslate nohighlight">
+\[\frac{1}{\mathcal{D}}\text{Tr}\hat{O}\approx\left\langle{\psi}\right .\left|{\hat{O}}\right| \left .{\psi}\right \rangle,\]</div>
+
+and to use the Krylov time-space evolution, explained in the following <a class="reference external" href="https://www.cs.cornell.edu/cv/ResearchPDF/19ways+.pdf">Ref</a> and built in <code class="docutils literal notranslate"><span class="pre">scipy.sparse.linalg.expm_multiply</span></code>.</p>
+<p>briefly, instead of diagonalizing the full matrix <span class="math notranslate nohighlight">\(\hat{H}\)</span> in order to calculate the time evolution operator <span class="math notranslate nohighlight">\(\hat{U}(t)=e^{-i \hat{H} t}\)</span>, one asses the time evolution by averaging over random states <span class="math notranslate nohighlight">\(\left| \psi (t) \right\rangle = \hat{U}(t)\left|\psi(0)\right\rangle\)</span>, without explicitly calculating <span class="math notranslate nohighlight">\(\hat{U}(t)\)</span>.</p>
+</section>
+<section id="module-static_tools">
+<span id="static-tools"></span><h1>Static Tools<a class="headerlink" href="#module-static_tools" title="Permalink to this headline">¶</a></h1>
+<p>newcommand{ket}[1]{left|{#1}rightrangle}
+newcommand{bra}[1]{leftlangle{#1}right|}
+newcommand{braket}[2]{left.leftlangle {#1}right|{#2}rightrangle}
+newcommand{obracket}[3]{leftlangle {#1}right|{#2}left|{#3}rightrangle}
+newcommand{proj}[2]{left.left.left|{#1}rightrangle rightlangle{#2}right|}</p>
+<p>The “XXZ” chain can be written in terms of spin matrices using
+<div class="math notranslate nohighlight">
+\[\hat{H}=\sum_{j=1}^{L-1}\frac{J_{xy}}{2}\left(\hat{S}_{j}^{x}\hat{S}_{j+1}^{x} + \hat{S}_{j}^{y}\hat{S}_{j+1}^{y}\right)+J_{z}\hat{S}_{j}^{z}\hat{S}_{j+1}^{z},\]</div>
+
+where <span class="math notranslate nohighlight">\(\hat{S}^{\{x,y,z\}}\)</span> are the Pauli matrices times a factor of <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span>.</p>
+<p>Usually, this type of systems can be classified into two classes:</p>
+<ol class="arabic simple">
+<li><p>Many-body localized systems (MBL).</p></li>
+<li><p>Quantum Chaotic systems ( thermalizing systems).</p></li>
+</ol>
+<p>Some key differences are:</p>
+<p>Feature | Quantum Chaotic   | Many-body localized |
+| :———– | ———– | ———– |
+Memory of initial conditions | None   | Some |
+Eigenvalues | Correlated  | Uncorrelated  |
+Off-diagonal elements distribution | Normal  |  Sharp distribution |
+Transport | Super-diffusive  | Sub-diffusive  |
+Entanglement entropy spreading | Power-law  | Logarithmic  |</p>
+<ul class="simple">
+<li><p><strong>Static properties</strong> are usually examined by using the Hamiltonian eigen-basis, where <span class="math notranslate nohighlight">\(E_\alpha = \obracket{\phi_\alpha}{\hat{H}}{\phi_\alpha}\)</span>.</p></li>
+<li><p><strong>Dynamical properties</strong> are usually examined by using the time evolution operator <span class="math notranslate nohighlight">\(\hat{U}(t)=e^{-i\hat{H}t}\)</span>.</p></li>
+</ul>
+</section>
+<section id="module-legacy_utils">
+<span id="legacy-utils"></span><h1>Legacy Utils<a class="headerlink" href="#module-legacy_utils" title="Permalink to this headline">¶</a></h1>
+<p>Old versions of some utils, that have been replaced with a more efficient code.
+This module can be used for benchmarking with new utils.</p>
+</section>
+<section id="module-unit_test">
+<span id="unit-test"></span><h1>Unit Test<a class="headerlink" href="#module-unit_test" title="Permalink to this headline">¶</a></h1>
+</section>
 
 
             <div class="clearer"></div>
@@ -205,8 +291,12 @@
 <li><a class="reference internal" href="#">Welcome to QuantumChaos’s documentation!</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 <li><a class="reference internal" href="#math-intro">Math Intro</a></li>
-<li><a class="reference internal" href="#module-build_hamiltonian">Building Heff</a></li>
+<li><a class="reference internal" href="#module-build_hamiltonian">Building Hamiltonians</a></li>
 <li><a class="reference internal" href="#module-utils">Utils</a></li>
+<li><a class="reference internal" href="#module-dynamical_tools">Dynamical Tools</a></li>
+<li><a class="reference internal" href="#module-static_tools">Static Tools</a></li>
+<li><a class="reference internal" href="#module-legacy_utils">Legacy Utils</a></li>
+<li><a class="reference internal" href="#module-unit_test">Unit Test</a></li>
 </ul>
 
   <div role="note" aria-label="source link">
