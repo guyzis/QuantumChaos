@@ -1,1 +1,1 @@
-**Static properties** are usually examined by using the Hamiltonian eigen-basis, where $E_\alpha = \obracket{\phi_\alpha}{\hat{H}}{\phi_\alpha}$.
+Static properties are usually examined by using the Hamiltonian eigen-basis, where
