@@ -1,3 +1,27 @@
-The evolution of a time-dependent Hamiltonian requires considerable computational resources, as it evolves building the time-dependent Hamiltonian for each time step. For periodically driven Hamiltonians a rather simpler numerical approach that can be used is the Magnus expansion [`Ref <https://doi.org/10.1016/j.physrep.2008.11.001>`_]. In this approach, one calculates an effective static Hamiltonian which approximates the dynamics of the system in multiples of the period T, up to some time. The static effective Hamiltonian is obtained as an expansion in $T$, where $T$ is considered as the small parameter. For example, the first order in Magnus expansion would be $$\hat{H}^{\left(0\right)}=\frac{1}{T}\int_{0}^{T}\hat{H}\left(t_{1}\right)dt_{1},$$ and the second term,$$\hat{H}_{\text{ }}^{\left(1\right)}=\frac{1}{2T}\int_{0}^{T}\int_{0}^{t_{1}}\left[\hat{H}\left(t_{1}\right),\hat{H}\left(t_{2}\right)\right]dt_{1}dt_{2}.$$ The effective Hamiltonian is then obtained by summing all the orders,$$\hat{H}_{\text{eff}}^{\left(n\right)}=\sum_{k=0}^{n}\hat{H}^{\left(k\right)},$$ and one can assess the time evolution of the Hamiltonian at each period by (stroboscopic time evolution) $$\hat{U}\left(T\right)=e^{-i\hat{H}_{\text{eff}}^{\left(n\right)}T}\approx\mathcal{T}\exp\left[-i\int_{0}^{T}\mathrm{d}\bar{t}\hat{H}\left(\bar{t}\right)\right],$$ where $\mathcal{T}$ corresponds to time-ordering. While the first four orders of the Magnus expansion can be written in a simple form, to construct higher terms in the Magnus series one should use a recursive generator shown in `Ref <https://doi.org/10.1016/j.physrep.2008.11.001>`_. One defines $\hat{S}_{n}^{\left(j\right)}$ matrices by the following recursive construction, (here we are starting from $n=1$ so $\hat{H}^{(0)}\equiv\hat{\Omega}^{(1)}$)
+The "XXZ" chain can be written in terms of spin matrices using
+$$\hat{H}=\sum_{j=1}^{L-1}\frac{J_{xy}}{2}\left(\hat{S}_{j}^{x}\hat{S}_{j+1}^{x} + \hat{S}_{j}^{y}\hat{S}_{j+1}^{y}\right)+J_{z}\hat{S}_{j}^{z}\hat{S}_{j+1}^{z},$$
+where $\hat{S}^{\{x,y,z\}}$ are the Pauli matrices times a factor of $\frac{1}{2}$.
 
-$$\hat{S}_{n}^{\left(j\right)}\sum_{m=1}^{n-j}\left[\hat{\Omega}^{\left(m\right)},\hat{S}_{n-m}^{\left(j-1\right)}\right],\hspace{1em}2\leq j\leq n-1$$ $$\hat{S}_{n}^{\left(1\right)}=\left[\hat{\Omega}^{\left(n-1\right)},\hat{\Omega}^{\left(1\right)}\right],\hspace{1em}\hat{S}_{n}^{\left(n-1\right)}=\text{ad}_{\hat{\Omega}^{\left(1\right)}}^{n-1}\left(\hat{\Omega}_{1}\right)$$ while $\text{ad}_{\hat{\Omega}}^{k}$ is defined as following $$\text{ad}_{\hat{\Omega}}^{0}\left(A\right)=A,\hspace{1em}\text{ad}_{\hat{\Omega}}^{k+1}\left(A\right)=\left[\hat{\Omega},\text{ad}_{\hat{\Omega}}^{k}\left(A\right)\right]$$ The expansion is then obtained by $$\hat{\Omega}^{\left(n\right)}=\sum_{j=1}^{n}\frac{(-i)^jB_{j}}{j!}\int_{0}^{t}\hat{S}_{n}^{\left(j\right)}\left(\tau\right)d\tau,\hspace{1em}n\geq1.$$ Even with this simplification the number of terms in the expansion grows exponentially, which makes it rather difficult to get to higher orders.
+Usually, this type of systems can be **classified into two distinct classes**:
+
+1. Many-body localized systems (MBL).
+2. Quantum Chaotic systems (thermalizing systems).
+
+Some key differences are:
+
++------------------------------------+---------------------+-------------------------+
+| **Feature**                        | **Quantum Chaotic** | **Many-body Localized** |
++====================================+=====================+=========================+
+| Memory of initial conditions       | None                | Some                    |
++------------------------------------+---------------------+-------------------------+
+| Eigenvalues                        | Correlated          | Uncorrelated            |
++------------------------------------+---------------------+-------------------------+
+| Off-diagonal elements distribution | Normal              | Sharp distribution      |
++------------------------------------+---------------------+-------------------------+
+| Transport                          | Super-diffusive     | Sub-diffusive           |
++------------------------------------+---------------------+-------------------------+
+| Entanglement entropy spreading     | Power-law           | Logarithmic             |
++------------------------------------+---------------------+-------------------------+
+
+* **Static properties** are usually examined by using the Hamiltonian eigen-basis, where $E_\alpha = \left\langle {\phi_\alpha}\right .\left|{\hat{H}}\right|\left .{\phi_\alpha}\right \rangle$.
+* **Dynamical properties** are examined using the time evolution operator $\hat{U}(t)=e^{-i\hat{H}t}$.

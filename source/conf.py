@@ -62,6 +62,7 @@ html_theme = 'nature'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+
 # latex dollar
 mathjax_config = {
     'tex2jax': {

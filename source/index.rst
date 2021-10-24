@@ -24,13 +24,32 @@ Math Intro
 .. include:: math_intro.md
 
 
-Building Heff
-================
+Building Hamiltonians
+======================
 .. automodule:: build_hamiltonian
     :members:
-
 
 Utils
 ================
 .. automodule:: utils
+    :members:
+
+Dynamical Tools
+================
+.. automodule:: dynamical_tools
+    :members:
+    
+Static Tools
+================
+.. automodule:: static_tools
+    :members:
+    
+Legacy Utils
+================
+.. automodule:: legacy_utils
+    :members:
+    
+Unit Test
+================
+.. automodule:: unit_test
     :members:

@@ -1,0 +1,4 @@
+The cheapest way to calculate the time evolution of some operator $\hat{O}$  is to use the 'Dynamical Typicality' concept (see `Ref <https://arxiv.org/pdf/1610.08993.pdf>`_): $$\frac{1}{\mathcal{D}}\text{Tr}\hat{O}\approx\left\langle{\psi}\right .\left|{\hat{O}}\right| \left .{\psi}\right \rangle,$$
+and to use the Krylov time-space evolution, explained in the following `Ref <https://www.cs.cornell.edu/cv/ResearchPDF/19ways+.pdf>`_ and built in ``scipy.sparse.linalg.expm_multiply``.
+
+briefly, instead of diagonalizing the full matrix $\hat{H}$ in order to calculate the time evolution operator $\hat{U}(t)=e^{-i \hat{H} t}$, one asses the time evolution by averaging over random states $\left| \psi (t) \right\rangle = \hat{U}(t)\left|\psi(0)\right\rangle$, without explicitly calculating $\hat{U}(t)$.
