@@ -1,6 +1,4 @@
 """
-Dynamics
-
 .. include:: dynamics.md
 """
 import numpy as np
@@ -29,27 +27,60 @@ from utils import *
 from build_hamiltonian import *
 
 
-def matt3sz(n, i, ord):
-    if i < 0:
-        return 1 / 0
-    tz = time.time()
-    # H = np.zeros([ord.shape[0], ord.shape[0]])
-    # H = spr.dok_matrix((ord.shape[0], ord.shape[0]))
-    # H = spr.dia_matrix((ord.shape[0], ord.shape[0]))
-    h = np.zeros(ord.shape[0])
-    l = np.flipud(ordtobit(ord, n))
-    h = h + (l[:, i] - 0.5)
-    # print("L = %i matt2sz time was %1.3f" %(n, time.time() - tz))
-    return spr.dia_matrix((h, 0), shape=(ord.shape[0], ord.shape[0]))
+def entropy(v, n, ord):
+    """
+
+    Args:
+        v:
+        n:
+        ord:
+
+    Returns:
+
+    """
+    l = ordtobit(ord, n)
+    k = int(n / 2)
+    l1 = bittoint(l[:, :k])
+    l2 = bittoint(l[:, k:])
+    m = spr.csc_matrix((v, (l1, l2)), shape=(2 ** k, 2 ** k))
+    s = np.trim_zeros(sp.linalg.svdvals(m.A)) ** 2
+    s = s / np.sum(s)
+    return - np.sum(s * np.log(s))
 
 
 def evolkryl3(H, v, dt, T):
+    """
+
+    Args:
+        H:
+        v:
+        dt:
+        T:
+
+    Returns:
+
+    """
     for i in range(0, T):
         v = las.expm_multiply(-1j * H * dt, v)
     return v
 
 
 def msd99(H, n, ord, t, k, dt, seed=False, neel=False):
+    """
+
+    Args:
+        H:
+        n:
+        ord:
+        t:
+        k:
+        dt:
+        seed:
+        neel:
+
+    Returns:
+
+    """
     tz1 = time.time()
     tt = np.linspace(0, t, k)
     rng = range(int(- n / 2) + 1, int(n / 2) + 1)
@@ -82,3 +113,32 @@ def msd99(H, n, ord, t, k, dt, seed=False, neel=False):
         mss[l] = ms
     print("L = %i, k = %i ,one haar measure time: %s" % (n, k, ptime(tz1)))
     return (tt, mss, grprofile)
+
+
+def msd99ent(H, n, ord, t, k, dt):
+    """
+
+    Args:
+        H:
+        n:
+        ord:
+        t:
+        k:
+        dt:
+
+    Returns:
+
+    """
+    tz0 = time.time()
+    tt = np.linspace(0, t, k)
+    ent = np.zeros(k)
+    psi = np.zeros(ord.shape[0])
+    psi[np.random.randint(0, ord.shape[0])] = 1
+    for l in range(0, k):
+        ent[l] = entropy(psi, n, ord)
+        if l < k - 1:
+            T = np.floor((tt[l + 1] - tt[l]) / dt).astype(int)  # number of steps in the section
+            dt2 = (tt[l + 1] - tt[l]) / T  # fine tuning dt so it will actually fit the number of steps
+            psi = evolkryl3(H, psi, dt2, T)
+    print("L = %i, k = %i ,entropy measure time: %s" % (n, k, ptime(tz0)))
+    return np.array([tt, ent])

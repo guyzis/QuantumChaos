@@ -90,6 +90,18 @@ def mattv(n, Jx, ord, c):
     return H
 
 def mattaddjz(H0, n, Jz, ord, c):
+    """
+
+    Args:
+        H0:
+        n:
+        Jz:
+        ord:
+        c:
+
+    Returns:
+
+    """
     t = time.time()
     H = H0.copy()
     l = np.flipud(ordtobit(ord, n))
@@ -99,7 +111,20 @@ def mattaddjz(H0, n, Jz, ord, c):
     print("\nmattaddjz time was: %s" % ptime(t))
     return H
 
-def mattaddstark2(H0, n, f, a, ord, c):
+def mattaddstark(H0, n, f, a, ord, c):
+    """
+
+    Args:
+        H0:
+        n:
+        f:
+        a:
+        ord:
+        c:
+
+    Returns:
+
+    """
     t = time.time()
     H = H0.copy()
     l = np.flipud(ordtobit(ord, n))
@@ -115,11 +140,26 @@ def mattaddstark2(H0, n, f, a, ord, c):
     if c == 0:
         # H[j, j] = H[j, j] + (f * (n - 1) / 2 - a * ((n - 1) / n) ** 2) * (l[j, n - 1] - 0.5)
         H.setdiag(H.diagonal() + pot_arr[n - 1] * (l[:, n - 1] - 0.5))  # * 0.5
-    print("\nmattaddstark2 time was: %s" % ptime(t))
+    print("\nmattaddstark time was: %s" % ptime(t))
     return H
 
 
-def matt32(n, Jx, Jz, f, a, ord, c, shift=True):
+def matt_stark(n, Jx, Jz, f, a, ord, c, shift=True):
+    """
+
+    Args:
+        n:
+        Jx:
+        Jz:
+        f:
+        a:
+        ord:
+        c:
+        shift:
+
+    Returns:
+
+    """
     t = time.time()
     H = spr.dok_matrix((ord.shape[0], ord.shape[0]))
     l = np.flipud(ordtobit(ord, n))
@@ -153,3 +193,59 @@ def matt32(n, Jx, Jz, f, a, ord, c, shift=True):
             H[j, j] = H[j, j] + 1 * pot_arr[n - 1] * (l[j, n - 1] - 0.5)
     print("\nmatt32 time was: %s" % ptime(t))
     return H
+
+def mattaddimp3(H0, imp, h, l):
+    """
+
+    Args:
+        H0:
+        imp:
+        h:
+        l:
+
+    Returns:
+
+    """
+    tz = time.time()
+    H = H0.copy()
+    H.setdiag(H.diagonal() + h * (l[:, imp] - 0.5))
+    print("\nmattaddimp3 time was: %s" % ptime(tz))
+    return H.todok()
+
+def matt0sz(i, l):
+    """
+
+    Args:
+        i:
+        l:
+
+    Returns:
+
+    """
+    h = np.zeros(l.shape[0])
+    h = h + (l[:, i] - 0.5)
+    return spr.dia_matrix((h, 0), shape=(l.shape[0], l.shape[0]))
+
+
+def matt3sz(n, i, ord):
+    """
+
+    Args:
+        n:
+        i:
+        ord:
+
+    Returns:
+
+    """
+    if i < 0:
+        return 1 / 0
+    tz = time.time()
+    # H = np.zeros([ord.shape[0], ord.shape[0]])
+    # H = spr.dok_matrix((ord.shape[0], ord.shape[0]))
+    # H = spr.dia_matrix((ord.shape[0], ord.shape[0]))
+    h = np.zeros(ord.shape[0])
+    l = np.flipud(ordtobit(ord, n))
+    h = h + (l[:, i] - 0.5)
+    # print("L = %i matt2sz time was %1.3f" %(n, time.time() - tz))
+    return spr.dia_matrix((h, 0), shape=(ord.shape[0], ord.shape[0]))
