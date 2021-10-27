@@ -115,6 +115,39 @@ where <span class="math notranslate nohighlight">\(\hat{S}^{\{x,y,z\}}\)</span> 
 </section>
 <section id="module-build_hamiltonian">
 <span id="building-hamiltonians"></span><h1>Building Hamiltonians<a class="headerlink" href="#module-build_hamiltonian" title="Permalink to this headline">¶</a></h1>
+<p>This module uses to build matrix representations of Hamiltonians.</p>
+<p>The main logic behind the code is to represent the wavefunctions at an easy computational basis (and code it as binary numbers):
+<div class="math notranslate nohighlight">
+\[\left|\psi\right\rangle=\left|\uparrow\downarrow\downarrow\right\rangle=\texttt{[1,0,0]}=\sum_{i=2}^02^i\cdot x=\boldsymbol{4}.\]</div>
+
+We start building the Hamiltonian matrix by generating this basis (either in basis of 10 or binary numbers array). If we take for example three spins (<span class="math notranslate nohighlight">\(L=3\)</span>) and one excitation (<span class="math notranslate nohighlight">\(N=1\)</span>), we get the following basis:
+<div class="math notranslate nohighlight">
+\[\left\{\left|\downarrow\downarrow\uparrow\right\rangle  , \left|\downarrow\uparrow\downarrow\right\rangle  , \left|\uparrow\downarrow\downarrow\right\rangle\right\},\space \left\{\boldsymbol{1},\boldsymbol{2},\boldsymbol{4}\right\} \]</div>
+</p>
+<blockquote>
+<div><p>Now we can see how a term in the Hamiltonian operates on this wavefunction</p>
+</div></blockquote>
+<p><div class="math notranslate nohighlight">
+\[\hat{S}^-_0\hat{S}^+_1\left|\uparrow\downarrow\downarrow\right\rangle=\left|\downarrow\uparrow\downarrow\right\rangle\]</div>
+
+Then we could match that output with the origin <span class="math notranslate nohighlight">\(\boldsymbol{4}\leftrightarrow\boldsymbol{2}\)</span>, so the matrix representation of this term in this basis is:</p>
+<p><div class="math notranslate nohighlight">
+\[\begin{split}\hat{S}_{0}^{-}\hat{S}_{1}^{+}=\begin{array}{c|ccc}
+\psi &amp; \left|\downarrow\downarrow\uparrow\right\rangle  &amp; \left|\downarrow\uparrow\downarrow\right\rangle  &amp; \left|\uparrow\downarrow\downarrow\right\rangle \\
+\hline \left\langle \downarrow\downarrow\uparrow\right| &amp; 0 &amp; 0 &amp; 0\\
+\left\langle \downarrow\uparrow\downarrow\right| &amp; 0 &amp; 0 &amp; 1\\
+\left\langle \uparrow\downarrow\downarrow\right| &amp; 0 &amp; 0 &amp; 0
+\end{array}=\begin{array}{c|ccc}
+\psi &amp; \boldsymbol{1} &amp; \boldsymbol{2} &amp; \boldsymbol{4}\\
+\hline \boldsymbol{1} &amp; 0 &amp; 0 &amp; 0\\
+\boldsymbol{2} &amp; 0 &amp; 0 &amp; 1\\
+\boldsymbol{4} &amp; 0 &amp; 0 &amp; 0
+\end{array}=\left(\begin{array}{ccc}
+0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 0
+\end{array}\right)\end{split}\]</div>
+</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="build_hamiltonian.block0">
 <span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">block0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.block0" title="Permalink to this definition">¶</a></dt>
@@ -175,8 +208,7 @@ where <span class="math notranslate nohighlight">\(\hat{S}^{\{x,y,z\}}\)</span> 
 <li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
 <li><p><strong>Jx</strong> (<em>float</em>) – xx interaction strength</p></li>
 <li><p><strong>Jz</strong> (<em>float</em>) – zz interaction strength</p></li>
-<li><p><strong>f</strong> (<em>float</em>) – </p></li>
-<li><p><strong>f</strong> – linear potential strength</p></li>
+<li><p><strong>f</strong> (<em>float</em>) – linear potential strength</p></li>
 <li><p><strong>a</strong> (<em>float</em>) – curvature strength</p></li>
 <li><p><strong>ord</strong> – </p></li>
 <li><p><strong>bc</strong> (<em>0</em><em> or </em><em>1</em>) – boundary conditions 0 = open, 1 = close</p></li>
@@ -190,7 +222,7 @@ where <span class="math notranslate nohighlight">\(\hat{S}^{\{x,y,z\}}\)</span> 
 <dl class="py function">
 <dt class="sig sig-object py" id="build_hamiltonian.mattaddimp3">
 <span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">mattaddimp3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.mattaddimp3" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a magentic impurity at a specific site of the chain <span class="math notranslate nohighlight">\(h\hat{S}^z_{       ext{imp}}\)</span></p>
+<dd><p>Add a magentic impurity at a specific site of the chain <span class="math notranslate nohighlight">\(h\hat{S}^z_{\textrm{imp}}\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -437,6 +469,27 @@ and to use the Krylov time-space evolution, explained in the following <a class=
 <span id="static-tools"></span><h1>Static Tools<a class="headerlink" href="#module-static_tools" title="Permalink to this headline">¶</a></h1>
 <p>Static properties are usually examined by using the Hamiltonian eigen-basis, where</p>
 <dl class="py function">
+<dt class="sig sig-object py" id="static_tools.diagelements">
+<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">diagelements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.diagelements" title="Permalink to this definition">¶</a></dt>
+<dd><p>ETH diagonal elements test, used to plot <span class="math notranslate nohighlight">\(\left\langle {\phi_\alpha}\right .\left|{\hat{O}}\right|\left .{\phi_\alpha}\right \rangle\)</span> as function of the energy <span class="math notranslate nohighlight">\(E_\alpha\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>H0</strong> (<em>sparse matrix</em>) – the Hamiltonian</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
+<li><p><strong>ord</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>normalized energies (from 0 to 1), corresponding diagonal element</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(np.array, np.array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="static_tools.num_var">
 <span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">num_var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dots_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.num_var" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
@@ -457,37 +510,57 @@ and to use the Krylov time-space evolution, explained in the following <a class=
 <dl class="py function">
 <dt class="sig sig-object py" id="static_tools.offdiag">
 <span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">offdiag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">de</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_unfold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.offdiag" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>ETH for off-diagonal elements test, used to identify the chaoticity of an Hamiltonian as a function of energy.
+Used to plot how close to gaussian dist are the off-diagonal elements <span class="math notranslate nohighlight">\(\hat{O}_{\alpha\beta}={\left.\left\langle
+{\phi_\alpha}\right .\left|{\hat{O}}\right|\left .{\phi_\beta}\right \rangle\right.}_{\alpha\neq\beta}\)</span> as a
+function of the frequency <span class="math notranslate nohighlight">\(\omega\equiv E_{\beta} - E_{\alpha}\)</span>.</p>
+<p>The gaussianity test is defined as <span class="math notranslate nohighlight">\(\Gamma_{\hat{O}}\left(\omega\right)=\frac{\overline{\left|O_{
+\alpha\beta}\right|^{2}}}{\overline{\left|O_{\alpha\beta}\right|}^{2}}\)</span> which is <span class="math notranslate nohighlight">\(\pi/2\)</span> for Gaussian distribution.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>H0</strong> – </p></li>
-<li><p><strong>n</strong> – </p></li>
+<li><p><strong>H0</strong> – Hamiltonian or eigenvalues and eigenvectors</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
 <li><p><strong>l</strong> – </p></li>
-<li><p><strong>dw</strong> – </p></li>
-<li><p><strong>de</strong> – </p></li>
-<li><p><strong>is_unfold</strong> – </p></li>
+<li><p><strong>dw</strong> (<em>float</em>) – size of frequency bins</p></li>
+<li><p><strong>de</strong> (<em>float</em>) – partial part of the spectrum that is being examined (from 0 to 1)</p></li>
+<li><p><strong>is_unfold</strong> (<em>bool</em>) – take unfolded eigenvalues</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\omega\)</span>, <span class="math notranslate nohighlight">\(\Gamma_{\hat{O}}\left(\omega\right)\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(np.array, np.array)</p>
+</dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="static_tools.offdiag_dist">
 <span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">offdiag_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.offdiag_dist" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>ETH for off-diagonal elements test, used to plot the distribution of the off-diagonal elements of some local
+observable. return the histogram of  <span class="math notranslate nohighlight">\(\hat{O}_{\alpha\beta}={\left.\left\langle {\phi_\alpha}\right .\left|{\hat{
+O}}\right|\left .{\phi_\beta}\right \rangle\right.}_{\alpha\neq\beta}\)</span> built from <code class="docutils literal notranslate"><span class="pre">e_number</span></code> of eigenstates
+near the middle of the spectrum.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>H0</strong> – </p></li>
-<li><p><strong>n</strong> – </p></li>
+<li><p><strong>H0</strong> (<em>sparse matrix</em>) – the Hamiltonian</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
 <li><p><strong>l</strong> – </p></li>
-<li><p><strong>e_number</strong> – </p></li>
-<li><p><strong>bin_num</strong> – </p></li>
-<li><p><strong>normed</strong> – </p></li>
+<li><p><strong>e_number</strong> (<em>int</em>) – number of eigenvalues used to calculate the</p></li>
+<li><p><strong>bin_num</strong> (<em>int</em>) – number of bins for the histogram</p></li>
+<li><p><strong>normed</strong> (<em>bool</em>) – normalize by the system size and Hilbert dimension</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>an array with the histogram x,y data (same number of points at each axis)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(np.array)</p>
+</dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="py function">
@@ -547,16 +620,22 @@ where <div class="math notranslate nohighlight">
 <dl class="py function">
 <dt class="sig sig-object py" id="static_tools.unfold">
 <span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">unfold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.unfold" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Returns the unfolded eigenvalues</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>H</strong> – </p></li>
-<li><p><strong>cut</strong> – </p></li>
-<li><p><strong>normed</strong> – </p></li>
+<li><p><strong>H</strong> (<em>np.array</em>) – a matrix or the eigenvalues of it</p></li>
+<li><p><strong>cut</strong> (<em>int</em>) – how many eigenvales to cut</p></li>
+<li><p><strong>normed</strong> (<em>bool</em>) – normalize the density of staes</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>unfolded eigenvalues</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(np.array)</p>
+</dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 </section>

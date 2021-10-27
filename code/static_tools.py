@@ -29,7 +29,6 @@ from utils import *
 from build_hamiltonian import *
 
 
-
 def rfold(H):
     r"""
     A chaos matrix the arises from the eigenvalues spacing statstics
@@ -59,6 +58,7 @@ def rfold(H):
         r = r + min(S[i], S[i - 1]) / max(S[i], S[i - 1])
     r = r / (S.shape[0] - 1)
     return r
+
 
 # sum heavyside functions of array E at point x
 def sumheavy(E, x):
@@ -168,8 +168,45 @@ def pr_eigen(H0, basis):
     return e, pr
 
 
-def offdiag(H0, n, l, dw=0.05, de=0.05, is_unfold=False):
+def diagelements(H0, n, ord):
+    r"""
+    ETH diagonal elements test, used to plot $\left\langle {\phi_\alpha}\right .\left|{\hat{O}}\right|\left .{\phi_\alpha}\right \rangle$ as function of the energy $E_\alpha$.
+
+    Args:
+        H0 (sparse matrix): the Hamiltonian
+        n (int): number of spins
+        ord:
+
+    Returns:
+        (np.array, np.array): normalized energies (from 0 to 1), corresponding diagonal element
+
     """
+    tz = time.time()
+    l = np.flipud(ordtobit(ord, n))
+    if isinstance(H0, list):
+        e = H0[0]
+        v = H0[1]
+    else:
+        e, v = la.eig(H0.A)
+    print("\ndiag time was: %s" % ptime(tz))
+    o = matt0sz(int(n / 2) - 1, l)
+    d = la.inv(v).dot(o.A).dot(v)
+    d = d.diagonal()
+    print("diag elements time was: %s\n" % ptime(tz))
+    eps = (e - np.min(e)) / (np.max(e) - np.min(e))
+    return eps, d
+
+
+def offdiag(H0, n, l, dw=0.05, de=0.05, is_unfold=False):
+    r"""
+    ETH for off-diagonal elements test, used to identify the chaoticity of an Hamiltonian as a function of energy.
+    Used to plot how close to gaussian dist are the off-diagonal elements $\hat{O}_{\alpha\beta}={\left.\left\langle
+    {\phi_\alpha}\right .\left|{\hat{O}}\right|\left .{\phi_\beta}\right \rangle\right.}_{\alpha\neq\beta}$ as a
+    function of the frequency $\omega\equiv E_{\beta} - E_{\alpha}$.
+
+    The gaussianity test is defined as $\Gamma_{\hat{O}}\left(\omega\right)=\frac{\overline{\left|O_{
+    \alpha\beta}\right|^{2}}}{\overline{\left|O_{\alpha\beta}\right|}^{2}}$ which is $\pi/2$ for Gaussian distribution.
+
 
     Args:
         H0: Hamiltonian or eigenvalues and eigenvectors
@@ -180,6 +217,7 @@ def offdiag(H0, n, l, dw=0.05, de=0.05, is_unfold=False):
         is_unfold (bool): take unfolded eigenvalues
 
     Returns:
+        (np.array, np.array): $\omega$, $\Gamma_{\hat{O}}\left(\omega\right)$
 
     """
     tz = time.time()
@@ -210,18 +248,24 @@ def offdiag(H0, n, l, dw=0.05, de=0.05, is_unfold=False):
     print("offdiag elements time was: %s\n" % ptime(tz))
     return wspace[1:], sbins
 
+
 def offdiag_dist(H0, n, l, e_number=200, bin_num=200, normed=False):
-    """
+    r"""
+    ETH for off-diagonal elements test, used to plot the distribution of the off-diagonal elements of some local
+    observable. return the histogram of  $\hat{O}_{\alpha\beta}={\left.\left\langle {\phi_\alpha}\right .\left|{\hat{
+    O}}\right|\left .{\phi_\beta}\right \rangle\right.}_{\alpha\neq\beta}$ built from ``e_number`` of eigenstates
+    near the middle of the spectrum.
 
     Args:
-        H0:
-        n:
+        H0 (sparse matrix): the Hamiltonian
+        n (int): number of spins
         l:
-        e_number:
-        bin_num:
-        normed:
+        e_number (int): number of eigenvalues used to calculate the
+        bin_num (int): number of bins for the histogram
+        normed (bool): normalize by the system size and Hilbert dimension
 
     Returns:
+        (np.array): an array with the histogram x,y data (same number of points at each axis)
 
     """
     tz = time.time()

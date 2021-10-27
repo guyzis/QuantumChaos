@@ -154,7 +154,6 @@ def matt_stark(n, Jx, Jz, f, a, ord, bc, shift=True):
         n (int): number of spins
         Jx (float): xx interaction strength
         Jz (float): zz interaction strength
-        f (float):
         f (float): linear potential strength
         a (float): curvature strength
         ord:
@@ -200,8 +199,8 @@ def matt_stark(n, Jx, Jz, f, a, ord, bc, shift=True):
 
 
 def mattaddimp3(H0, imp, h, l):
-    """
-    Add a magentic impurity at a specific site of the chain $h\hat{S}^z_{\text{imp}}$
+    r"""
+    Add a magentic impurity at a specific site of the chain $h\hat{S}^z_{\textrm{imp}}$
 
     Args:
         H0 (sparse matrix): existing Hamiltonian
