@@ -30,9 +30,9 @@ class Test(unittest.TestCase):
         cls.imp = np.random.randint(0, cls.n)
         cls.h_imp = np.random.uniform(0.1, 2)
         print('Initial variables')
-        print('n = {n}, jx = {jx:.2f}, jz = {jz:.2f}, bc = {bc}'.format(n=cls.n, jx=cls.jx, jz=cls.jz, bc=cls.bc))
-        print('f = {f:.2f}, a = {a:.2f}'.format(f=cls.f, a=cls.a))
-        print('imp = {imp}, h_imp = {h_imp:.2f}'.format(imp=cls.imp, h_imp=cls.h_imp))
+        print(f'n = {cls.n}, jx = {cls.jx:.2f}, jz = {cls.jz:.2f}, bc = {cls.bc}')
+        print(f'f = {cls.f:.2f}, a = {cls.a:.2f}')
+        print(f'imp = {cls.imp}, h_imp = {cls.h_imp:.2f}')
 
 
 
