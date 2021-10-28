@@ -1,5 +1,5 @@
 The "XXZ" chain can be written in terms of spin matrices using
-$$\hat{H}=\sum_{j=1}^{L-1}\frac{J_{xy}}{2}\left(\hat{S}_{j}^{x}\hat{S}_{j+1}^{x} + \hat{S}_{j}^{y}\hat{S}_{j+1}^{y}\right)+J_{z}\hat{S}_{j}^{z}\hat{S}_{j+1}^{z},$$
+$$\hat{H}=\sum_{j=1}^{L-1}\frac{J_{xy}}{2}\left(\hat{S}_{j}^{+}\hat{S}_{j+1}^{-} + \hat{S}_{j}^{-}\hat{S}_{j+1}^{+}\right)+J_{z}\hat{S}_{j}^{z}\hat{S}_{j+1}^{z},$$
 where $\hat{S}^{\{x,y,z\}}$ are the Pauli matrices times a factor of $\frac{1}{2}$.
 
 Usually, this type of systems can be **classified into two distinct classes**:

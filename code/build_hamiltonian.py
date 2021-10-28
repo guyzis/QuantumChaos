@@ -158,7 +158,7 @@ def matt_stark(n, Jx, Jz, f, a, ord, bc, shift=True):
         a (float): curvature strength
         ord:
         bc (0 or 1): boundary conditions 0 = open, 1 = close
-        shift (bool): shift the potential to be concentrade in the middle
+        shift (bool): shift the potential to be concentrated in the middle
 
     Returns:
 
@@ -194,11 +194,11 @@ def matt_stark(n, Jx, Jz, f, a, ord, bc, shift=True):
         if bc == 0:
             # H[j, j] = H[j, j] + (f * (n - 1) / 2 - a * ((n - 1) / n) ** 2) * (l[j, n - 1] - 0.5)
             H[j, j] = H[j, j] + 1 * pot_arr[n - 1] * (l[j, n - 1] - 0.5)
-    print("\nmatt32 time was: %s" % ptime(t))
+    print("\nmatt_stark time was: %s" % ptime(t))
     return H
 
 
-def mattaddimp3(H0, imp, h, l):
+def mattaddimp3(H0, imp, h, l, n=0):
     r"""
     Add a magentic impurity at a specific site of the chain $h\hat{S}^z_{\textrm{imp}}$
 
@@ -211,6 +211,8 @@ def mattaddimp3(H0, imp, h, l):
     Returns:
 
     """
+    if l.ndim == 1:
+        l = np.flipud(ordtobit(l, n))
     tz = time.time()
     H = H0.copy()
     H.setdiag(H.diagonal() + h * (l[:, imp] - 0.5))
