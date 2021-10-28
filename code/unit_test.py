@@ -58,21 +58,21 @@ class Test(unittest.TestCase):
         """
         Benchmark the `Stark` potentials
         """
-        h1_stark = mattaddstark(self.h1.copy(), self.n, self.f, self.a, self.ord, self.bc)
+        h1_stark = matt_add_stark(self.h1.copy(), self.n, self.f, self.a, self.ord, self.bc)
         h2_stark = xxzblock0addstark(self.h2.copy(), self.n, self.f, self.a, self.ord)
         stark_bool = np.allclose(h1_stark.A, h2_stark)
         print('test_stark = ?', stark_bool)
-        self.assertTrue(stark_bool, msg='mattaddstark and xxzblock0addstark do not generate the same matrix')
+        self.assertTrue(stark_bool, msg='matt_add_stark and xxzblock0addstark do not generate the same matrix')
 
     def test_impurity(self):
         """
         Benchmark the addition of impurity
         """
-        h1_imp = mattaddimp(self.h1.copy(), self.imp, self.h_imp, self.ord, n=self.n)
+        h1_imp = matt_add_imp(self.h1.copy(), self.imp, self.h_imp, self.ord, n=self.n)
         h2_imp = xxzblock0addimp(self.h2.copy(), self.n, self.imp, self.h_imp, self.ord)
         imp_bool = np.allclose(h1_imp.A, h2_imp)
         print('test_stark = ?', imp_bool)
-        self.assertTrue(imp_bool, msg='mattaddimp and xxzblock0addimp do not generate the same matrix')
+        self.assertTrue(imp_bool, msg='matt_add_imp and xxzblock0addimp do not generate the same matrix')
 
     # @classmethod
     # def tearDownClass(cls):

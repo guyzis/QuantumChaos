@@ -19,7 +19,7 @@ def block0(n):
     Args:
         n (int): the number of spins
     Returns:
-         the block0 'order' in integers
+         (np.array): array of numbers encoding the wave functions
     """
     t = time.time()
     h = np.zeros(2 ** n)
@@ -67,7 +67,7 @@ def mattv(n, Jx, ord, c):
         ord (array): an array of integers represents the spins sub-space
         bc (0 or 1): boundary conditions 0 = open, 1 = close
     Returns:
-        the matrix V
+        the matrix $\hat{V}$
     """
     t = time.time()
     H = spr.dok_matrix((ord.shape[0], ord.shape[0]))
@@ -88,7 +88,7 @@ def mattv(n, Jx, ord, c):
     return H
 
 
-def mattaddjz(H0, n, Jz, ord, bc):
+def matt_add_jz(H0, n, Jz, ord, bc):
     """
     Adds $\hat{S}^z_i\hat{S}^z_{i+1}$ interaction for an existing Hamiltonian
 
@@ -100,6 +100,7 @@ def mattaddjz(H0, n, Jz, ord, bc):
         bc (0 or 1): boundary conditions 0 = open, 1 = close
 
     Returns:
+        The matrix $\hat{H}_0$ with addition of $zz$ interactions
 
     """
     t = time.time()
@@ -108,11 +109,11 @@ def mattaddjz(H0, n, Jz, ord, bc):
     # H = H.tocsr()
     for i in range(0, n - 1 + bc):
         H.setdiag(H.diagonal() + Jz * (l[:, i] - 0.5) * (l[:, np.mod(i + 1, n)] - 0.5))
-    print("\nmattaddjz time was: %s" % ptime(t))
+    print("\nmatt_add_jz time was: %s" % ptime(t))
     return H
 
 
-def mattaddstark(H0, n, f, a, ord, bc):
+def matt_add_stark(H0, n, f, a, ord, bc):
     """
     Add a linear field of strength ``f`` to an existing Hamiltonian (stark potential)
 
@@ -142,7 +143,7 @@ def mattaddstark(H0, n, f, a, ord, bc):
     if bc == 0:
         # H[j, j] = H[j, j] + (f * (n - 1) / 2 - a * ((n - 1) / n) ** 2) * (l[j, n - 1] - 0.5)
         H.setdiag(H.diagonal() + pot_arr[n - 1] * (l[:, n - 1] - 0.5))  # * 0.5
-    print("\nmattaddstark time was: %s" % ptime(t))
+    print("\nmatt_add_stark time was: %s" % ptime(t))
     return H
 
 
@@ -198,7 +199,7 @@ def matt_stark(n, Jx, Jz, f, a, ord, bc, shift=True):
     return H
 
 
-def mattaddimp(H0, imp, h, l, n=0):
+def matt_add_imp(H0, imp, h, l, n=0):
     r"""
     Add a magentic impurity at a specific site of the chain $h\hat{S}^z_{\textrm{imp}}$
 
@@ -216,7 +217,7 @@ def mattaddimp(H0, imp, h, l, n=0):
     tz = time.time()
     H = H0.copy()
     H.setdiag(H.diagonal() + h * (l[:, imp] - 0.5))
-    print("\nmattaddimp time was: %s" % ptime(tz))
+    print("\nmatt_add_imp time was: %s" % ptime(tz))
     return H.todok()
 
 
@@ -253,11 +254,8 @@ def matt3sz(n, i, ord):
     if i < 0:
         raise ValueError('matt3sz got an input i out of the chain')
     tz = time.time()
-    # H = np.zeros([ord.shape[0], ord.shape[0]])
-    # H = spr.dok_matrix((ord.shape[0], ord.shape[0]))
-    # H = spr.dia_matrix((ord.shape[0], ord.shape[0]))
     h = np.zeros(ord.shape[0])
     l = np.flipud(ordtobit(ord, n))
     h = h + (l[:, i] - 0.5)
-    # print("L = %i matt2sz time was %1.3f" %(n, time.time() - tz))
+    print("L = %i matt3sz time was %s" %(n, ptime(tz)))
     return spr.dia_matrix((h, 0), shape=(ord.shape[0], ord.shape[0]))

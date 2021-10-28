@@ -50,7 +50,7 @@ def entropy(v, n, ord):
     return - np.sum(s * np.log(s))
 
 
-def evolkryl3(H, v, dt, T):
+def evol_kryl(H, v, dt, T):
     r"""
     Calculates the time evolution of a vector using Krylov sub-space
     $$\vec{v}(t) = e^{-i\hat{H}t}\vec{v}$$
@@ -70,7 +70,7 @@ def evolkryl3(H, v, dt, T):
     return v
 
 
-def msd99(H, n, ord, t, k, dt, seed=False, neel=False):
+def msd(H, n, ord, t, k, dt, seed=False, neel=False):
     r"""
     Calculates the spins mean square displacement after a spin flip in the middle of the chain
     $$G_{n}\left(t\right)=\frac{1}{\mathcal{D}}\textrm{Tr}\left[\hat{S}_{n}^{z}\left(t\right)\hat{S}_{L/2}^{z}\right]$$
@@ -115,14 +115,14 @@ def msd99(H, n, ord, t, k, dt, seed=False, neel=False):
         if l < k - 1:
             T = np.floor((tt[l + 1] - tt[l]) / dt).astype(int)  # number of steps in the section
             dt2 = (tt[l + 1] - tt[l]) / T  # fine tuning dt so it will actually fit the number of steps
-            psi = evolkryl3(H, psi, dt2, T)
-            psi2 = evolkryl3(H, psi2, dt2, T)
+            psi = evol_kryl(H, psi, dt2, T)
+            psi2 = evol_kryl(H, psi2, dt2, T)
         mss[l] = ms
     print("L = %i, k = %i ,one haar measure time: %s" % (n, k, ptime(tz1)))
     return (tt, mss, grprofile)
 
 
-def msd99ent(H, n, ord, t, k, dt):
+def entropy_vs_time(H, n, ord, t, k, dt):
     """
     Calculate the entanglement entropy
 
@@ -136,6 +136,7 @@ def msd99ent(H, n, ord, t, k, dt):
         dt (float): time intervals for the Krylov time evolution
 
     Returns:
+        (np.array): [time array, entangelment entropy array]
 
     """
     tz0 = time.time()
@@ -148,6 +149,6 @@ def msd99ent(H, n, ord, t, k, dt):
         if l < k - 1:
             T = np.floor((tt[l + 1] - tt[l]) / dt).astype(int)  # number of steps in the section
             dt2 = (tt[l + 1] - tt[l]) / T  # fine tuning dt so it will actually fit the number of steps
-            psi = evolkryl3(H, psi, dt2, T)
+            psi = evol_kryl(H, psi, dt2, T)
     print("L = %i, k = %i ,entropy measure time: %s" % (n, k, ptime(tz0)))
     return np.array([tt, ent])

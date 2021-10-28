@@ -18,11 +18,7 @@ from scipy.linalg import expm, sinm, cosm
 from scipy import optimize
 from scipy import stats
 import os
-# from sympy.utilities.iterables import multiset_permutations
-# import h5py
-# import sympy as sym
 import itertools
-# from sympy.core import sympify
 import sys
 
 from utils import *
@@ -60,24 +56,10 @@ def rfold(H):
     return r
 
 
-# sum heavyside functions of array E at point x
-def sumheavy(E, x):
-    """
-
-    Args:
-        E:
-        x:
-
-    Returns:
-
-    """
-
-    return np.sum(np.heaviside(x - E, 0))
-
-
 def unfold(H, cut=2000, normed=False):
     """
-    Returns the unfolded eigenvalues
+    Returns the unfolded eigenvalues (used to remove the bais of the denisity of states in the level spacing
+    statistics).
 
     Args:
         H (np.array): a matrix or the eigenvalues of it
@@ -111,18 +93,7 @@ def unfold(H, cut=2000, normed=False):
 
 def num_var(H, l_min=1e-1, dots_number=1000, cut=1000, window=1, normed=False):
     """
-
-
-    Args:
-        H:
-        l_min:
-        dots_number:
-        cut:
-        window:
-        normed:
-
-    Returns:
-
+    *Docs in progress*
     """
     if H.ndim == 2:
         E = la.eigvalsh(H.A)
@@ -146,13 +117,7 @@ def num_var(H, l_min=1e-1, dots_number=1000, cut=1000, window=1, normed=False):
 
 def pr_eigen(H0, basis):
     """
-
-    Args:
-        H0:
-        basis:
-
-    Returns:
-
+    *Docs in progress*
     """
     tz = time.time()
     if isinstance(H0, list):
@@ -168,7 +133,7 @@ def pr_eigen(H0, basis):
     return e, pr
 
 
-def diagelements(H0, n, ord):
+def diag_elements(H0, n, ord):
     r"""
     ETH diagonal elements test, used to plot $\left\langle {\phi_\alpha}\right .\left|{\hat{O}}\right|\left .{\phi_\alpha}\right \rangle$ as function of the energy $E_\alpha$.
 
