@@ -16,7 +16,7 @@ import numpy as np
 import time
 from scipy import sparse as spr
 
-# Usefull matrices
+# Defining useful matrices
 Sz = np.dot(1 / 2, np.array([[1, 0], [0, -1]], dtype=np.complex_))
 Sx = np.dot(1 / 2, np.array([[0, 1], [1, 0]], dtype=np.complex_))
 Sy = np.dot(1j / 2, np.array([[0, -1], [1, 0]], dtype=np.complex_))
@@ -56,10 +56,11 @@ def outr1d(a, b):
     Equivalent to np.kron but only for diagonal matrices
 
     Args:
-        a:
-        b:
+        a (matrix): $\hat{a}$
+        b (matrix): $\hat{b}$
 
     Returns:
+        (matrix): $\hat{a}\otimes \hat{b}$
 
     """
     c = np.zeros([a.shape[0] * b.shape[0]], dtype=np.complex_)

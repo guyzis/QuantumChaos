@@ -14,7 +14,7 @@ from utils import *
 
 def block0(n):
     """
-    Generate the zero magnetization block 'order'
+    Generate the zero magnetization block 'order', namely the numbers encoding the wave functions that are in the basis.
 
     Args:
         n (int): the number of spins
