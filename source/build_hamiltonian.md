@@ -26,4 +26,6 @@ $$\hat{S}_{0}^{-}\hat{S}_{1}^{+}=\begin{array}{c|ccc}
 0 & 0 & 0
 \end{array}\right)$$
 
+All matrices generated are at the size of the basis.
+
 

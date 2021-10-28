@@ -96,7 +96,7 @@ def mattaddjz(H0, n, Jz, ord, bc):
         H0 (sparse matrix): existing Hamiltonian
         n (int): number of spins in the chain
         Jz (float): interaction strength
-        ord:
+        ord (np.array): array of numbers encoding the wave functions
         bc (0 or 1): boundary conditions 0 = open, 1 = close
 
     Returns:
@@ -121,7 +121,7 @@ def mattaddstark(H0, n, f, a, ord, bc):
         n (int): number of spins in the chain
         f (float): linear potential strength
         a (float): curvature strength
-        ord:
+        ord (np.array): array of numbers encoding the wave functions
         bc (0 or 1): boundary conditions 0 = open, 1 = close
 
     Returns:
@@ -156,7 +156,7 @@ def matt_stark(n, Jx, Jz, f, a, ord, bc, shift=True):
         Jz (float): zz interaction strength
         f (float): linear potential strength
         a (float): curvature strength
-        ord:
+        ord (np.array): array of numbers encoding the wave functions
         bc (0 or 1): boundary conditions 0 = open, 1 = close
         shift (bool): shift the potential to be concentrated in the middle
 
@@ -198,7 +198,7 @@ def matt_stark(n, Jx, Jz, f, a, ord, bc, shift=True):
     return H
 
 
-def mattaddimp3(H0, imp, h, l, n=0):
+def mattaddimp(H0, imp, h, l, n=0):
     r"""
     Add a magentic impurity at a specific site of the chain $h\hat{S}^z_{\textrm{imp}}$
 
@@ -206,7 +206,7 @@ def mattaddimp3(H0, imp, h, l, n=0):
         H0 (sparse matrix): existing Hamiltonian
         imp (int): impurity location
         h (float): impurity strength
-        l:
+        l (np.array): array of wave functions, encoded in bits formation
 
     Returns:
 
@@ -216,19 +216,20 @@ def mattaddimp3(H0, imp, h, l, n=0):
     tz = time.time()
     H = H0.copy()
     H.setdiag(H.diagonal() + h * (l[:, imp] - 0.5))
-    print("\nmattaddimp3 time was: %s" % ptime(tz))
+    print("\nmattaddimp time was: %s" % ptime(tz))
     return H.todok()
 
 
 def matt0sz(i, l):
     """
-    Generate the operator $\hat{S}^z_i$
+    Generates the operator $\hat{S}^z_i$
 
     Args:
         i (int): location of the operator
-        l:
+        l (np.array): array of wave functions, encoded in bits formation
 
     Returns:
+        (sparse matrix): $\hat{S}^z_i$
 
     """
     h = np.zeros(l.shape[0])
@@ -243,7 +244,7 @@ def matt3sz(n, i, ord):
     Args:
         n (int): number of spins
         i (int): location of the operator
-        ord:
+        ord (np.array): array of numbers encoding the wave functions
 
     Returns:
         (sparse matrix): $\hat{S}^z_i$

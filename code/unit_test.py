@@ -68,7 +68,7 @@ class Test(unittest.TestCase):
         """
         Benchmark the addition of impurity
         """
-        h1_imp = mattaddimp3(self.h1.copy(), self.imp, self.h_imp, self.ord, n=self.n)
+        h1_imp = mattaddimp(self.h1.copy(), self.imp, self.h_imp, self.ord, n=self.n)
         h2_imp = xxzblock0addimp(self.h2.copy(), self.n, self.imp, self.h_imp, self.ord)
         imp_bool = np.allclose(h1_imp.A, h2_imp)
         print('test_stark = ?', imp_bool)
