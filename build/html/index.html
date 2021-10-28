@@ -41,7 +41,7 @@
 <h1>Welcome to QuantumChaos’s documentation!<a class="headerlink" href="#welcome-to-quantumchaos-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<p><a class="reference external" href="https://github.com/guyzis/QuantumChaos">This</a> repo contains samples of the code used to write the following articles:</p>
+<p>This project contains samples of the code used to write the following articles:</p>
 <ul class="simple">
 <li><p>Guy Zisling, Lea F. Santos, and Yevgeny Bar Lev, <strong>How many particles make up a chaotic many-body quantum system?</strong> <a class="reference external" href="https://doi.org/10.21468/SciPostPhys.10.4.088">SciPost Phys. 10, 88 (2021)</a>.</p></li>
 <li><p>Guy Zisling, Dante M. Kennes, and Yevegeny Bar Lev, <strong>Transport in Stark Many Body Localized Systems</strong> <a class="reference external" href="https://arxiv.org/abs/2109.06196">arXiv:2109.06196</a> <em>(under review in PRL)</em>.</p></li>
@@ -51,6 +51,10 @@
 <li><p>Build Hamiltonian’s (matrix representations) of spin-chain systems (mainly “XXZ” chain).</p></li>
 <li><p>Examine the statical and dynamical properties of those Hamiltonian’s.</p></li>
 </ol>
+<p><strong>Link to the github repo:</strong></p>
+<blockquote>
+<div><p><a class="reference external" href="https://github.com/guyzis/QuantumChaos">https://github.com/guyzis/QuantumChaos</a></p>
+</div></blockquote>
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -64,7 +68,7 @@
 <h1>Math Intro<a class="headerlink" href="#math-intro" title="Permalink to this headline">¶</a></h1>
 <p>The “XXZ” chain can be written in terms of spin matrices using
 <div class="math notranslate nohighlight">
-\[\hat{H}=\sum_{j=1}^{L-1}\frac{J_{xy}}{2}\left(\hat{S}_{j}^{x}\hat{S}_{j+1}^{x} + \hat{S}_{j}^{y}\hat{S}_{j+1}^{y}\right)+J_{z}\hat{S}_{j}^{z}\hat{S}_{j+1}^{z},\]</div>
+\[\hat{H}=\sum_{j=1}^{L-1}\frac{J_{xy}}{2}\left(\hat{S}_{j}^{+}\hat{S}_{j+1}^{-} + \hat{S}_{j}^{-}\hat{S}_{j+1}^{+}\right)+J_{z}\hat{S}_{j}^{z}\hat{S}_{j+1}^{z},\]</div>
 
 where <span class="math notranslate nohighlight">\(\hat{S}^{\{x,y,z\}}\)</span> are the Pauli matrices times a factor of <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span>.</p>
 <p>Usually, this type of systems can be <strong>classified into two distinct classes</strong>:</p>
@@ -212,7 +216,7 @@ Then we could match that output with the origin <span class="math notranslate no
 <li><p><strong>a</strong> (<em>float</em>) – curvature strength</p></li>
 <li><p><strong>ord</strong> – </p></li>
 <li><p><strong>bc</strong> (<em>0</em><em> or </em><em>1</em>) – boundary conditions 0 = open, 1 = close</p></li>
-<li><p><strong>shift</strong> (<em>bool</em>) – shift the potential to be concentrade in the middle</p></li>
+<li><p><strong>shift</strong> (<em>bool</em>) – shift the potential to be concentrated in the middle</p></li>
 </ul>
 </dd>
 </dl>
@@ -221,7 +225,7 @@ Then we could match that output with the origin <span class="math notranslate no
 
 <dl class="py function">
 <dt class="sig sig-object py" id="build_hamiltonian.mattaddimp3">
-<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">mattaddimp3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.mattaddimp3" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">mattaddimp3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.mattaddimp3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a magentic impurity at a specific site of the chain <span class="math notranslate nohighlight">\(h\hat{S}^z_{\textrm{imp}}\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -643,9 +647,83 @@ where <div class="math notranslate nohighlight">
 <span id="legacy-utils"></span><h1>Legacy Utils<a class="headerlink" href="#module-legacy_utils" title="Permalink to this headline">¶</a></h1>
 <p>Old versions of some utils, that have been replaced with a more efficient code.
 This module can be used for benchmarking with new utils.</p>
+<p>The main idea behind this module is that matrices are generating using kronecker product, this is way less efficient
+but a bit easier to grasp then the methods used in build_hamiltonian module.</p>
+<p>For example, a term can be built as follow:
+<div class="math notranslate nohighlight">
+\[\hat{S}^z = \mathbb{I}_{2^i}\otimes \hat{S}^z \otimes \mathbb{I}_{2^{L-i-1}},\]</div>
+
+where <span class="math notranslate nohighlight">\(L\)</span> is the chain length.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="legacy_utils.outr">
+<span class="sig-prename descclassname"><span class="pre">legacy_utils.</span></span><span class="sig-name descname"><span class="pre">outr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#legacy_utils.outr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kronecker product, equivalent to np.kron but much slower</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>matrix</em>) – <span class="math notranslate nohighlight">\(\hat{a}\)</span></p></li>
+<li><p><strong>b</strong> (<em>matrix</em>) – <span class="math notranslate nohighlight">\(\hat{b}\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\hat{a}\otimes \hat{b}\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(matrix)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="legacy_utils.outr1d">
+<span class="sig-prename descclassname"><span class="pre">legacy_utils.</span></span><span class="sig-name descname"><span class="pre">outr1d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#legacy_utils.outr1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equivalent to np.kron but only for diagonal matrices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – </p></li>
+<li><p><strong>b</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns:</p>
+</dd></dl>
+
 </section>
 <section id="module-unit_test">
 <span id="unit-test"></span><h1>Unit Test<a class="headerlink" href="#module-unit_test" title="Permalink to this headline">¶</a></h1>
+<p>Test module, to use it run
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">unittest</span> <span class="pre">-v</span> <span class="pre">code.unit_test.Test</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="unit_test.Test">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">unit_test.</span></span><span class="sig-name descname"><span class="pre">Test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="unit_test.Test.setUpClass">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">setUpClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.setUpClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial variables and create XXZ matrices for benchmarking
+Returns:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unit_test.Test.test_impurity">
+<span class="sig-name descname"><span class="pre">test_impurity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.test_impurity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Benchmark the addition of impurity</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unit_test.Test.test_stark">
+<span class="sig-name descname"><span class="pre">test_stark</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.test_stark" title="Permalink to this definition">¶</a></dt>
+<dd><p>Benchmark the <cite>Stark</cite> potentials</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unit_test.Test.test_xxz">
+<span class="sig-name descname"><span class="pre">test_xxz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.test_xxz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Benchmark the basic XXZ matrices</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

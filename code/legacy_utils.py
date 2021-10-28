@@ -1,15 +1,20 @@
-"""
+r"""
 Old versions of some utils, that have been replaced with a more efficient code.
 This module can be used for benchmarking with new utils.
 
-*Work in progress...*
+The main idea behind this module is that matrices are generating using kronecker product, this is way less efficient
+but a bit easier to grasp then the methods used in build_hamiltonian module.
+
+For example, a term can be built as follow:
+$$\hat{S}^z = \mathbb{I}_{2^i}\otimes \hat{S}^z \otimes \mathbb{I}_{2^{L-i-1}},$$
+where $L$ is the chain length.
+
+Some functions are built to do the
 """
 
 import numpy as np
 import time
 from scipy import sparse as spr
-
-
 
 # Usefull matrices
 Sz = np.dot(1 / 2, np.array([[1, 0], [0, -1]], dtype=np.complex_))
@@ -24,8 +29,19 @@ Sigma = [S0, S1, S2, S3]
 Sp = (Sx + 1j * Sy)
 Sm = (Sx - 1j * Sy)
 
-# supposed to be equiv to tensordot
+
 def outr(a, b):
+    r"""
+    Kronecker product, equivalent to np.kron but much slower
+
+    Args:
+        a (matrix): $\hat{a}$
+        b (matrix): $\hat{b}$
+
+    Returns:
+        (matrix): $\hat{a}\otimes \hat{b}$
+
+    """
     c = np.zeros([a.shape[0] * b.shape[0], a.shape[1] * b.shape[1]], dtype=np.complex_)
     for i in range(0, a.shape[0]):
         for j in range(0, a.shape[1]):
@@ -35,8 +51,17 @@ def outr(a, b):
     return c
 
 
-# supposed to be equiv to tensordot but only for diagonal matrices
 def outr1d(a, b):
+    """
+    Equivalent to np.kron but only for diagonal matrices
+
+    Args:
+        a:
+        b:
+
+    Returns:
+
+    """
     c = np.zeros([a.shape[0] * b.shape[0]], dtype=np.complex_)
     for i in range(0, a.shape[0]):
         for j in range(0, b.shape[0]):
@@ -163,8 +188,6 @@ def outrr(a, i, n):
     return c
 
 
-
-
 # generate xxz hamiltonian
 def xxz(n, Jx, Jz):
     H = np.zeros([np.power(2, n), np.power(2, n)], dtype=np.complex_)
@@ -234,7 +257,6 @@ def xxzc2(n, Jx, Jz):
     return H
 
 
-
 # return a subspace of H by the order a
 def subspace(H, a):
     h = np.zeros([a.shape[0], a.shape[0]], dtype=np.complex_)
@@ -271,10 +293,10 @@ def xxzblock0stark(n, Jx, Jz, f, a, ord, c):
     return H
 
 
-def xxzblock0addstark(H, n, f, a, ord, c):
+def xxzblock0addstark(H, n, f, a, ord):
     t = time.time()
     for i in range(0, n - 1):
-            H += (f * i + a * (i / (n - 1)) ** 2) * outerrsub21d(Sz, I2, i, n, ord)
+        H += (f * i + a * (i / (n - 1)) ** 2) * outerrsub21d(Sz, I2, i, n, ord)
     H += (f * (n - 1) + a * ((n - 1) / (n - 1)) ** 2) * outerrsub21d(I2, Sz, n - 1, n, ord)
     print("normal addstark time was: ", time.time() - t)
     return H

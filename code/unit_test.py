@@ -18,6 +18,11 @@ class Test(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """
+        Initial variables and create XXZ matrices for benchmarking
+        Returns:
+
+        """
         print('----------------------\n Test setUp\n----------------------')
 
         cls.n = np.random.choice([8, 10, 12, 14])
@@ -42,25 +47,34 @@ class Test(unittest.TestCase):
         print('----------------------\n done setUp\n----------------------')
 
     def test_xxz(self):
+        """
+        Benchmark the basic XXZ matrices
+        """
         xxz_bool = np.allclose(self.h1.A, self.h2)
         print('test_xxz = ?', xxz_bool)
         self.assertTrue(xxz_bool, msg='matt_stark and xxzblock0stark do not generate the same matrix')
 
     def test_stark(self):
+        """
+        Benchmark the `Stark` potentials
+        """
         h1_stark = mattaddstark(self.h1.copy(), self.n, self.f, self.a, self.ord, self.bc)
-        h2_stark = xxzblock0addstark(self.h2.copy(), self.n, self.f, self.a, self.ord, self.bc)
+        h2_stark = xxzblock0addstark(self.h2.copy(), self.n, self.f, self.a, self.ord)
         stark_bool = np.allclose(h1_stark.A, h2_stark)
         print('test_stark = ?', stark_bool)
         self.assertTrue(stark_bool, msg='mattaddstark and xxzblock0addstark do not generate the same matrix')
 
     def test_impurity(self):
+        """
+        Benchmark the addition of impurity
+        """
         h1_imp = mattaddimp3(self.h1.copy(), self.imp, self.h_imp, self.ord, n=self.n)
         h2_imp = xxzblock0addimp(self.h2.copy(), self.n, self.imp, self.h_imp, self.ord)
         imp_bool = np.allclose(h1_imp.A, h2_imp)
         print('test_stark = ?', imp_bool)
         self.assertTrue(imp_bool, msg='mattaddimp and xxzblock0addimp do not generate the same matrix')
 
-    @classmethod
-    def tearDownClass(cls):
-        print('----------------------\n Test tearDown\n----------------------')
-        print('----------------------\n done tearDown\n----------------------')
+    # @classmethod
+    # def tearDownClass(cls):
+    #     print('----------------------\n Test tearDown\n----------------------')
+    #     print('----------------------\n done tearDown\n----------------------')
