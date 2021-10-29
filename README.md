@@ -13,6 +13,3 @@ This repo contains samples of the code used to write the following articles:
 
 
 
-*This repo is still under construction*
-
-
