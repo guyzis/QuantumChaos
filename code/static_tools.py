@@ -162,7 +162,7 @@ def diag_elements(H0, n, ord):
     return eps, d
 
 
-def offdiag(H0, n, l, dw=0.05, de=0.05, is_unfold=False):
+def offdiag(H0, n, ord, dw=0.05, de=0.05, is_unfold=False):
     r"""
     ETH for off-diagonal elements test, used to identify the chaoticity of an Hamiltonian as a function of energy.
     Used to plot how close to gaussian dist are the off-diagonal elements $\hat{O}_{\alpha\beta}={\left.\left\langle
@@ -186,6 +186,7 @@ def offdiag(H0, n, l, dw=0.05, de=0.05, is_unfold=False):
 
     """
     tz = time.time()
+    l = np.flipud(ordtobit(ord, n))
     if isinstance(H0, list):
         e = H0[0]
         v = H0[1]
@@ -214,7 +215,7 @@ def offdiag(H0, n, l, dw=0.05, de=0.05, is_unfold=False):
     return wspace[1:], sbins
 
 
-def offdiag_dist(H0, n, l, e_number=200, bin_num=200, normed=False):
+def offdiag_dist(H0, n, ord, e_number=200, bin_num=200, normed=False):
     r"""
     ETH for off-diagonal elements test, used to plot the distribution of the off-diagonal elements of some local
     observable. return the histogram of  $\hat{O}_{\alpha\beta}={\left.\left\langle {\phi_\alpha}\right .\left|{\hat{
@@ -240,6 +241,7 @@ def offdiag_dist(H0, n, l, e_number=200, bin_num=200, normed=False):
     else:
         e, v = la.eig(H0.A)
     print("\ndiag time was: %s" % ptime(tz))
+    l = np.flipud(ordtobit(ord, n))
     dim = e.shape[0]
     o = matt0sz(int(n / 2) - 1, l)
     s = la.inv(v).dot(o.A).dot(v)

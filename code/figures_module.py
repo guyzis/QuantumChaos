@@ -25,7 +25,7 @@ def prepare_standard_figure(nrows=1, ncols=1, sharex=False, sharey=False, width=
     # change color scheme
     #colors__ = ["#fff7ec", "#fee8c8", "#fdd49e", "#fdbb84", "#fc8d59", "#ef6548", "#d7301f", "#990000"]
     colors__ = ["#ffc30f", "#ff5733", "#c70039", "#900c3f", "#581845", 'k']
-    # plt.rcParams['axes.prop_cycle'] = cycler.cycler(color=colors__)
+    plt.rcParams['axes.prop_cycle'] = cycler.cycler(color=colors__)
 
     fig_size = (width, width/aspect_ratio)
     f1, axs = plt.subplots(nrows=nrows, ncols=ncols, sharex=sharex, sharey=sharey, figsize=fig_size, tight_layout=tight, constrained_layout=constrained)

@@ -133,7 +133,7 @@ def matt_add_stark(H0, n, f, a, ord, bc):
     l = np.flipud(ordtobit(ord, n))
     pot_arr = f * np.arange(n) + a * np.arange(n) ** 2 / float(n - 1) ** 2
     pot_arr = pot_arr - np.mean(pot_arr)
-    H = H.tocsr()
+    # H = H.tocsr()
     if bc == 1:
         cc = n
     else:
