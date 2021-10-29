@@ -257,3 +257,40 @@ def offdiag_dist(H0, n, ord, e_number=200, bin_num=200, normed=False):
     hist = np.histogram(s.flatten(), bins=bin_num, density=True)
     print("offdiag_dist elements time was: %s\n" % ptime(tz))
     return np.array([hist[1][1:], hist[0]])
+
+
+def offdiag_stats(H0, n, ord, e_number=200):
+    r"""
+    ETH for off-diagonal elements test, used to plot the distribution of the off-diagonal elements of some local
+    observable. return the variance and kurtosis of  $\hat{O}_{\alpha\beta}={\left.\left\langle {\phi_\alpha}\right .\left|{\hat{
+    O}}\right|\left .{\phi_\beta}\right \rangle\right.}_{\alpha\neq\beta}$ built from ``e_number`` of eigenstates
+    near the middle of the spectrum.
+
+    Args:
+        H0 (sparse matrix): the Hamiltonian
+        n (int): number of spins
+        ord:
+        e_number (int): number of eigenvalues used to calculate the
+
+    Returns:
+        (float, float): variance, kurtosis
+
+    """
+    tz = time.time()
+    if isinstance(H0, list):
+        e = H0[0]
+        v = H0[1]
+    else:
+        e, v = la.eig(H0.A)
+    print("\ndiag time was: %s" % ptime(tz))
+    l = np.flipud(ordtobit(ord, n))
+    o = matt0sz(int(n / 2) - 1, l)
+    s = la.inv(v).dot(o.A).dot(v)
+    logic = np.arange(int((e.shape[0] - e_number) / 2), int((e.shape[0] + e_number) / 2))
+    s = s[np.ix_(logic, logic)]
+    s = s[np.triu_indices(s.shape[0], k=1)]
+    print(s.shape)
+    var = np.var(s.flatten())
+    kurt = sp.stats.kurtosis(s.flatten(), fisher=False)
+    print("offdiag_stats elements time was: %s\n" % ptime(tz))
+    return var, kurt
