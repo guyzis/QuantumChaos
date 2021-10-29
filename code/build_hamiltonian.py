@@ -253,9 +253,7 @@ def matt3sz(n, i, ord):
     """
     if i < 0:
         raise ValueError('matt3sz got an input i out of the chain')
-    tz = time.time()
     h = np.zeros(ord.shape[0])
     l = np.flipud(ordtobit(ord, n))
     h = h + (l[:, i] - 0.5)
-    print("L = %i matt3sz time was %s" %(n, ptime(tz)))
     return spr.dia_matrix((h, 0), shape=(ord.shape[0], ord.shape[0]))
