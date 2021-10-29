@@ -9,15 +9,22 @@ from figures_module import *
 
 if __name__ == '__main__':
     n = 12
+    jx = 2
+    jz = 1
+    f = 0.5
+    a = 1
+    bc = 0
+
     ordd = block0(n)
-    H = matt_stark(n, 2, 1, 0.5, 3, ordd, 0)
+    H = matt_stark(n, jx, jz, f, a, ordd, bc)
 
     E, V = la.eigh(H.A)
     print('<r> = %1.2f' % rfold(E))
 
-    x = msd(H, n, ordd, t=20, k=50, dt=0.1)
+    x = msd(H, n, ordd, t=25, k=50, dt=0.1)
 
     fig, axs = prepare_standard_figure(nrows=2, ncols=2, tight=True, width=2*3.375)
+    fig.suptitle(r'$L={n},\ J_x={jx}, J_z={jz},\ \gamma={f},\ \alpha={a},\ B.C={bc}$'.format(n=n, jx=jx, jz=jz, f=f, a=a, bc=bc), fontsize=10)
 
     ax = axs[0, 0]
     ax.plot(x[0], x[1], label=f'$L = {n}$')
