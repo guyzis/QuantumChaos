@@ -22,9 +22,7 @@ class Test(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """
-        Initial variables and create XXZ matrices for benchmarking
-        Returns:
-
+        Initialize variables, creates XXZ matrices for benchmarking, diagonalize the matrices.
         """
         print('----------------------\n Test setUp\n----------------------')
 
