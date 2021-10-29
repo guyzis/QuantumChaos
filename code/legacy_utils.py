@@ -7,7 +7,7 @@ but a bit easier to grasp then the methods used in build_hamiltonian module.
 
 For example, a term can be built as follow:
 $$\hat{S}^z = \mathbb{I}_{2^i}\otimes \hat{S}^z \otimes \mathbb{I}_{2^{L-i-1}},$$
-where $L$ is the chain length.
+where $L$ is the chain length, and $\mathbb{I}_N$ is the identity matrix of dim $N$.
 
 Some functions are built to do the
 """
