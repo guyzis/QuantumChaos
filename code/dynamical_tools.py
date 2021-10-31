@@ -34,7 +34,7 @@ def entropy(v, n, ord):
     Args:
         v (np.array): vector
         n (int): number of spins in the chain
-        ord:
+        ord (np.array): array of numbers encoding the wave functions
 
     Returns:
         (float): entanglment entropy
@@ -78,12 +78,12 @@ def msd(H, n, ord, t, k, dt, seed=False, neel=False):
     Args:
         H (sparse matrix): Hamiltonian
         n (int): number of spins in the chain
-        ord:
+        ord (np.array): array of numbers encoding the wave functions
         t (float): ending time of the calculation
         k (int): number of point to sample in time
         dt (float): time intervals for the Krylov time evolution
-        seed:
-        neel:
+        seed (bool): fix the seed
+        neel (bool): start with a neel state
 
     Returns:
 
@@ -130,7 +130,7 @@ def entropy_vs_time(H, n, ord, t, k, dt):
     Args:
         H (sparse matrix): Hamiltonian
         n (int): number of spins in the chain
-        ord:
+        ord (np.array): array of numbers encoding the wave functions
         t (float): ending time of the calculation
         k (int): number of point to sample in time
         dt (float): time intervals for the Krylov time evolution

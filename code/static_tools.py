@@ -140,7 +140,7 @@ def diag_elements(H0, n, ord):
     Args:
         H0 (sparse matrix): the Hamiltonian
         n (int): number of spins
-        ord:
+        ord (np.array): array of numbers encoding the wave functions
 
     Returns:
         (np.array, np.array): normalized energies (from 0 to 1), corresponding diagonal element
@@ -176,7 +176,7 @@ def offdiag(H0, n, ord, dw=0.05, de=0.05, is_unfold=False):
     Args:
         H0: Hamiltonian or eigenvalues and eigenvectors
         n (int): number of spins
-        l:
+        l (np.array): array of wave functions, encoded in bits formation
         dw (float): size of frequency bins
         de (float): partial part of the spectrum that is being examined (from 0 to 1)
         is_unfold (bool): take unfolded eigenvalues
@@ -225,7 +225,7 @@ def offdiag_dist(H0, n, ord, e_number=200, bin_num=200, normed=False):
     Args:
         H0 (sparse matrix): the Hamiltonian
         n (int): number of spins
-        l:
+        l (np.array): array of wave functions, encoded in bits formation
         e_number (int): number of eigenvalues used to calculate the
         bin_num (int): number of bins for the histogram
         normed (bool): normalize by the system size and Hilbert dimension
@@ -269,7 +269,7 @@ def offdiag_stats(H0, n, ord, e_number=200):
     Args:
         H0 (sparse matrix): the Hamiltonian
         n (int): number of spins
-        ord:
+        ord (np.array): array of numbers encoding the wave functions
         e_number (int): number of eigenvalues used to calculate the
 
     Returns:
