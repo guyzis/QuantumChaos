@@ -15,7 +15,7 @@
 $u = _.noConflict();
 
 /**
- * make the src_code below compatible with browsers without
+ * make the code below compatible with browsers without
  * an installed firebug like debugger
 if (!window.console || !console.firebug) {
   var names = ["log", "debug", "info", "warn", "error", "assert", "dir",

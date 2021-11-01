@@ -12,45 +12,23 @@ import shutil
 from utils import *
 
 
-def block0(n):
+def matt0(n, Jx, Jz, basis, bc):
     """
-    Generate the zero magnetization block 'order', namely the numbers encoding the wave functions that are in the basis.
-
-    Args:
-        n (int): the number of spins
-    Returns:
-         (np.array): array of numbers encoding the wave functions
-    """
-    t = time.time()
-    h = np.zeros(2 ** n)
-    basis = np.flipud(ordtobit(np.arange(2 ** n), n))
-    for i in range(0, n):
-        h = h + (basis[:, i] - 0.5)
-    ord = np.where(h == 0)[0]
-    print("block0 time was %s" % ptime(t))
-    return ord
-
-
-def matt0(n, Jx, Jz, basis, c):
-    """
-    Generates the Stark Hamiltonian (xxz chain with linear potential)
+    Generates the XXZ Hamiltonian
 
     Args:
         n (int): number of spins
         Jx (float): xx interaction strength
         Jz (float): zz interaction strength
-        basis (np.array): array of numbers encoding the wave functions
+        basis (np.array): array of bits encoding the wave functions
         bc (0 or 1): boundary conditions 0 = open, 1 = close
 
     Returns:
-        (sparse matrix): xxz chain
+        sparse matrix: xxz chain
     """
     t = time.time()
     H = spr.dok_matrix((basis.shape[0], basis.shape[0]))
-    if c == 1:
-        cc = n
-    else:
-        cc = n - 1
+    cc = n - 1 + bc
     for i in range(0, cc):
         for j in range(0, basis.shape[0]):
             H[j, j] = H[j, j] + Jz * (basis[j, i] - 0.5) * (basis[j, np.mod(i + 1, n)] - 0.5)
@@ -82,7 +60,7 @@ def matt_add_jz(H0, n, Jz, basis, bc):
         bc (0 or 1): boundary conditions 0 = open, 1 = close
 
     Returns:
-        The matrix $\hat{H}_0$ with addition of $zz$ interactions
+        sparse matrix: The matrix $\hat{H}_0$ with addition of $zz$ interactions
 
     """
     t = time.time()
@@ -95,8 +73,9 @@ def matt_add_jz(H0, n, Jz, basis, bc):
 
 
 def matt_add_stark(H0, n, f, a, basis, bc):
-    """
-    Add a linear field of strength ``f`` to an existing Hamiltonian (stark potential)
+    r"""
+    Add a linear field of strength ``f`` to an existing Hamiltonian (stark potential).
+    $$\hat{H}_0\rightarrow\hat{H}_0 + \sum_{j=1}^{L}\left(\gamma j+\alpha j^{2}/L^{2}\right) \hat{S}_{j}^{z}$$
 
     Args:
         H0 (sparse matrix): existing Hamiltonian
@@ -107,6 +86,7 @@ def matt_add_stark(H0, n, f, a, basis, bc):
         bc (0 or 1): boundary conditions 0 = open, 1 = close
 
     Returns:
+        sparse matrix: The initial Hamiltonian plus the Stark potential term
 
     """
     t = time.time()
@@ -137,6 +117,7 @@ def matt_add_imp(H0, imp, h, basis, n=0):
         basis (np.array): array of wave functions, encoded in bits formation
 
     Returns:
+        sparse matrix: The initial Hamiltonian plus the impurity term
 
     """
     tz = time.time()
@@ -155,7 +136,7 @@ def matt0sz(i, basis):
         basis (np.array): array of wave functions, encoded in bits formation
 
     Returns:
-        (sparse matrix): $\hat{S}^z_i$
+        sparse matrix: $\hat{S}^z_i$
 
     """
     h = np.zeros(basis.shape[0])

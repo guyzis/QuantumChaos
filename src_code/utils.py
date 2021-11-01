@@ -1,5 +1,10 @@
-"""
-For utils used in more than one module
+r"""
+For utils used in more than one module.
+
+The transformation between wave-function bits and integer representation is defined as following:
+$$\vec{x}\rightarrow\sum_{i=L}^1(1-x_i)\cdot 2^{L-i}=\boldsymbol{\mathrm{int}}.$$
+
+See ``legacy_utils`` for more information about this transformation.
 """
 
 import time
@@ -32,7 +37,7 @@ def blockex(n, j):
         j (int): number of excitations in the basis
 
     Returns:
-        (np.array): wave functions basis in bits
+        np.array: wave functions basis in bits
 
     """
     h = np.zeros(n)
@@ -45,12 +50,12 @@ def ordtobit(ord, n):
     Integers basis to bits basis (e.g $\boldsymbol{4}\rightarrow\texttt{[0,1,1]}$)
 
     Args:
-        ord (str): a list of integers that represents the spins
+        ord (np.array): an array of integers that represents the spins
         n:  number of spins in the chain
     Returns:
-         list: a list of bits that represents the spins (1 = spin pointing up, 0 = down)
+         np.array: a list of bits that represents the spins (1 = spin pointing up, 0 = down)
     """
-    return (1 - np.array([list(map(int, list(np.binary_repr(i, n)))) for i in ord]))
+    return 1 - np.array([list(map(int, list(np.binary_repr(i, n)))) for i in ord])
 
 
 def bittoint(basis):
@@ -60,7 +65,7 @@ def bittoint(basis):
     Args:
         basis (np.array):  a list of bits that represents the spins (1 = spin pointing up, 0 = down)
     Returns:
-         (np.array): a list of integers
+         np.array: an array of integers encoding the wave function
     """
     if basis.ndim == 2:
         return np.sum(np.fliplr(1 - basis) * (2 ** np.arange(basis.shape[1])), axis=1)

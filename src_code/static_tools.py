@@ -39,7 +39,7 @@ def rfold(H):
         H (np.array): matrix or eigenvalues
 
     Returns:
-        (float): $\langle r \rangle$
+        float: $\langle r \rangle$
 
     """
     t = time.time()
@@ -67,8 +67,7 @@ def unfold(H, cut=2000, normed=False):
         normed (bool): normalize the density of staes
 
     Returns:
-        (np.array): unfolded eigenvalues
-
+        np.array: unfolded eigenvalues
     """
     if H.ndim == 2:
         E = np.sort(la.eigvalsh(H))
@@ -92,9 +91,6 @@ def unfold(H, cut=2000, normed=False):
 
 
 def num_var(H, l_min=1e-1, dots_number=1000, cut=1000, window=1, normed=False):
-    """
-    *Docs in progress*
-    """
     if H.ndim == 2:
         E = la.eigvalsh(H.A)
     elif H.ndim == 1:
@@ -116,9 +112,6 @@ def num_var(H, l_min=1e-1, dots_number=1000, cut=1000, window=1, normed=False):
 
 
 def pr_eigen(H0, basis):
-    """
-    *Docs in progress*
-    """
     tz = time.time()
     if isinstance(H0, list):
         e = H0[0]
@@ -144,7 +137,6 @@ def diag_elements(H0, n, basis):
 
     Returns:
         (np.array, np.array): normalized energies (from 0 to 1), corresponding diagonal element
-
     """
     tz = time.time()
     if isinstance(H0, list):
@@ -182,7 +174,6 @@ def offdiag(H0, n, basis, dw=0.05, de=0.05, is_unfold=False):
 
     Returns:
         (np.array, np.array): $\omega$, $\Gamma_{\hat{O}}\left(\omega\right)$
-
     """
     tz = time.time()
     if isinstance(H0, list):
@@ -230,7 +221,6 @@ def offdiag_dist(H0, n, basis, e_number=200, bin_num=200, normed=False):
 
     Returns:
         (np.array): an array with the histogram x,y data (same number of points at each axis)
-
     """
     tz = time.time()
     if isinstance(H0, list):
@@ -271,7 +261,6 @@ def offdiag_stats(H0, n, basis, e_number=200):
 
     Returns:
         (float, float): variance, kurtosis
-
     """
     tz = time.time()
     if isinstance(H0, list):

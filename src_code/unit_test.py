@@ -40,10 +40,10 @@ class Test(unittest.TestCase):
         print(f'f = {cls.f:.2f}, a = {cls.a:.2f}')
         print(f'imp = {cls.imp}, h_imp = {cls.h_imp:.2f}')
 
-        cls.h1 = matt0(cls.n, cls.jx, cls.jz, basis=cls.basis, c=cls.bc)
-        cls.h2 = xxzblock0stark(cls.n, cls.jx, cls.jz, f=0, a=0, ord=cls.basis, c=cls.bc)
+        cls.h1 = matt0(cls.n, cls.jx, cls.jz, basis=cls.basis, bc=cls.bc)
+        cls.h2 = xxz_block_stark(cls.n, cls.jx, cls.jz, f=0, a=0, basis=cls.basis, bc=cls.bc)
         cls.h1_imp = matt_add_imp(cls.h1.copy(), cls.imp, cls.h_imp, cls.basis, n=cls.n)
-        cls.h2_imp = xxzblock0addimp(cls.h2.copy(), cls.n, cls.imp, cls.h_imp, cls.basis)
+        cls.h2_imp = xxz_block_add_imp(cls.h2.copy(), cls.n, cls.imp, cls.h_imp, cls.basis)
 
         cls.E, cls.V = la.eigh(cls.h1_imp.A)
 
@@ -61,7 +61,7 @@ class Test(unittest.TestCase):
         Benchmark the `Stark` potentials
         """
         h1_stark = matt_add_stark(self.h1.copy(), self.n, self.f, self.a, self.basis, self.bc)
-        h2_stark = xxzblock0addstark(self.h2.copy(), self.n, self.f, self.a, self.basis)
+        h2_stark = xxz_block_add_stark(self.h2.copy(), self.n, self.f, self.a, self.basis)
         np.testing.assert_allclose(h1_stark.A, h2_stark,
                                    err_msg='matt_add_stark and xxzblock0addstark do not generate the same matrix')
 
@@ -101,7 +101,7 @@ class Test(unittest.TestCase):
 
     def test_offdiag(self):
         """
-        Make sure offdiag runss properly and returns a tuple
+        Make sure offdiag runs properly and returns a tuple
         """
         x = offdiag([self.E, self.V], self.n, self.basis)
         self.assertIsInstance(x, tuple, msg='offdiag does not return a tuple')

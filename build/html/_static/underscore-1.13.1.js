@@ -868,7 +868,7 @@
     return '\\' + escapes[match];
   }
 
-  // In order to prevent third-party src_code injection through
+  // In order to prevent third-party code injection through
   // `_.templateSettings.variable`, we test it against the following regular
   // expression. It is intentionally a bit more liberal than just matching valid
   // identifiers, but still prevents possible loopholes through defaults or
@@ -877,7 +877,7 @@
 
   // JavaScript micro-templating, similar to John Resig's implementation.
   // Underscore templating handles arbitrary delimiters, preserves whitespace,
-  // and correctly escapes quotes within interpolated src_code.
+  // and correctly escapes quotes within interpolated code.
   // NB: `oldSettings` only exists for backwards compatibility.
   function template(text, settings, oldSettings) {
     if (!settings && oldSettings) settings = oldSettings;
@@ -912,7 +912,7 @@
 
     var argument = settings.variable;
     if (argument) {
-      // Insure against third-party src_code injection. (CVE-2021-23358)
+      // Insure against third-party code injection. (CVE-2021-23358)
       if (!bareIdentifier.test(argument)) throw new Error(
         'variable is not a bare identifier: ' + argument
       );
@@ -1176,7 +1176,7 @@
   }
 
   // Returns the first function passed as an argument to the second,
-  // allowing you to adjust arguments, run src_code before and after, and
+  // allowing you to adjust arguments, run code before and after, and
   // conditionally execute the original function.
   function wrap(func, wrapper) {
     return partial(wrapper, func);
@@ -1353,7 +1353,7 @@
 
   // Internal helper to create a reducing function, iterating left or right.
   function createReduce(dir) {
-    // Wrap src_code that reassigns argument variables in a separate function than
+    // Wrap code that reassigns argument variables in a separate function than
     // the one that accesses `arguments.length` to avoid a perf hit. (#1991)
     var reducer = function(obj, iteratee, memo, initial) {
       var _keys = !isArrayLike(obj) && keys(obj),

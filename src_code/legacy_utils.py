@@ -21,18 +21,8 @@ Sp = (Sx + 1j * Sy)
 Sm = (Sx - 1j * Sy)
 
 
+# Kronecker product, equivalent to np.kron but much slower
 def outr(a, b):
-    r"""
-    Kronecker product, equivalent to np.kron but much slower
-
-    Args:
-        a (matrix): $\hat{a}$
-        b (matrix): $\hat{b}$
-
-    Returns:
-        (matrix): $\hat{a}\otimes \hat{b}$
-
-    """
     c = np.zeros([a.shape[0] * b.shape[0], a.shape[1] * b.shape[1]], dtype=np.complex_)
     for i in range(0, a.shape[0]):
         for j in range(0, a.shape[1]):
@@ -42,18 +32,8 @@ def outr(a, b):
     return c
 
 
+# Equivalent to np.kron but only for diagonal matrices
 def outr1d(a, b):
-    """
-    Equivalent to np.kron but only for diagonal matrices
-
-    Args:
-        a (matrix): $\hat{a}$
-        b (matrix): $\hat{b}$
-
-    Returns:
-        (matrix): $\hat{a}\otimes \hat{b}$
-
-    """
     c = np.zeros([a.shape[0] * b.shape[0]], dtype=np.complex_)
     for i in range(0, a.shape[0]):
         for j in range(0, b.shape[0]):
@@ -61,7 +41,7 @@ def outr1d(a, b):
     return c
 
 
-# equiv to tensordot with subspace
+# equiv to np.kron with subspace
 def outrsub(a, b, ord):
     c = np.zeros([ord.shape[0], ord.shape[0]], dtype=np.complex_)
     for i in range(0, ord.shape[0]):
@@ -73,7 +53,6 @@ def outrsub(a, b, ord):
 
 # equiv to outrsub but much faster
 def outrsub2(a, b, ord):
-    c = np.zeros([ord.shape[0], ord.shape[0]], dtype=np.complex_)
     orda = np.floor_divide(ord, b.shape[0])
     ordb = np.mod(ord, b.shape[0])
     a = a[:, orda][orda]
@@ -84,7 +63,6 @@ def outrsub2(a, b, ord):
 
 # outrsub just for diagonal matrices
 def outrsub21d(a, b, ord):
-    # c = np.zeros([ord.shape[0], ord.shape[0]], dtype=np.complex_)
     orda = np.floor_divide(ord, b.shape[0])
     ordb = np.mod(ord, b.shape[0])
     a = a[orda, orda]
@@ -92,8 +70,18 @@ def outrsub21d(a, b, ord):
     return np.diag(np.multiply(a, b))
 
 
-# generate an 2^n dim matrix representing matrix a in place i in the full hilbert space
 def outerr(a, i, n):
+    """
+    Generate an $2^n$ dim matrix representing matrix ``a`` in place ``i`` in the full hilbert space
+
+    Args:
+        a (np.array): matrix
+        i (int): location in the spin chain
+        n (int): spin chain length
+
+    Returns:
+        np.array: $\hat{a}_i$ $2^n\times2^n$ matrix repreesntation
+    """
     if i > 0 and i + 1 < n:
         c = outr(outr(np.identity((np.power(2, i))), a), np.identity((np.power(2, n - i - 1))))
     if i == 0:
@@ -270,36 +258,67 @@ def xxzblock0(n, Jx, Jz, ord):
 
 
 # generate xxz block0 hamiltonian with f linear potential and a curvature
-def xxzblock0stark(n, Jx, Jz, f, a, ord, c):
+def xxz_block_stark(n, Jx, Jz, f, a, basis, bc):
+    """
+    Generates the Stark Hamiltonian (xxz chain with linear potential)
+
+    Args:
+        n (int): number of spins
+        Jx (float): xx interaction strength
+        Jz (float): zz interaction strength
+        f (float): linear potential strength
+        a (float): curvature strength
+        basis (np.array): an array encoding the wave functions
+        bc (int): boundary conditions (0 - open, 1 - closed)
+
+    Returns:
+        np.array: the Stark Hamiltonian matrix representation on the basis given
+
+    """
     t = time.time()
-    if ord.ndim == 2:
-        ord = bittoint(ord)
-    H = np.zeros([ord.shape[0], ord.shape[0]], dtype=np.complex_)
+    if basis.ndim == 2:
+        basis = bittoint(basis)
+    H = np.zeros([basis.shape[0], basis.shape[0]], dtype=np.complex_)
     for i in range(0, n - 1):
-        H = H + Jx * outerrsub2(Sx, Sx, i, n, ord) + Jx * outerrsub2(Sy, Sy, i, n, ord) + Jz * outerrsub21d(Sz, Sz, i,
-                                                                                                            n, ord) + \
-            (f * i + a * (i / (n - 1)) ** 2) * outerrsub21d(Sz, I2, i, n, ord)
-    H = H + (f * (n - 1) + a * ((n - 1) / (n - 1)) ** 2) * outerrsub21d(I2, Sz, n - 1, n, ord)
-    if c == 1:
-        H = H + Jx * (outerrsub2(Sx, Sx, - 1, n, ord) + outerrsub2(Sy, Sy, - 1, n, ord)) + \
-            Jz * outerrsub2(Sz, Sz, - 1, n, ord)
-    print("normal stark time was: ", time.time() - t)
+        H = H + Jx * outerrsub2(Sx, Sx, i, n, basis) + Jx * outerrsub2(Sy, Sy, i, n, basis) + Jz * outerrsub21d(Sz, Sz,
+                                                                                                                i,
+                                                                                                                n,
+                                                                                                                basis) + \
+            (f * i + a * (i / (n - 1)) ** 2) * outerrsub21d(Sz, I2, i, n, basis)
+    H = H + (f * (n - 1) + a * ((n - 1) / (n - 1)) ** 2) * outerrsub21d(I2, Sz, n - 1, n, basis)
+    if bc == 1:
+        H = H + Jx * (outerrsub2(Sx, Sx, - 1, n, basis) + outerrsub2(Sy, Sy, - 1, n, basis)) + \
+            Jz * outerrsub2(Sz, Sz, - 1, n, basis)
+    print("xxz_block_stark time was: ", time.time() - t)
     return H
 
 
-def xxzblock0addstark(H, n, f, a, ord):
+def xxz_block_add_stark(H, n, f, a, basis):
+    """
+    Add Stark potential to existing Hamiltonian
+
+    Args:
+        H (np.array): initial Hamiltonian
+        n (int): number of spins
+        f (float): linear potential strength
+        a (float): curvature strength
+        basis (np.array): an array encoding the wave functions
+
+    Returns:
+        np.array: The Hamiltonian matrix ``H`` plus the Stark potential
+    """
     t = time.time()
-    if ord.ndim == 2:
-        ord = bittoint(ord)
+    if basis.ndim == 2:
+        basis = bittoint(basis)
     for i in range(0, n - 1):
-        H += (f * i + a * (i / (n - 1)) ** 2) * outerrsub21d(Sz, I2, i, n, ord)
-    H += (f * (n - 1) + a * ((n - 1) / (n - 1)) ** 2) * outerrsub21d(I2, Sz, n - 1, n, ord)
-    print("normal addstark time was: ", time.time() - t)
+        H += (f * i + a * (i / (n - 1)) ** 2) * outerrsub21d(Sz, I2, i, n, basis)
+    H += (f * (n - 1) + a * ((n - 1) / (n - 1)) ** 2) * outerrsub21d(I2, Sz, n - 1, n, basis)
+    print("xxz_block_add_stark time was: ", time.time() - t)
     return H
 
 
 # generate xxz block0 hamiltonian with impurity at imp
-def xxzblock0imp(n, Jx, Jz, imp, h, ord, c):
+def xxz_block_imp(n, Jx, Jz, imp, h, ord, c):
     t = time.time()
     if ord.ndim == 2:
         ord = bittoint(ord)
@@ -319,14 +338,26 @@ def xxzblock0imp(n, Jx, Jz, imp, h, ord, c):
     return H
 
 
-# generate xxz block0 hamiltonian with impurity at imp
-def xxzblock0addimp(H, n, imp, h, ord):
+def xxz_block_add_imp(H, n, imp, h, basis):
+    r"""
+    Add impurity to existing Hamiltonian $\hat{H}\rightarrow \hat{H} + h\cdot\hat{S}^z_{\mathrm{imp}}$
+    
+    Args:
+        H (np.array): initial Hamiltonian
+        n (int): number of spins
+        imp (int): impurity location 
+        h (float): impurity strength 
+        basis (np.array): an array encoding the wave functions
+
+    Returns:
+        np.array: The Hamiltonian matrix ``H`` plus the impurity term.
+    """
     t = time.time()
-    if ord.ndim == 2:
-        ord = bittoint(ord)
+    if basis.ndim == 2:
+        basis = bittoint(basis)
     if imp != n - 1:
-        H += h * outerrsub21d(Sz, I2, imp, n, ord)
+        H += h * outerrsub21d(Sz, I2, imp, n, basis)
     else:
-        H += h * outerrsub21d(I2, Sz, n - 1, n, ord)
-    print("normal xxzaddimp0 time was: ", time.time() - t)
+        H += h * outerrsub21d(I2, Sz, n - 1, n, basis)
+    print("xxz_block_add_imp time was: ", time.time() - t)
     return H

@@ -44,7 +44,7 @@
 <p>This project contains samples of the code used to write the following articles:</p>
 <ul class="simple">
 <li><p>Guy Zisling, Lea F. Santos, and Yevgeny Bar Lev, <strong>How many particles make up a chaotic many-body quantum system?</strong> <a class="reference external" href="https://doi.org/10.21468/SciPostPhys.10.4.088">SciPost Phys. 10, 88 (2021)</a>.</p></li>
-<li><p>Guy Zisling, Dante M. Kennes, and Yevegeny Bar Lev, <strong>Transport in Stark Many Body Localized Systems</strong> <a class="reference external" href="https://arxiv.org/abs/2109.06196">arXiv:2109.06196</a> <em>(under review in PRL)</em>.</p></li>
+<li><p>Guy Zisling, Dante M. Kennes, and Yevegeny Bar Lev, <strong>Transport in Stark Many Body Localized Systems</strong> <a class="reference external" href="https://arxiv.org/abs/2109.06196">arXiv:2109.06196</a>.</p></li>
 </ul>
 <p><strong>The code can be used for two main purposes:</strong></p>
 <ol class="arabic simple">
@@ -55,6 +55,7 @@
 <blockquote>
 <div><p><a class="reference external" href="https://github.com/guyzis/QuantumChaos">https://github.com/guyzis/QuantumChaos</a></p>
 </div></blockquote>
+<p><em>All the code was written by Guy Zisling</em></p>
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -122,11 +123,11 @@ where <span class="math notranslate nohighlight">\(\hat{S}^{\{x,y,z\}}\)</span> 
 <p>This module uses to build matrix representations of Hamiltonians.</p>
 <p>The main logic behind the code is to represent the wavefunctions at an easy computational basis (and code it as binary numbers):
 <div class="math notranslate nohighlight">
-\[\left|\psi\right\rangle=\left|\uparrow\downarrow\downarrow\right\rangle=\texttt{[1,0,0]}=\sum_{i=2}^02^i\cdot x=\boldsymbol{4}.\]</div>
+\[\left|\psi\right\rangle=\left|\uparrow\downarrow\downarrow\right\rangle=\texttt{[1,0,0]}.\]</div>
 
 We start building the Hamiltonian matrix by generating this basis (either in basis of 10 or binary numbers array). If we take for example three spins (<span class="math notranslate nohighlight">\(L=3\)</span>) and one excitation (<span class="math notranslate nohighlight">\(N=1\)</span>), we get the following basis:
 <div class="math notranslate nohighlight">
-\[\left\{\left|\downarrow\downarrow\uparrow\right\rangle  , \left|\downarrow\uparrow\downarrow\right\rangle  , \left|\uparrow\downarrow\downarrow\right\rangle\right\},\space \left\{\boldsymbol{1},\boldsymbol{2},\boldsymbol{4}\right\} \]</div>
+\[\left\{\left|\downarrow\downarrow\uparrow\right\rangle  , \left|\downarrow\uparrow\downarrow\right\rangle  , \left|\uparrow\downarrow\downarrow\right\rangle\right\},\space \left\{\texttt{[1,0,0]}, \texttt{[0,1,0]}, \texttt{[0,0,1]} \right\} \]</div>
 </p>
 <blockquote>
 <div><p>Now we can see how a term in the Hamiltonian operates on this wavefunction</p>
@@ -134,98 +135,66 @@ We start building the Hamiltonian matrix by generating this basis (either in bas
 <p><div class="math notranslate nohighlight">
 \[\hat{S}^-_0\hat{S}^+_1\left|\uparrow\downarrow\downarrow\right\rangle=\left|\downarrow\uparrow\downarrow\right\rangle\]</div>
 
-Then we could match that output with the origin <span class="math notranslate nohighlight">\(\boldsymbol{4}\leftrightarrow\boldsymbol{2}\)</span>, so the matrix representation of this term in this basis is:</p>
+Then we could match that output with the origin <span class="math notranslate nohighlight">\(\texttt{[1,0,0]}\leftrightarrow\texttt{[0,1,0]}\)</span>, so the matrix representation of this term in this basis is:</p>
 <p><div class="math notranslate nohighlight">
 \[\begin{split}\hat{S}_{0}^{-}\hat{S}_{1}^{+}=\begin{array}{c|ccc}
 \psi &amp; \left|\downarrow\downarrow\uparrow\right\rangle  &amp; \left|\downarrow\uparrow\downarrow\right\rangle  &amp; \left|\uparrow\downarrow\downarrow\right\rangle \\
 \hline \left\langle \downarrow\downarrow\uparrow\right| &amp; 0 &amp; 0 &amp; 0\\
 \left\langle \downarrow\uparrow\downarrow\right| &amp; 0 &amp; 0 &amp; 1\\
 \left\langle \uparrow\downarrow\downarrow\right| &amp; 0 &amp; 0 &amp; 0
-\end{array}=\begin{array}{c|ccc}
-\psi &amp; \boldsymbol{1} &amp; \boldsymbol{2} &amp; \boldsymbol{4}\\
-\hline \boldsymbol{1} &amp; 0 &amp; 0 &amp; 0\\
-\boldsymbol{2} &amp; 0 &amp; 0 &amp; 1\\
-\boldsymbol{4} &amp; 0 &amp; 0 &amp; 0
 \end{array}=\left(\begin{array}{ccc}
 0 &amp; 0 &amp; 0\\
 0 &amp; 0 &amp; 1\\
 0 &amp; 0 &amp; 0
 \end{array}\right)\end{split}\]</div>
 </p>
+<p>All matrices generated are at the size of the basis.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="build_hamiltonian.block0">
-<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">block0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.block0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate the zero magnetization block ‘order’</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – the number of spins</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the block0 ‘order’ in integers</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="build_hamiltonian.matt0sz">
-<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">matt0sz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.matt0sz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate the operator <span class="math notranslate nohighlight">\(\hat{S}^z_i\)</span></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>i</strong> (<em>int</em>) – location of the operator</p></li>
-<li><p><strong>l</strong> – </p></li>
-</ul>
-</dd>
-</dl>
-<p>Returns:</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="build_hamiltonian.matt3sz">
-<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">matt3sz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.matt3sz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate the operator <span class="math notranslate nohighlight">\(\hat{S}^z_i\)</span></p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
-<li><p><strong>i</strong> (<em>int</em>) – location of the operator</p></li>
-<li><p><strong>ord</strong> – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><span class="math notranslate nohighlight">\(\hat{S}^z_i\)</span></p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(sparse matrix)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="build_hamiltonian.matt_stark">
-<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">matt_stark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.matt_stark" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates the Stark Hamiltonian (xxz chain with linear potential)</p>
+<dt class="sig sig-object py" id="build_hamiltonian.matt0">
+<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">matt0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.matt0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the XXZ Hamiltonian</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
 <li><p><strong>Jx</strong> (<em>float</em>) – xx interaction strength</p></li>
 <li><p><strong>Jz</strong> (<em>float</em>) – zz interaction strength</p></li>
-<li><p><strong>f</strong> (<em>float</em>) – linear potential strength</p></li>
-<li><p><strong>a</strong> (<em>float</em>) – curvature strength</p></li>
-<li><p><strong>ord</strong> – </p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of bits encoding the wave functions</p></li>
 <li><p><strong>bc</strong> (<em>0</em><em> or </em><em>1</em>) – boundary conditions 0 = open, 1 = close</p></li>
-<li><p><strong>shift</strong> (<em>bool</em>) – shift the potential to be concentrated in the middle</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>xxz chain</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sparse matrix</p>
+</dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="build_hamiltonian.mattaddimp3">
-<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">mattaddimp3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.mattaddimp3" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="build_hamiltonian.matt0sz">
+<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">matt0sz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.matt0sz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the operator <span class="math notranslate nohighlight">\(\hat{S}^z_i\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> (<em>int</em>) – location of the operator</p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of wave functions, encoded in bits formation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\hat{S}^z_i\)</span></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sparse matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="build_hamiltonian.matt_add_imp">
+<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">matt_add_imp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.matt_add_imp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a magentic impurity at a specific site of the chain <span class="math notranslate nohighlight">\(h\hat{S}^z_{\textrm{imp}}\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -233,16 +202,21 @@ Then we could match that output with the origin <span class="math notranslate no
 <li><p><strong>H0</strong> (<em>sparse matrix</em>) – existing Hamiltonian</p></li>
 <li><p><strong>imp</strong> (<em>int</em>) – impurity location</p></li>
 <li><p><strong>h</strong> (<em>float</em>) – impurity strength</p></li>
-<li><p><strong>l</strong> – </p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of wave functions, encoded in bits formation</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The initial Hamiltonian plus the impurity term</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sparse matrix</p>
+</dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="build_hamiltonian.mattaddjz">
-<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">mattaddjz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.mattaddjz" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="build_hamiltonian.matt_add_jz">
+<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">matt_add_jz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.matt_add_jz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds <span class="math notranslate nohighlight">\(\hat{S}^z_i\hat{S}^z_{i+1}\)</span> interaction for an existing Hamiltonian</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -250,18 +224,26 @@ Then we could match that output with the origin <span class="math notranslate no
 <li><p><strong>H0</strong> (<em>sparse matrix</em>) – existing Hamiltonian</p></li>
 <li><p><strong>n</strong> (<em>int</em>) – number of spins in the chain</p></li>
 <li><p><strong>Jz</strong> (<em>float</em>) – interaction strength</p></li>
-<li><p><strong>ord</strong> – </p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of numbers encoding the wave functions</p></li>
 <li><p><strong>bc</strong> (<em>0</em><em> or </em><em>1</em>) – boundary conditions 0 = open, 1 = close</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The matrix <span class="math notranslate nohighlight">\(\hat{H}_0\)</span> with addition of <span class="math notranslate nohighlight">\(zz\)</span> interactions</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sparse matrix</p>
+</dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="build_hamiltonian.mattaddstark">
-<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">mattaddstark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.mattaddstark" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a linear field of strength <code class="docutils literal notranslate"><span class="pre">f</span></code> to an existing Hamiltonian (stark potential)</p>
+<dt class="sig sig-object py" id="build_hamiltonian.matt_add_stark">
+<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">matt_add_stark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.matt_add_stark" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a linear field of strength <code class="docutils literal notranslate"><span class="pre">f</span></code> to an existing Hamiltonian (stark potential).
+<div class="math notranslate nohighlight">
+\[\hat{H}_0\rightarrow\hat{H}_0 + \sum_{j=1}^{L}\left(\gamma j+\alpha j^{2}/L^{2}\right) \hat{S}_{j}^{z}\]</div>
+</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -269,48 +251,15 @@ Then we could match that output with the origin <span class="math notranslate no
 <li><p><strong>n</strong> (<em>int</em>) – number of spins in the chain</p></li>
 <li><p><strong>f</strong> (<em>float</em>) – linear potential strength</p></li>
 <li><p><strong>a</strong> (<em>float</em>) – curvature strength</p></li>
-<li><p><strong>ord</strong> – </p></li>
-<li><p><strong>bc</strong> (<em>0</em><em> or </em><em>1</em>) – boundary conditions 0 = open, 1 = close</p></li>
-</ul>
-</dd>
-</dl>
-<p>Returns:</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="build_hamiltonian.matth0">
-<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">matth0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.matth0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates the <span class="math notranslate nohighlight">\(\hat{H}_0\)</span> matrix for the Magnus expension in the Stark model</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em>) – number of spins in the chain</p></li>
-<li><p><strong>Jz</strong> (<em>float</em>) – zz coupling</p></li>
-<li><p><strong>ord</strong> (<em>array</em>) – an array of integers represents the spins sub-space</p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of numbers encoding the wave functions</p></li>
 <li><p><strong>bc</strong> (<em>0</em><em> or </em><em>1</em>) – boundary conditions 0 = open, 1 = close</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The matrix H_0</p>
+<dd class="field-even"><p>The initial Hamiltonian plus the Stark potential term</p>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="build_hamiltonian.mattv">
-<span class="sig-prename descclassname"><span class="pre">build_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">mattv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#build_hamiltonian.mattv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates the <span class="math notranslate nohighlight">\(\hat{V}\)</span> matrix for the Magnus expension in the Stark model</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em>) – number of spins in the chain</p></li>
-<li><p><strong>Jx</strong> (<em>float</em>) – xx coupling</p></li>
-<li><p><strong>ord</strong> (<em>array</em>) – an array of integers represents the spins sub-space</p></li>
-<li><p><strong>bc</strong> (<em>0</em><em> or </em><em>1</em>) – boundary conditions 0 = open, 1 = close</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the matrix V</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sparse matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -318,20 +267,45 @@ Then we could match that output with the origin <span class="math notranslate no
 </section>
 <section id="module-utils">
 <span id="utils"></span><h1>Utils<a class="headerlink" href="#module-utils" title="Permalink to this headline">¶</a></h1>
-<p>For utils used in more than one module</p>
+<p>For utils used in more than one module.</p>
+<p>The transformation between wave-function bits and integer representation is defined as following:
+<div class="math notranslate nohighlight">
+\[\vec{x}\rightarrow\sum_{i=L}^1(1-x_i)\cdot 2^{L-i}=\boldsymbol{\mathrm{int}}.\]</div>
+</p>
+<p>See <code class="docutils literal notranslate"><span class="pre">legacy_utils</span></code> for more information about this transformation.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="utils.bittoint">
-<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">bittoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordbits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.bittoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bits ‘order’ to integers</p>
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">bittoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.bittoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basis in bits to integers (e.g <span class="math notranslate nohighlight">\(\texttt{[0,1,1]}\rightarrow\boldsymbol{4}\)</span>)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ordbits</strong> (<em>str</em>) – a list of bits that represents the spins (1 = spin pointing up, 0 = down)</p>
+<dd class="field-odd"><p><strong>basis</strong> (<em>np.array</em>) – a list of bits that represents the spins (1 = spin pointing up, 0 = down)</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a list of integers</p>
+<dd class="field-even"><p>an array of integers encoding the wave function</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.blockex">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">blockex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.blockex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a basis of <code class="docutils literal notranslate"><span class="pre">n</span></code> spins and <code class="docutils literal notranslate"><span class="pre">j</span></code> excitations (spins pointing up)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – number of spins in the chain</p></li>
+<li><p><strong>j</strong> (<em>int</em>) – number of excitations in the basis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>wave functions basis in bits</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -339,11 +313,11 @@ Then we could match that output with the origin <span class="math notranslate no
 <dl class="py function">
 <dt class="sig sig-object py" id="utils.ordtobit">
 <span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">ordtobit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.ordtobit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Integers ‘order’ to bits</p>
+<dd><p>Integers basis to bits basis (e.g <span class="math notranslate nohighlight">\(\boldsymbol{4}\rightarrow\texttt{[0,1,1]}\)</span>)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ord</strong> (<em>str</em>) – a list of integers that represents the spins</p></li>
+<li><p><strong>ord</strong> (<em>np.array</em>) – an array of integers that represents the spins</p></li>
 <li><p><strong>n</strong> – number of spins in the chain</p></li>
 </ul>
 </dd>
@@ -351,7 +325,7 @@ Then we could match that output with the origin <span class="math notranslate no
 <dd class="field-even"><p>a list of bits that represents the spins (1 = spin pointing up, 0 = down)</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -379,14 +353,14 @@ and to use the Krylov time-space evolution, explained in the following <a class=
 <p>briefly, instead of diagonalizing the full matrix <span class="math notranslate nohighlight">\(\hat{H}\)</span> in order to calculate the time evolution operator <span class="math notranslate nohighlight">\(\hat{U}(t)=e^{-i \hat{H} t}\)</span>, one asses the time evolution by averaging over random states <span class="math notranslate nohighlight">\(\left| \psi (t) \right\rangle = \hat{U}(t)\left|\psi(0)\right\rangle\)</span>, without explicitly calculating <span class="math notranslate nohighlight">\(\hat{U}(t)\)</span>.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="dynamical_tools.entropy">
-<span class="sig-prename descclassname"><span class="pre">dynamical_tools.</span></span><span class="sig-name descname"><span class="pre">entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dynamical_tools.entropy" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">dynamical_tools.</span></span><span class="sig-name descname"><span class="pre">entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dynamical_tools.entropy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the entanglement entropy of a vector <code class="docutils literal notranslate"><span class="pre">v</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>v</strong> (<em>np.array</em>) – vector</p></li>
 <li><p><strong>n</strong> (<em>int</em>) – number of spins in the chain</p></li>
-<li><p><strong>ord</strong> – </p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of numbers encoding the wave functions</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -399,8 +373,32 @@ and to use the Krylov time-space evolution, explained in the following <a class=
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="dynamical_tools.evolkryl3">
-<span class="sig-prename descclassname"><span class="pre">dynamical_tools.</span></span><span class="sig-name descname"><span class="pre">evolkryl3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dynamical_tools.evolkryl3" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dynamical_tools.entropy_vs_time">
+<span class="sig-prename descclassname"><span class="pre">dynamical_tools.</span></span><span class="sig-name descname"><span class="pre">entropy_vs_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dynamical_tools.entropy_vs_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the entanglement entropy</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>H</strong> (<em>sparse matrix</em>) – Hamiltonian</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – number of spins in the chain</p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of numbers encoding the wave functions</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – ending time of the calculation</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – number of point to sample in time</p></li>
+<li><p><strong>dt</strong> (<em>float</em>) – time intervals for the Krylov time evolution</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[time array, entangelment entropy array]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(np.array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dynamical_tools.evol_kryl">
+<span class="sig-prename descclassname"><span class="pre">dynamical_tools.</span></span><span class="sig-name descname"><span class="pre">evol_kryl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dynamical_tools.evol_kryl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the time evolution of a vector using Krylov sub-space
 <div class="math notranslate nohighlight">
 \[\vec{v}(t) = e^{-i\hat{H}t}\vec{v}\]</div>
@@ -424,8 +422,8 @@ and to use the Krylov time-space evolution, explained in the following <a class=
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="dynamical_tools.msd99">
-<span class="sig-prename descclassname"><span class="pre">dynamical_tools.</span></span><span class="sig-name descname"><span class="pre">msd99</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dynamical_tools.msd99" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dynamical_tools.msd">
+<span class="sig-prename descclassname"><span class="pre">dynamical_tools.</span></span><span class="sig-name descname"><span class="pre">msd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dynamical_tools.msd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the spins mean square displacement after a spin flip in the middle of the chain
 <div class="math notranslate nohighlight">
 \[G_{n}\left(t\right)=\frac{1}{\mathcal{D}}\textrm{Tr}\left[\hat{S}_{n}^{z}\left(t\right)\hat{S}_{L/2}^{z}\right]\]</div>
@@ -437,34 +435,16 @@ and to use the Krylov time-space evolution, explained in the following <a class=
 :type H: sparse matrix
 :param n: number of spins in the chain
 :type n: int
-:param ord:
+:param basis: array of numbers encoding the wave functions
+:type basis: np.array
 :param t: ending time of the calculation
 :type t: float
 :param k: number of point to sample in time
 :type k: int
 :param dt: time intervals for the Krylov time evolution
 :type dt: float
-:param seed:
-:param neel:</p>
-<p>Returns:</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="dynamical_tools.msd99ent">
-<span class="sig-prename descclassname"><span class="pre">dynamical_tools.</span></span><span class="sig-name descname"><span class="pre">msd99ent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dynamical_tools.msd99ent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the entanglement entropy</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>H</strong> (<em>sparse matrix</em>) – Hamiltonian</p></li>
-<li><p><strong>n</strong> (<em>int</em>) – number of spins in the chain</p></li>
-<li><p><strong>ord</strong> – </p></li>
-<li><p><strong>t</strong> (<em>float</em>) – ending time of the calculation</p></li>
-<li><p><strong>k</strong> (<em>int</em>) – number of point to sample in time</p></li>
-<li><p><strong>dt</strong> (<em>float</em>) – time intervals for the Krylov time evolution</p></li>
-</ul>
-</dd>
-</dl>
+:param seed: fix the seed
+:type seed: bool</p>
 <p>Returns:</p>
 </dd></dl>
 
@@ -473,15 +453,15 @@ and to use the Krylov time-space evolution, explained in the following <a class=
 <span id="static-tools"></span><h1>Static Tools<a class="headerlink" href="#module-static_tools" title="Permalink to this headline">¶</a></h1>
 <p>Static properties are usually examined by using the Hamiltonian eigen-basis, where</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="static_tools.diagelements">
-<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">diagelements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ord</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.diagelements" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="static_tools.diag_elements">
+<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">diag_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.diag_elements" title="Permalink to this definition">¶</a></dt>
 <dd><p>ETH diagonal elements test, used to plot <span class="math notranslate nohighlight">\(\left\langle {\phi_\alpha}\right .\left|{\hat{O}}\right|\left .{\phi_\alpha}\right \rangle\)</span> as function of the energy <span class="math notranslate nohighlight">\(E_\alpha\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>H0</strong> (<em>sparse matrix</em>) – the Hamiltonian</p></li>
 <li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
-<li><p><strong>ord</strong> – </p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of numbers encoding the wave functions</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -494,26 +474,8 @@ and to use the Krylov time-space evolution, explained in the following <a class=
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="static_tools.num_var">
-<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">num_var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dots_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.num_var" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>H</strong> – </p></li>
-<li><p><strong>l_min</strong> – </p></li>
-<li><p><strong>dots_number</strong> – </p></li>
-<li><p><strong>cut</strong> – </p></li>
-<li><p><strong>window</strong> – </p></li>
-<li><p><strong>normed</strong> – </p></li>
-</ul>
-</dd>
-</dl>
-<p>Returns:</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="static_tools.offdiag">
-<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">offdiag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">de</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_unfold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.offdiag" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">offdiag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">de</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_unfold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.offdiag" title="Permalink to this definition">¶</a></dt>
 <dd><p>ETH for off-diagonal elements test, used to identify the chaoticity of an Hamiltonian as a function of energy.
 Used to plot how close to gaussian dist are the off-diagonal elements <span class="math notranslate nohighlight">\(\hat{O}_{\alpha\beta}={\left.\left\langle
 {\phi_\alpha}\right .\left|{\hat{O}}\right|\left .{\phi_\beta}\right \rangle\right.}_{\alpha\neq\beta}\)</span> as a
@@ -525,7 +487,7 @@ function of the frequency <span class="math notranslate nohighlight">\(\omega\eq
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>H0</strong> – Hamiltonian or eigenvalues and eigenvectors</p></li>
 <li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
-<li><p><strong>l</strong> – </p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of wave functions, encoded in bits formation</p></li>
 <li><p><strong>dw</strong> (<em>float</em>) – size of frequency bins</p></li>
 <li><p><strong>de</strong> (<em>float</em>) – partial part of the spectrum that is being examined (from 0 to 1)</p></li>
 <li><p><strong>is_unfold</strong> (<em>bool</em>) – take unfolded eigenvalues</p></li>
@@ -542,7 +504,7 @@ function of the frequency <span class="math notranslate nohighlight">\(\omega\eq
 
 <dl class="py function">
 <dt class="sig sig-object py" id="static_tools.offdiag_dist">
-<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">offdiag_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.offdiag_dist" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">offdiag_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.offdiag_dist" title="Permalink to this definition">¶</a></dt>
 <dd><p>ETH for off-diagonal elements test, used to plot the distribution of the off-diagonal elements of some local
 observable. return the histogram of  <span class="math notranslate nohighlight">\(\hat{O}_{\alpha\beta}={\left.\left\langle {\phi_\alpha}\right .\left|{\hat{
 O}}\right|\left .{\phi_\beta}\right \rangle\right.}_{\alpha\neq\beta}\)</span> built from <code class="docutils literal notranslate"><span class="pre">e_number</span></code> of eigenstates
@@ -552,7 +514,7 @@ near the middle of the spectrum.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>H0</strong> (<em>sparse matrix</em>) – the Hamiltonian</p></li>
 <li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
-<li><p><strong>l</strong> – </p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of wave functions, encoded in bits formation</p></li>
 <li><p><strong>e_number</strong> (<em>int</em>) – number of eigenvalues used to calculate the</p></li>
 <li><p><strong>bin_num</strong> (<em>int</em>) – number of bins for the histogram</p></li>
 <li><p><strong>normed</strong> (<em>bool</em>) – normalize by the system size and Hilbert dimension</p></li>
@@ -568,17 +530,28 @@ near the middle of the spectrum.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="static_tools.pr_eigen">
-<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">pr_eigen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.pr_eigen" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dt class="sig sig-object py" id="static_tools.offdiag_stats">
+<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">offdiag_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.offdiag_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>ETH for off-diagonal elements test, used to plot the distribution of the off-diagonal elements of some local
+observable. return the variance and kurtosis of  <span class="math notranslate nohighlight">\(\hat{O}_{\alpha\beta}={\left.\left\langle {\phi_\alpha}\right .\left|{\hat{
+O}}\right|\left .{\phi_\beta}\right \rangle\right.}_{\alpha\neq\beta}\)</span> built from <code class="docutils literal notranslate"><span class="pre">e_number</span></code> of eigenstates
+near the middle of the spectrum.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>H0</strong> – </p></li>
-<li><p><strong>basis</strong> – </p></li>
+<li><p><strong>H0</strong> (<em>sparse matrix</em>) – the Hamiltonian</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – array of numbers encoding the wave functions</p></li>
+<li><p><strong>e_number</strong> (<em>int</em>) – number of eigenvalues used to calculate the</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>variance, kurtosis</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(float, float)</p>
+</dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="py function">
@@ -602,29 +575,16 @@ where <div class="math notranslate nohighlight">
 <dd class="field-even"><p><span class="math notranslate nohighlight">\(\langle r \rangle\)</span></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(float)</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="static_tools.sumheavy">
-<span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">sumheavy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.sumheavy" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>E</strong> – </p></li>
-<li><p><strong>x</strong> – </p></li>
-</ul>
-</dd>
-</dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="static_tools.unfold">
 <span class="sig-prename descclassname"><span class="pre">static_tools.</span></span><span class="sig-name descname"><span class="pre">unfold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#static_tools.unfold" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the unfolded eigenvalues</p>
+<dd><p>Returns the unfolded eigenvalues (used to remove the bais of the denisity of states in the level spacing
+statistics).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -637,7 +597,7 @@ where <div class="math notranslate nohighlight">
 <dd class="field-even"><p>unfolded eigenvalues</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(np.array)</p>
+<dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -645,69 +605,182 @@ where <div class="math notranslate nohighlight">
 </section>
 <section id="module-legacy_utils">
 <span id="legacy-utils"></span><h1>Legacy Utils<a class="headerlink" href="#module-legacy_utils" title="Permalink to this headline">¶</a></h1>
-<p>Old versions of some utils, that have been replaced with a more efficient code.
-This module can be used for benchmarking with new utils.</p>
-<p>The main idea behind this module is that matrices are generating using kronecker product, this is way less efficient
-but a bit easier to grasp then the methods used in build_hamiltonian module.</p>
+<p>Old versions of some utils, that have been replaced with a more efficient <code class="docutils literal notranslate"><span class="pre">src_code</span></code>.
+This module is used for benchmarking, and educational purposes.</p>
+<p>The main idea behind this module is that matrices are generating using Kronecker product  (denoted by <span class="math notranslate nohighlight">\(\otimes\)</span>), this is much less efficient but a bit easier to grasp than the methods used in <code class="docutils literal notranslate"><span class="pre">build_hamiltonian</span></code> module.</p>
 <p>For example, a term can be built as follow:
 <div class="math notranslate nohighlight">
-\[\hat{S}^z = \mathbb{I}_{2^i}\otimes \hat{S}^z \otimes \mathbb{I}_{2^{L-i-1}},\]</div>
+\[\hat{S}^z_i = \mathbb{I}_{2^i}\otimes \hat{S}^z \otimes \mathbb{I}_{2^{L-i-1}},\]</div>
 
-where <span class="math notranslate nohighlight">\(L\)</span> is the chain length.</p>
+where <span class="math notranslate nohighlight">\(L\)</span> is the chain length, and <span class="math notranslate nohighlight">\(\mathbb{I}_N\)</span> is the identity matrix of dim <span class="math notranslate nohighlight">\(N\)</span>.</p>
+<p>Using this method the output is the matrix representation on the ‘computational basis’,  for example for two spins (<span class="math notranslate nohighlight">\(L=2\)</span>):
+<div class="math notranslate nohighlight">
+\[\{\left|\uparrow\uparrow\right\rangle, \left|\uparrow\downarrow\right\rangle, \left|\downarrow\uparrow\right\rangle, \left|\downarrow\downarrow\right\rangle\}.\]</div>
+</p>
+<p>If we want to use only a sub-sector of the <span class="math notranslate nohighlight">\(N=2^L\)</span> matrix we need to code this basis into ordered numbers, to do so we use the following transformation
+<div class="math notranslate nohighlight">
+\[\left|\downarrow\uparrow\right\rangle=\texttt{[0,1]}=\sum_{i=L}^1(1-x_i)\cdot 2^{L-i}=0\cdot2^0+1\cdot2^1=\boldsymbol{2}.\]</div>
+</p>
+<p>For example if we want to take only the zero magnetization sector (where the same number of spins point up and down) out of the following matrix
+<div class="math notranslate nohighlight">
+\[\begin{split}\hat{S}_{1}^{z}=\mathbb{I}_{2}\otimes\hat{S}^{z}=\left(\begin{array}{cccc}
+0.5 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; -0.5 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0.5 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; -0.5
+\end{array}\right)\end{split}\]</div>
+</p>
+<p>We need to cut the following entries
+<div class="math notranslate nohighlight">
+\[\{\left|\uparrow\downarrow\right\rangle, \left|\downarrow\uparrow\right\rangle\}=\{\boldsymbol{1}, \boldsymbol{2}\},\]</div>
+</p>
+<p>so the matrix representation in this basis would be</p>
+<p><div class="math notranslate nohighlight">
+\[\begin{split}\hat{S}_{1,\mathrm{basis}}^{z}=\left(\begin{array}{cc}
+-0.5 &amp; 0\\
+0 &amp; 0.5
+\end{array}\right)\end{split}\]</div>
+</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="legacy_utils.outr">
-<span class="sig-prename descclassname"><span class="pre">legacy_utils.</span></span><span class="sig-name descname"><span class="pre">outr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#legacy_utils.outr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Kronecker product, equivalent to np.kron but much slower</p>
+<dt class="sig sig-object py" id="legacy_utils.outerr">
+<span class="sig-prename descclassname"><span class="pre">legacy_utils.</span></span><span class="sig-name descname"><span class="pre">outerr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#legacy_utils.outerr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate an <span class="math notranslate nohighlight">\(2^n\)</span> dim matrix representing matrix <code class="docutils literal notranslate"><span class="pre">a</span></code> in place <code class="docutils literal notranslate"><span class="pre">i</span></code> in the full hilbert space</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> (<em>matrix</em>) – <span class="math notranslate nohighlight">\(\hat{a}\)</span></p></li>
-<li><p><strong>b</strong> (<em>matrix</em>) – <span class="math notranslate nohighlight">\(\hat{b}\)</span></p></li>
+<li><p><strong>a</strong> (<em>np.array</em>) – matrix</p></li>
+<li><p><strong>i</strong> (<em>int</em>) – location in the spin chain</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – spin chain length</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><span class="math notranslate nohighlight">\(\hat{a}\otimes \hat{b}\)</span></p>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\hat{a}_i\)</span> <span class="math notranslate nohighlight">\(2^n      imes2^n\)</span> matrix repreesntation</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>(matrix)</p>
+<dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="legacy_utils.outr1d">
-<span class="sig-prename descclassname"><span class="pre">legacy_utils.</span></span><span class="sig-name descname"><span class="pre">outr1d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#legacy_utils.outr1d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Equivalent to np.kron but only for diagonal matrices</p>
+<dt class="sig sig-object py" id="legacy_utils.xxz_block_add_imp">
+<span class="sig-prename descclassname"><span class="pre">legacy_utils.</span></span><span class="sig-name descname"><span class="pre">xxz_block_add_imp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#legacy_utils.xxz_block_add_imp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add impurity to existing Hamiltonian <span class="math notranslate nohighlight">\(\hat{H}\rightarrow \hat{H} + h\cdot\hat{S}^z_{\mathrm{imp}}\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>a</strong> – </p></li>
-<li><p><strong>b</strong> – </p></li>
+<li><p><strong>H</strong> (<em>np.array</em>) – initial Hamiltonian</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
+<li><p><strong>imp</strong> (<em>int</em>) – impurity location</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – impurity strength</p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – an array encoding the wave functions</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Hamiltonian matrix <code class="docutils literal notranslate"><span class="pre">H</span></code> plus the impurity term.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
 </dl>
-<p>Returns:</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="legacy_utils.xxz_block_add_stark">
+<span class="sig-prename descclassname"><span class="pre">legacy_utils.</span></span><span class="sig-name descname"><span class="pre">xxz_block_add_stark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#legacy_utils.xxz_block_add_stark" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Stark potential to existing Hamiltonian</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>H</strong> (<em>np.array</em>) – initial Hamiltonian</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
+<li><p><strong>f</strong> (<em>float</em>) – linear potential strength</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – curvature strength</p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – an array encoding the wave functions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Hamiltonian matrix <code class="docutils literal notranslate"><span class="pre">H</span></code> plus the Stark potential</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="legacy_utils.xxz_block_stark">
+<span class="sig-prename descclassname"><span class="pre">legacy_utils.</span></span><span class="sig-name descname"><span class="pre">xxz_block_stark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Jz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#legacy_utils.xxz_block_stark" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the Stark Hamiltonian (xxz chain with linear potential)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – number of spins</p></li>
+<li><p><strong>Jx</strong> (<em>float</em>) – xx interaction strength</p></li>
+<li><p><strong>Jz</strong> (<em>float</em>) – zz interaction strength</p></li>
+<li><p><strong>f</strong> (<em>float</em>) – linear potential strength</p></li>
+<li><p><strong>a</strong> (<em>float</em>) – curvature strength</p></li>
+<li><p><strong>basis</strong> (<em>np.array</em>) – an array encoding the wave functions</p></li>
+<li><p><strong>bc</strong> (<em>int</em>) – boundary conditions (0 - open, 1 - closed)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the Stark Hamiltonian matrix representation on the basis given</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
 <section id="module-unit_test">
 <span id="unit-test"></span><h1>Unit Test<a class="headerlink" href="#module-unit_test" title="Permalink to this headline">¶</a></h1>
 <p>Test module, to use it run
-<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">unittest</span> <span class="pre">-v</span> <span class="pre">code.unit_test.Test</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">unittest</span> <span class="pre">-v</span> <span class="pre">src_code.unit_test.Test</span></code></p>
 <dl class="py class">
 <dt class="sig sig-object py" id="unit_test.Test">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">unit_test.</span></span><span class="sig-name descname"><span class="pre">Test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="unit_test.Test.setUpClass">
 <em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">setUpClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.setUpClass" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initial variables and create XXZ matrices for benchmarking
-Returns:</p>
+<dd><p>Initialize variables, creates XXZ matrices for benchmarking, diagonalize the matrices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unit_test.Test.test_diag_elements">
+<span class="sig-name descname"><span class="pre">test_diag_elements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.test_diag_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure diag_elements runs properly and returns a tuple</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="unit_test.Test.test_impurity">
 <span class="sig-name descname"><span class="pre">test_impurity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.test_impurity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Benchmark the addition of impurity</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unit_test.Test.test_msd">
+<span class="sig-name descname"><span class="pre">test_msd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.test_msd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure msd functions runs properly and return a tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unit_test.Test.test_offdiag">
+<span class="sig-name descname"><span class="pre">test_offdiag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.test_offdiag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure offdiag runs properly and returns a tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unit_test.Test.test_offdiag_dist">
+<span class="sig-name descname"><span class="pre">test_offdiag_dist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.test_offdiag_dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure offdiag_dist runs properly and returns an np.array</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unit_test.Test.test_rfold">
+<span class="sig-name descname"><span class="pre">test_rfold</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unit_test.Test.test_rfold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure rfold is runs properly and returns a float</p>
 </dd></dl>
 
 <dl class="py method">
