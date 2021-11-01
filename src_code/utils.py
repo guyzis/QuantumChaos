@@ -26,6 +26,7 @@ def ptime(tz):
 def blockex(n, j):
     """
     Generates a basis of ``n`` spins and ``j`` excitations (spins pointing up)
+
     Args:
         n (int): number of spins in the chain
         j (int): number of excitations in the basis
@@ -40,7 +41,7 @@ def blockex(n, j):
 
 
 def ordtobit(ord, n):
-    """
+    r"""
     Integers basis to bits basis (e.g $\boldsymbol{4}\rightarrow\texttt{[0,1,1]}$)
 
     Args:
@@ -53,7 +54,7 @@ def ordtobit(ord, n):
 
 
 def bittoint(basis):
-    """
+    r"""
     Basis in bits to integers (e.g $\texttt{[0,1,1]}\rightarrow\boldsymbol{4}$)
 
     Args:

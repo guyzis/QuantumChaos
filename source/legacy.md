@@ -1,5 +1,5 @@
 Old versions of some utils, that have been replaced with a more efficient ``src_code``.
-This module can be used for benchmarking with new utils.
+This module is used for benchmarking, and educational purposes.
 
 The main idea behind this module is that matrices are generating using Kronecker product  (denoted by $\otimes$), this is much less efficient but a bit easier to grasp than the methods used in ``build_hamiltonian`` module.
 
