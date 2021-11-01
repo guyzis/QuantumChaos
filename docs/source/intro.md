@@ -15,4 +15,4 @@ This project contains samples of the code used to write the following articles:
 
  https://github.com/guyzis/QuantumChaos
 
-*All the code was written by Guy Zisling*
+*Written by Guy Zisling*
