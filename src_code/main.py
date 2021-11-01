@@ -8,7 +8,7 @@ from static_tools import *
 from dynamical_tools import *
 from figures_module import *
 
-if __name__ == '__3main__':
+if __name__ == '__main__':
     jx = 2
     jz = 1
     f = 0.5
@@ -74,8 +74,3 @@ if __name__ == '__3main__':
     axs[2, 1].hlines(3, ns[0], ns[-1], ls='--', color='k')
 
     plt.show()
-
-else:
-    n = 3
-    sz1 = np.real(np.kron(np.kron(Sz, I2), I2))
-    print(sz1)
