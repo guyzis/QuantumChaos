@@ -1,6 +1,6 @@
 """
 Test module, to use it run
-``python -m unittest -v code.unit_test.Test``
+``python -m unittest -v src_code.unit_test.Test``
 """
 import os
 import sys
@@ -26,10 +26,10 @@ class Test(unittest.TestCase):
         """
         print('----------------------\n Test setUp\n----------------------')
 
-        cls.n = np.random.choice([8, 10, 12, 14])
+        cls.n = np.random.randint(10, 14)
         cls.jx = np.random.uniform(0.5, 3)
         cls.jz = np.random.uniform(0.5, 3)
-        cls.ord = block0(cls.n)
+        cls.basis = blockex(cls.n, cls.n // 2)
         cls.bc = np.random.choice([0, 1])
         cls.f = np.random.uniform(0.5, 3)
         cls.a = np.random.uniform(0.1, 1)
@@ -40,10 +40,10 @@ class Test(unittest.TestCase):
         print(f'f = {cls.f:.2f}, a = {cls.a:.2f}')
         print(f'imp = {cls.imp}, h_imp = {cls.h_imp:.2f}')
 
-        cls.h1 = matt_stark(cls.n, cls.jx, cls.jz, f=0, a=0, ord=cls.ord, bc=cls.bc, shift=False)
-        cls.h2 = xxzblock0stark(cls.n, cls.jx, cls.jz, f=0, a=0, ord=cls.ord, c=cls.bc)
-        cls.h1_imp = matt_add_imp(cls.h1.copy(), cls.imp, cls.h_imp, cls.ord, n=cls.n)
-        cls.h2_imp = xxzblock0addimp(cls.h2.copy(), cls.n, cls.imp, cls.h_imp, cls.ord)
+        cls.h1 = matt0(cls.n, cls.jx, cls.jz, basis=cls.basis, c=cls.bc)
+        cls.h2 = xxzblock0stark(cls.n, cls.jx, cls.jz, f=0, a=0, ord=cls.basis, c=cls.bc)
+        cls.h1_imp = matt_add_imp(cls.h1.copy(), cls.imp, cls.h_imp, cls.basis, n=cls.n)
+        cls.h2_imp = xxzblock0addimp(cls.h2.copy(), cls.n, cls.imp, cls.h_imp, cls.basis)
 
         cls.E, cls.V = la.eigh(cls.h1_imp.A)
 
@@ -54,14 +54,14 @@ class Test(unittest.TestCase):
         Benchmark the basic XXZ matrices
         """
         np.testing.assert_allclose(self.h1.A, self.h2,
-                                   err_msg='matt_stark and xxzblock0stark do not generate the same matrix')
+                                   err_msg='matt0 and xxzblock0stark do not generate the same matrix')
 
     def test_stark(self):
         """
         Benchmark the `Stark` potentials
         """
-        h1_stark = matt_add_stark(self.h1.copy(), self.n, self.f, self.a, self.ord, self.bc)
-        h2_stark = xxzblock0addstark(self.h2.copy(), self.n, self.f, self.a, self.ord)
+        h1_stark = matt_add_stark(self.h1.copy(), self.n, self.f, self.a, self.basis, self.bc)
+        h2_stark = xxzblock0addstark(self.h2.copy(), self.n, self.f, self.a, self.basis)
         np.testing.assert_allclose(h1_stark.A, h2_stark,
                                    err_msg='matt_add_stark and xxzblock0addstark do not generate the same matrix')
 
@@ -72,11 +72,17 @@ class Test(unittest.TestCase):
         np.testing.assert_allclose(self.h1_imp.A, self.h2_imp,
                                    err_msg='matt_add_imp and xxzblock0addimp do not generate the same matrix')
 
+    def test_matt0sz(self):
+        i = np.random.randint(self.n)
+        sz1 = matt0sz(i, self.basis).A
+        sz2 = np.real(outerrsub21d(Sz, I2, i, self.n, bittoint(self.basis)))
+        np.testing.assert_allclose(sz1.diagonal(), sz2.diagonal())
+
     def test_msd(self):
         """
         Make sure msd functions runs properly and return a tuple
         """
-        x = msd(self.h1, self.n, self.ord, t=20, k=50, dt=0.1)
+        x = msd(self.h1, self.n, self.basis, t=5, k=10, dt=0.1)
         self.assertIsInstance(x, tuple, msg='msd does not return a tuple')
 
     def test_rfold(self):
@@ -90,24 +96,24 @@ class Test(unittest.TestCase):
         """
         Make sure diag_elements runs properly and returns a tuple
         """
-        x = diag_elements([self.E, self.V], self.n, self.ord)
+        x = diag_elements([self.E, self.V], self.n, self.basis)
         self.assertIsInstance(x, tuple, msg='diag_elements does not return a tuple')
 
     def test_offdiag(self):
         """
         Make sure offdiag runss properly and returns a tuple
         """
-        x = offdiag([self.E, self.V], self.n, self.ord)
+        x = offdiag([self.E, self.V], self.n, self.basis)
         self.assertIsInstance(x, tuple, msg='offdiag does not return a tuple')
 
     def test_offdiag_dist(self):
         """
         Make sure offdiag_dist runs properly and returns an np.array
         """
-        x = offdiag_dist([self.E, self.V], self.n, self.ord)
+        x = offdiag_dist([self.E, self.V], self.n, self.basis)
         self.assertIsInstance(x, np.ndarray, msg='offdiag does not return an np.array')
 
-    # @classmethod
-    # def tearDownClass(cls):
-    #     print('----------------------\n Test tearDown\n----------------------')
-    #     print('----------------------\n done tearDown\n----------------------')
+    @classmethod
+    def tearDownClass(cls):
+        print('----------------------\n Test tearDown\n----------------------')
+        print('----------------------\n done tearDown\n----------------------')

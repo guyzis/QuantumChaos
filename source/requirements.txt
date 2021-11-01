@@ -1,3 +1,4 @@
 sympy
 h5py
 sphinx-math-dollar
+sympy

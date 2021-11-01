@@ -1,13 +1,14 @@
 """
-Some examples of executing the code and plotting the results
+Some examples of executing the src_code and plotting the results
 """
 from utils import *
 from build_hamiltonian import *
+from legacy_utils import *
 from static_tools import *
 from dynamical_tools import *
 from figures_module import *
 
-if __name__ == '__main__':
+if __name__ == '__3main__':
     jx = 2
     jz = 1
     f = 0.5
@@ -21,28 +22,29 @@ if __name__ == '__main__':
 
     ns = [10, 12, 14]
     for n in ns:
-        ordd = block0(n)
-        H = matt_stark(n, jx, jz, f, a, ordd, bc)
+        basis = blockex(n, n // 2)
+        H0 = matt0(n, jx, jz, basis, bc)
+        H = matt_add_stark(H0, n, f, a, basis, bc)
 
         E, V = la.eigh(H.A)
 
         axs[2, 0].plot(n, rfold(E), 'o')
 
-        var, kurt = offdiag_stats([E, V], n, ordd)
+        var, kurt = offdiag_stats([E, V], n, basis)
         axs[2, 1].plot(n, kurt, 'o')
 
         # msd should be averaged over multiple runs
-        x = msd(H, n, ordd, t=25, k=50, dt=0.1)
+        x = msd(H, n, basis, t=25, k=50, dt=0.1)
 
         axs[0, 0].plot(x[0], x[1] - x[1][0], label=f'$L = {n}$')
 
-        x = diag_elements([E, V], n, ordd)
+        x = diag_elements([E, V], n, basis)
         axs[0, 1].scatter(x[0], x[1], label=f'$L = {n}$', s=1)
 
-        x = offdiag_dist([E, V], n, ordd)
+        x = offdiag_dist([E, V], n, basis)
         axs[1, 1].step(x[0], x[1], label=f'$L = {n}$')
 
-        x = offdiag([E, V], n, ordd)
+        x = offdiag([E, V], n, basis)
         axs[1, 0].plot(x[0], x[1], '.', ms=1)
 
     axs[0, 0].set_ylabel(r'$MSD$')
@@ -72,3 +74,8 @@ if __name__ == '__main__':
     axs[2, 1].hlines(3, ns[0], ns[-1], ls='--', color='k')
 
     plt.show()
+
+else:
+    n = 3
+    sz1 = np.real(np.kron(np.kron(Sz, I2), I2))
+    print(sz1)

@@ -1,5 +1,5 @@
 r"""
-Old versions of some utils, that have been replaced with a more efficient code.
+Old versions of some utils, that have been replaced with a more efficient src_code.
 This module can be used for benchmarking with new utils.
 
 The main idea behind this module is that matrices are generating using kronecker product, this is way less efficient
@@ -15,6 +15,7 @@ Some functions are built to do the
 import numpy as np
 import time
 from scipy import sparse as spr
+from utils import *
 
 # Defining useful matrices
 Sz = np.dot(1 / 2, np.array([[1, 0], [0, -1]], dtype=np.complex_))
@@ -281,6 +282,8 @@ def xxzblock0(n, Jx, Jz, ord):
 # generate xxz block0 hamiltonian with f linear potential and a curvature
 def xxzblock0stark(n, Jx, Jz, f, a, ord, c):
     t = time.time()
+    if ord.ndim == 2:
+        ord = bittoint(ord)
     H = np.zeros([ord.shape[0], ord.shape[0]], dtype=np.complex_)
     for i in range(0, n - 1):
         H = H + Jx * outerrsub2(Sx, Sx, i, n, ord) + Jx * outerrsub2(Sy, Sy, i, n, ord) + Jz * outerrsub21d(Sz, Sz, i,
@@ -296,6 +299,8 @@ def xxzblock0stark(n, Jx, Jz, f, a, ord, c):
 
 def xxzblock0addstark(H, n, f, a, ord):
     t = time.time()
+    if ord.ndim == 2:
+        ord = bittoint(ord)
     for i in range(0, n - 1):
         H += (f * i + a * (i / (n - 1)) ** 2) * outerrsub21d(Sz, I2, i, n, ord)
     H += (f * (n - 1) + a * ((n - 1) / (n - 1)) ** 2) * outerrsub21d(I2, Sz, n - 1, n, ord)
@@ -306,6 +311,8 @@ def xxzblock0addstark(H, n, f, a, ord):
 # generate xxz block0 hamiltonian with impurity at imp
 def xxzblock0imp(n, Jx, Jz, imp, h, ord, c):
     t = time.time()
+    if ord.ndim == 2:
+        ord = bittoint(ord)
     H = np.zeros([ord.shape[0], ord.shape[0]], dtype=np.complex_)
     for i in range(0, n - 1):
         H = H + Jx * outerrsub2(Sx, Sx, i, n, ord) + Jx * outerrsub2(Sy, Sy, i, n, ord) + Jz * outerrsub21d(Sz, Sz, i,
@@ -325,6 +332,8 @@ def xxzblock0imp(n, Jx, Jz, imp, h, ord, c):
 # generate xxz block0 hamiltonian with impurity at imp
 def xxzblock0addimp(H, n, imp, h, ord):
     t = time.time()
+    if ord.ndim == 2:
+        ord = bittoint(ord)
     if imp != n - 1:
         H += h * outerrsub21d(Sz, I2, imp, n, ord)
     else:

@@ -11,7 +11,7 @@
 
 if (!Scorer) {
   /**
-   * Simple result scoring code.
+   * Simple result scoring src_code.
    */
   var Scorer = {
     // Implement the following function to further tweak the score for each result

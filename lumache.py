@@ -56,7 +56,7 @@
     <script crossorigin="anonymous" defer="defer" integrity="sha512-l17BURTC/nyliNO0hxUJljjzeGxPG6DJNLK8Nf8Y1B0PWSat5fN1pFw79zCua/9SR2C1OStSQwYjUf6GXId1wg==" type="application/javascript" data-module-id="./chunk-insights-query.js" data-src="https://github.githubassets.com/assets/chunk-insights-query-975ec151.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-nFgqpzYwgNe9703Z+c2nIhGpyB0V4NNAdr/A+17V34EWdpXDU7uwPskxfQffdNOjXVDHpNfAaZgCgk0tHdkinQ==" type="application/javascript" data-module-id="./chunk-invitations.js" data-src="https://github.githubassets.com/assets/chunk-invitations-9c582aa7.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-D0+Pnb8jOB4EdU4XDkOsBBYVmL2FSOhGSgwoWDp0yvw7GezG/V0cDgbALQ4eSDhr4ghkmPZr859IThH3jIFC5w==" type="application/javascript" data-module-id="./chunk-jump-to.js" data-src="https://github.githubassets.com/assets/chunk-jump-to-0f4f8f9d.js"></script>
-    <script crossorigin="anonymous" defer="defer" integrity="sha512-3q9CgTtVlQ6fkBQRgpwkwOZ+3tHjtGqOJeAI+Vp4bbcig2h1mR9iRJG2ohClN8+YThWAOBxizc8R/yrZPbxNSw==" type="application/javascript" data-module-id="./chunk-launch-code-element.js" data-src="https://github.githubassets.com/assets/chunk-launch-code-element-deaf4281.js"></script>
+    <script crossorigin="anonymous" defer="defer" integrity="sha512-3q9CgTtVlQ6fkBQRgpwkwOZ+3tHjtGqOJeAI+Vp4bbcig2h1mR9iRJG2ohClN8+YThWAOBxizc8R/yrZPbxNSw==" type="application/javascript" data-module-id="./chunk-launch-src_code-element.js" data-src="https://github.githubassets.com/assets/chunk-launch-code-element-deaf4281.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-wsUZy3UTRSh6p1qIcqNoHOreDHZaJIPcpjewT8nVUjh+v5pbn8vsTKuYwnbc+0MQ6/9ybSdb98P34Bfyhk7VTw==" type="application/javascript" data-module-id="./chunk-line-chart.js" data-src="https://github.githubassets.com/assets/chunk-line-chart-c2c519cb.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-vmtT5r0gvfYRqPPeAKDO2jCskwQgqay7JXgzcGQtAKb5FGptmF3QpO5MuKfazP4AbOqbgGL3VdhfSs64WE409A==" type="application/javascript" data-module-id="./chunk-line.js" data-src="https://github.githubassets.com/assets/chunk-line-be6b53e6.js"></script>
     <script crossorigin="anonymous" defer="defer" integrity="sha512-7G7VNhRoIxfK6aKTgUSUtMHI6U0k+szgDfwZIEcKuQKs+K0XZGfVivusB0NlOy78zixfFSI7NHzmvHike+5uyQ==" type="application/javascript" data-module-id="./chunk-metric-selection-element.js" data-src="https://github.githubassets.com/assets/chunk-metric-selection-element-ec6ed536.js"></script>
@@ -117,7 +117,7 @@
     <meta name="hovercard-subject-tag" content="repository:397534787" data-pjax-transient>
 
 
-  <meta name="github-keyboard-shortcuts" content="repository,source-code" data-pjax-transient="true" />
+  <meta name="github-keyboard-shortcuts" content="repository,source-src_code" data-pjax-transient="true" />
 
   
 
@@ -459,7 +459,7 @@
           Marketplace
 </a>      </div>
 
-    <a class="js-selected-navigation-item Header-link mt-md-n3 mb-md-n3 py-2 py-md-3 mr-0 mr-md-3 border-top border-md-top-0 border-white-fade" data-ga-click="Header, click, Nav menu - item:explore" data-selected-links="/explore /trending /trending/developers /integrations /integrations/feature/code /integrations/feature/collaborate /integrations/feature/ship showcases showcases_search showcases_landing /explore" href="/explore">
+    <a class="js-selected-navigation-item Header-link mt-md-n3 mb-md-n3 py-2 py-md-3 mr-0 mr-md-3 border-top border-md-top-0 border-white-fade" data-ga-click="Header, click, Nav menu - item:explore" data-selected-links="/explore /trending /trending/developers /integrations /integrations/feature/src_code /integrations/feature/collaborate /integrations/feature/ship showcases showcases_search showcases_landing /explore" href="/explore">
       Explore
 </a>
     <a class="js-selected-navigation-item Header-link d-block d-md-none py-2 py-md-3 border-top border-md-top-0 border-white-fade" data-ga-click="Header, click, Nav menu - item:workspaces context:user" data-selected-links="/codespaces /codespaces" href="/codespaces">
@@ -1108,9 +1108,9 @@
 
   <ul data-view-component="true" class="UnderlineNav-body list-style-none">
       <li data-view-component="true" class="d-inline-flex">
-  <a id="code-tab" href="/readthedocs/tutorial-template" data-tab-item="i0code-tab" data-selected-links="repo_source repo_downloads repo_commits repo_releases repo_tags repo_branches repo_packages repo_deployments /readthedocs/tutorial-template" data-hotkey="g c" data-ga-click="Repository, Navigation click, Code tab" data-pjax="#repo-content-pjax-container" aria-current="page" data-view-component="true" class="UnderlineNav-item hx_underlinenav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item selected">
+  <a id="src_code-tab" href="/readthedocs/tutorial-template" data-tab-item="i0code-tab" data-selected-links="repo_source repo_downloads repo_commits repo_releases repo_tags repo_branches repo_packages repo_deployments /readthedocs/tutorial-template" data-hotkey="g c" data-ga-click="Repository, Navigation click, Code tab" data-pjax="#repo-content-pjax-container" aria-current="page" data-view-component="true" class="UnderlineNav-item hx_underlinenav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item selected">
     
-                  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-code UnderlineNav-octicon d-none d-sm-inline">
+                  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-src_code UnderlineNav-octicon d-none d-sm-inline">
     <path fill-rule="evenodd" d="M4.72 3.22a.75.75 0 011.06 1.06L2.06 8l3.72 3.72a.75.75 0 11-1.06 1.06L.47 8.53a.75.75 0 010-1.06l4.25-4.25zm6.56 0a.75.75 0 10-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 101.06 1.06l4.25-4.25a.75.75 0 000-1.06l-4.25-4.25z"></path>
 </svg>
           <span data-content="Code">Code</span>
@@ -1379,7 +1379,7 @@
   <summary aria-haspopup="true" data-hotkey="r" data-hydro-click="{&quot;event_type&quot;:&quot;code_navigation.click_on_blob_definitions&quot;,&quot;payload&quot;:{&quot;action&quot;:&quot;click_on_blob_definitions&quot;,&quot;repository_id&quot;:397534787,&quot;ref&quot;:&quot;main&quot;,&quot;language&quot;:&quot;Python&quot;,&quot;originating_url&quot;:&quot;https://github.com/readthedocs/tutorial-template/blob/main/lumache.py&quot;,&quot;user_id&quot;:57836051}}" data-hydro-click-hmac="ec55993b978ecc8bf72888a173443db468349f5fb310dd91d1084265cee43b52" role="button" data-view-component="true" class="Link--secondary css-truncate btn-link">
   
   
-      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-code">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-src_code">
     <path fill-rule="evenodd" d="M4.72 3.22a.75.75 0 011.06 1.06L2.06 8l3.72 3.72a.75.75 0 11-1.06 1.06L.47 8.53a.75.75 0 010-1.06l4.25-4.25zm6.56 0a.75.75 0 10-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 101.06 1.06l4.25-4.25a.75.75 0 000-1.06l-4.25-4.25z"></path>
 </svg>
     <span data-menu-button>Jump to</span>
@@ -1692,100 +1692,100 @@
 <table class="highlight tab-size js-file-line-container" data-tab-size="8" data-paste-markdown-skip>
       <tr>
         <td id="L1" class="blob-num js-line-number" data-line-number="1"></td>
-        <td id="LC1" class="blob-code blob-code-inner js-file-line"><span class=pl-s>&quot;&quot;&quot;</span></td>
+        <td id="LC1" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s>&quot;&quot;&quot;</span></td>
       </tr>
       <tr>
         <td id="L2" class="blob-num js-line-number" data-line-number="2"></td>
-        <td id="LC2" class="blob-code blob-code-inner js-file-line"><span class=pl-s>Lumache - Python library for cooks and food lovers.</span></td>
+        <td id="LC2" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s>Lumache - Python library for cooks and food lovers.</span></td>
       </tr>
       <tr>
         <td id="L3" class="blob-num js-line-number" data-line-number="3"></td>
-        <td id="LC3" class="blob-code blob-code-inner js-file-line"><span class=pl-s>&quot;&quot;&quot;</span></td>
+        <td id="LC3" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s>&quot;&quot;&quot;</span></td>
       </tr>
       <tr>
         <td id="L4" class="blob-num js-line-number" data-line-number="4"></td>
-        <td id="LC4" class="blob-code blob-code-inner js-file-line">
+        <td id="LC4" class="blob-src_code blob-src_code-inner js-file-line">
 </td>
       </tr>
       <tr>
         <td id="L5" class="blob-num js-line-number" data-line-number="5"></td>
-        <td id="LC5" class="blob-code blob-code-inner js-file-line"><span class=pl-s1>__version__</span> <span class=pl-c1>=</span> <span class=pl-s>&quot;0.1.0&quot;</span></td>
+        <td id="LC5" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s1>__version__</span> <span class=pl-c1>=</span> <span class=pl-s>&quot;0.1.0&quot;</span></td>
       </tr>
       <tr>
         <td id="L6" class="blob-num js-line-number" data-line-number="6"></td>
-        <td id="LC6" class="blob-code blob-code-inner js-file-line">
+        <td id="LC6" class="blob-src_code blob-src_code-inner js-file-line">
 </td>
       </tr>
       <tr>
         <td id="L7" class="blob-num js-line-number" data-line-number="7"></td>
-        <td id="LC7" class="blob-code blob-code-inner js-file-line">
+        <td id="LC7" class="blob-src_code blob-src_code-inner js-file-line">
 </td>
       </tr>
       <tr>
         <td id="L8" class="blob-num js-line-number" data-line-number="8"></td>
-        <td id="LC8" class="blob-code blob-code-inner js-file-line"><span class=pl-k>class</span> <span class=pl-v>InvalidKindError</span>(<span class=pl-v>Exception</span>):</td>
+        <td id="LC8" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-k>class</span> <span class=pl-v>InvalidKindError</span>(<span class=pl-v>Exception</span>):</td>
       </tr>
       <tr>
         <td id="L9" class="blob-num js-line-number" data-line-number="9"></td>
-        <td id="LC9" class="blob-code blob-code-inner js-file-line">    <span class=pl-s>&quot;&quot;&quot;Raised if the kind is invalid.&quot;&quot;&quot;</span></td>
+        <td id="LC9" class="blob-src_code blob-src_code-inner js-file-line">    <span class=pl-s>&quot;&quot;&quot;Raised if the kind is invalid.&quot;&quot;&quot;</span></td>
       </tr>
       <tr>
         <td id="L10" class="blob-num js-line-number" data-line-number="10"></td>
-        <td id="LC10" class="blob-code blob-code-inner js-file-line">    <span class=pl-k>pass</span></td>
+        <td id="LC10" class="blob-src_code blob-src_code-inner js-file-line">    <span class=pl-k>pass</span></td>
       </tr>
       <tr>
         <td id="L11" class="blob-num js-line-number" data-line-number="11"></td>
-        <td id="LC11" class="blob-code blob-code-inner js-file-line">
+        <td id="LC11" class="blob-src_code blob-src_code-inner js-file-line">
 </td>
       </tr>
       <tr>
         <td id="L12" class="blob-num js-line-number" data-line-number="12"></td>
-        <td id="LC12" class="blob-code blob-code-inner js-file-line">
+        <td id="LC12" class="blob-src_code blob-src_code-inner js-file-line">
 </td>
       </tr>
       <tr>
         <td id="L13" class="blob-num js-line-number" data-line-number="13"></td>
-        <td id="LC13" class="blob-code blob-code-inner js-file-line"><span class=pl-k>def</span> <span class=pl-en>get_random_ingredients</span>(<span class=pl-s1>kind</span><span class=pl-c1>=</span><span class=pl-c1>None</span>):</td>
+        <td id="LC13" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-k>def</span> <span class=pl-en>get_random_ingredients</span>(<span class=pl-s1>kind</span><span class=pl-c1>=</span><span class=pl-c1>None</span>):</td>
       </tr>
       <tr>
         <td id="L14" class="blob-num js-line-number" data-line-number="14"></td>
-        <td id="LC14" class="blob-code blob-code-inner js-file-line">    <span class=pl-s>&quot;&quot;&quot;</span></td>
+        <td id="LC14" class="blob-src_code blob-src_code-inner js-file-line">    <span class=pl-s>&quot;&quot;&quot;</span></td>
       </tr>
       <tr>
         <td id="L15" class="blob-num js-line-number" data-line-number="15"></td>
-        <td id="LC15" class="blob-code blob-code-inner js-file-line"><span class=pl-s>    Return a list of random ingredients as strings.</span></td>
+        <td id="LC15" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s>    Return a list of random ingredients as strings.</span></td>
       </tr>
       <tr>
         <td id="L16" class="blob-num js-line-number" data-line-number="16"></td>
-        <td id="LC16" class="blob-code blob-code-inner js-file-line"><span class=pl-s></span></td>
+        <td id="LC16" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s></span></td>
       </tr>
       <tr>
         <td id="L17" class="blob-num js-line-number" data-line-number="17"></td>
-        <td id="LC17" class="blob-code blob-code-inner js-file-line"><span class=pl-s>    :param kind: Optional &quot;kind&quot; of ingredients.</span></td>
+        <td id="LC17" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s>    :param kind: Optional &quot;kind&quot; of ingredients.</span></td>
       </tr>
       <tr>
         <td id="L18" class="blob-num js-line-number" data-line-number="18"></td>
-        <td id="LC18" class="blob-code blob-code-inner js-file-line"><span class=pl-s>    :type kind: list[str] or None</span></td>
+        <td id="LC18" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s>    :type kind: list[str] or None</span></td>
       </tr>
       <tr>
         <td id="L19" class="blob-num js-line-number" data-line-number="19"></td>
-        <td id="LC19" class="blob-code blob-code-inner js-file-line"><span class=pl-s>    :raise lumache.InvalidKindError: If the kind is invalid.</span></td>
+        <td id="LC19" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s>    :raise lumache.InvalidKindError: If the kind is invalid.</span></td>
       </tr>
       <tr>
         <td id="L20" class="blob-num js-line-number" data-line-number="20"></td>
-        <td id="LC20" class="blob-code blob-code-inner js-file-line"><span class=pl-s>    :return: The ingredients list.</span></td>
+        <td id="LC20" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s>    :return: The ingredients list.</span></td>
       </tr>
       <tr>
         <td id="L21" class="blob-num js-line-number" data-line-number="21"></td>
-        <td id="LC21" class="blob-code blob-code-inner js-file-line"><span class=pl-s>    :rtype: list[str]</span></td>
+        <td id="LC21" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s>    :rtype: list[str]</span></td>
       </tr>
       <tr>
         <td id="L22" class="blob-num js-line-number" data-line-number="22"></td>
-        <td id="LC22" class="blob-code blob-code-inner js-file-line"><span class=pl-s>    &quot;&quot;&quot;</span></td>
+        <td id="LC22" class="blob-src_code blob-src_code-inner js-file-line"><span class=pl-s>    &quot;&quot;&quot;</span></td>
       </tr>
       <tr>
         <td id="L23" class="blob-num js-line-number" data-line-number="23"></td>
-        <td id="LC23" class="blob-code blob-code-inner js-file-line">    <span class=pl-k>return</span> [<span class=pl-s>&quot;shells&quot;</span>, <span class=pl-s>&quot;gorgonzola&quot;</span>, <span class=pl-s>&quot;parsley&quot;</span>]</td>
+        <td id="LC23" class="blob-src_code blob-src_code-inner js-file-line">    <span class=pl-k>return</span> [<span class=pl-s>&quot;shells&quot;</span>, <span class=pl-s>&quot;gorgonzola&quot;</span>, <span class=pl-s>&quot;parsley&quot;</span>]</td>
       </tr>
 </table>
 

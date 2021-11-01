@@ -133,28 +133,27 @@ def pr_eigen(H0, basis):
     return e, pr
 
 
-def diag_elements(H0, n, ord):
+def diag_elements(H0, n, basis):
     r"""
     ETH diagonal elements test, used to plot $\left\langle {\phi_\alpha}\right .\left|{\hat{O}}\right|\left .{\phi_\alpha}\right \rangle$ as function of the energy $E_\alpha$.
 
     Args:
         H0 (sparse matrix): the Hamiltonian
         n (int): number of spins
-        ord (np.array): array of numbers encoding the wave functions
+        basis (np.array): array of numbers encoding the wave functions
 
     Returns:
         (np.array, np.array): normalized energies (from 0 to 1), corresponding diagonal element
 
     """
     tz = time.time()
-    l = np.flipud(ordtobit(ord, n))
     if isinstance(H0, list):
         e = H0[0]
         v = H0[1]
     else:
         e, v = la.eig(H0.A)
     print("\ndiag time was: %s" % ptime(tz))
-    o = matt0sz(int(n / 2) - 1, l)
+    o = matt0sz(int(n / 2) - 1, basis)
     d = la.inv(v).dot(o.A).dot(v)
     d = d.diagonal()
     print("diag elements time was: %s\n" % ptime(tz))
@@ -162,7 +161,7 @@ def diag_elements(H0, n, ord):
     return eps, d
 
 
-def offdiag(H0, n, ord, dw=0.05, de=0.05, is_unfold=False):
+def offdiag(H0, n, basis, dw=0.05, de=0.05, is_unfold=False):
     r"""
     ETH for off-diagonal elements test, used to identify the chaoticity of an Hamiltonian as a function of energy.
     Used to plot how close to gaussian dist are the off-diagonal elements $\hat{O}_{\alpha\beta}={\left.\left\langle
@@ -176,7 +175,7 @@ def offdiag(H0, n, ord, dw=0.05, de=0.05, is_unfold=False):
     Args:
         H0: Hamiltonian or eigenvalues and eigenvectors
         n (int): number of spins
-        l (np.array): array of wave functions, encoded in bits formation
+        basis (np.array): array of wave functions, encoded in bits formation
         dw (float): size of frequency bins
         de (float): partial part of the spectrum that is being examined (from 0 to 1)
         is_unfold (bool): take unfolded eigenvalues
@@ -186,25 +185,24 @@ def offdiag(H0, n, ord, dw=0.05, de=0.05, is_unfold=False):
 
     """
     tz = time.time()
-    l = np.flipud(ordtobit(ord, n))
     if isinstance(H0, list):
         e = H0[0]
         v = H0[1]
     else:
         e, v = la.eig(H0.A)
     print("\ndiag time was: %s" % ptime(tz))
-    o = matt0sz(int(n / 2) - 1, l)
+    o = matt0sz(int(n / 2) - 1, basis)
     eps = np.max(e) - np.min(e)
     emean = np.mean(e)
     s = la.inv(v).dot(o.A).dot(v)
     s = s.flatten()
-    e1 = np.tile(e, (l.shape[0], 1))
+    e1 = np.tile(e, (basis.shape[0], 1))
     ebar = (e1 + e1.T).flatten() / 2
     logic = np.logical_and(ebar < emean + 0.5 * de * eps, ebar > emean - 0.5 * de * eps)
     w_real = np.abs(e1 - e1.T).flatten()
     bin_num = int((np.max(w_real) - np.min(w_real)) / dw)
     if is_unfold:
-        e1 = np.tile(unfold(e, cut=0), (l.shape[0], 1))
+        e1 = np.tile(unfold(e, cut=0), (basis.shape[0], 1))
     w = np.abs(e1 - e1.T).flatten()
     w = w[logic]
     s = s[logic]
@@ -215,7 +213,7 @@ def offdiag(H0, n, ord, dw=0.05, de=0.05, is_unfold=False):
     return wspace[1:], sbins
 
 
-def offdiag_dist(H0, n, ord, e_number=200, bin_num=200, normed=False):
+def offdiag_dist(H0, n, basis, e_number=200, bin_num=200, normed=False):
     r"""
     ETH for off-diagonal elements test, used to plot the distribution of the off-diagonal elements of some local
     observable. return the histogram of  $\hat{O}_{\alpha\beta}={\left.\left\langle {\phi_\alpha}\right .\left|{\hat{
@@ -225,7 +223,7 @@ def offdiag_dist(H0, n, ord, e_number=200, bin_num=200, normed=False):
     Args:
         H0 (sparse matrix): the Hamiltonian
         n (int): number of spins
-        l (np.array): array of wave functions, encoded in bits formation
+        basis (np.array): array of wave functions, encoded in bits formation
         e_number (int): number of eigenvalues used to calculate the
         bin_num (int): number of bins for the histogram
         normed (bool): normalize by the system size and Hilbert dimension
@@ -241,12 +239,11 @@ def offdiag_dist(H0, n, ord, e_number=200, bin_num=200, normed=False):
     else:
         e, v = la.eig(H0.A)
     print("\ndiag time was: %s" % ptime(tz))
-    l = np.flipud(ordtobit(ord, n))
     dim = e.shape[0]
-    o = matt0sz(int(n / 2) - 1, l)
+    o = matt0sz(int(n / 2) - 1, basis)
     s = la.inv(v).dot(o.A).dot(v)
     logic = np.arange(int((e.shape[0] - e_number) / 2), int((e.shape[0] + e_number) / 2))
-    e1 = np.tile(e, (l.shape[0], 1))
+    e1 = np.tile(e, (basis.shape[0], 1))
     ebar = (e1 + e1.T) / 2
     w = (e1 - e1.T)
     s = s[np.ix_(logic, logic)]
@@ -259,7 +256,7 @@ def offdiag_dist(H0, n, ord, e_number=200, bin_num=200, normed=False):
     return np.array([hist[1][1:], hist[0]])
 
 
-def offdiag_stats(H0, n, ord, e_number=200):
+def offdiag_stats(H0, n, basis, e_number=200):
     r"""
     ETH for off-diagonal elements test, used to plot the distribution of the off-diagonal elements of some local
     observable. return the variance and kurtosis of  $\hat{O}_{\alpha\beta}={\left.\left\langle {\phi_\alpha}\right .\left|{\hat{
@@ -269,7 +266,7 @@ def offdiag_stats(H0, n, ord, e_number=200):
     Args:
         H0 (sparse matrix): the Hamiltonian
         n (int): number of spins
-        ord (np.array): array of numbers encoding the wave functions
+        basis (np.array): array of numbers encoding the wave functions
         e_number (int): number of eigenvalues used to calculate the
 
     Returns:
@@ -283,8 +280,7 @@ def offdiag_stats(H0, n, ord, e_number=200):
     else:
         e, v = la.eig(H0.A)
     print("\ndiag time was: %s" % ptime(tz))
-    l = np.flipud(ordtobit(ord, n))
-    o = matt0sz(int(n / 2) - 1, l)
+    o = matt0sz(int(n / 2) - 1, basis)
     s = la.inv(v).dot(o.A).dot(v)
     logic = np.arange(int((e.shape[0] - e_number) / 2), int((e.shape[0] + e_number) / 2))
     s = s[np.ix_(logic, logic)]
