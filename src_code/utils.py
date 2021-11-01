@@ -24,6 +24,16 @@ def ptime(tz):
 
 
 def blockex(n, j):
+    """
+    Generates a basis of ``n`` spins and ``j`` excitations (spins pointing up)
+    Args:
+        n (int): number of spins in the chain
+        j (int): number of excitations in the basis
+
+    Returns:
+        (np.array): wave functions basis in bits
+
+    """
     h = np.zeros(n)
     h[:j] = 1
     return np.flipud(np.array(list(multiset_permutations(h))).astype(int))
@@ -31,7 +41,7 @@ def blockex(n, j):
 
 def ordtobit(ord, n):
     """
-    Integers 'order' to bits
+    Integers basis to bits basis (e.g $\boldsymbol{4}\rightarrow\texttt{[0,1,1]}$)
 
     Args:
         ord (str): a list of integers that represents the spins
@@ -42,34 +52,16 @@ def ordtobit(ord, n):
     return (1 - np.array([list(map(int, list(np.binary_repr(i, n)))) for i in ord]))
 
 
-def bittoint2(ordbits):
+def bittoint(basis):
     """
-    Bits 'order' to integers
+    Basis in bits to integers (e.g $\texttt{[0,1,1]}\rightarrow\boldsymbol{4}$)
 
     Args:
-        ordbits (str):  a list of bits that represents the spins (1 = spin pointing up, 0 = down)
+        basis (np.array):  a list of bits that represents the spins (1 = spin pointing up, 0 = down)
     Returns:
-         list: a list of integers
+         (np.array): a list of integers
     """
-    ordbits = np.flipud(ordbits)
-    x = np.zeros(ordbits.shape[0])
-    x1 = 0
-    for i in range(0, ordbits.shape[0]):
-        if ordbits.ndim == 2:
-            k = 0
-            for j in range(0, ordbits.shape[1]):
-                if ordbits[i][j] != -1:
-                    x[i] = x[i] + ordbits[i][- (j + 1)] * 2 ** j
-                else:
-                    x[i] = None
-        else:
-            k = 1
-            x1 = x1 + ordbits[-i - 1] * 2 ** i
-    xx = [x, x1]
-    return np.flip(xx[k].astype(int))
-
-def bittoint(ordbits):
-    if ordbits.ndim == 2:
-        return np.sum(np.fliplr(1 - ordbits) * (2 ** np.arange(ordbits.shape[1])), axis=1)
+    if basis.ndim == 2:
+        return np.sum(np.fliplr(1 - basis) * (2 ** np.arange(basis.shape[1])), axis=1)
     else:
-        return np.sum(np.fliplr(1 - ordbits) * (2 ** np.arange(ordbits.shape[0])))
+        return np.sum(np.fliplr(1 - basis) * (2 ** np.arange(basis.shape[0])))
