@@ -74,6 +74,7 @@ def msd(H, n, basis, t, k, dt, seed=False):
     Calculates the spins mean square displacement after a spin flip in the middle of the chain
     $$G_{n}\left(t\right)=\frac{1}{\mathcal{D}}\textrm{Tr}\left[\hat{S}_{n}^{z}\left(t\right)\hat{S}_{L/2}^{z}\right]$$
     $$x^{2}\left(t\right)=\sum_{n}n^{2}\left(G_{n}\left(t\right)-G_{n}\left(0\right)\right)$$
+
     Args:
         H (sparse matrix): Hamiltonian
         n (int): number of spins in the chain
@@ -84,7 +85,7 @@ def msd(H, n, basis, t, k, dt, seed=False):
         seed (bool): fix the seed
 
     Returns:
-
+        (np.array, np.array, np.array): time array, msd array, Gr profile array
     """
     tz1 = time.time()
     tt = np.linspace(0, t, k)

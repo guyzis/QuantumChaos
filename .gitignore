@@ -1,4 +1,3 @@
 # Project exclude paths
 /venv/
 *.lyx#
-lumache.py
