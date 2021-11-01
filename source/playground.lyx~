@@ -88,7 +88,27 @@
 \hline \boldsymbol{1} & 0 & 0 & 0\\
 \boldsymbol{2} & 0 & 0 & 1\\
 \boldsymbol{4} & 0 & 0 & 0
-\end{array}
+\end{array}=\left(\begin{array}{ccc}
+0 & 0 & 0\\
+0 & 0 & 1\\
+0 & 0 & 0
+\end{array}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\hat{S}_{1}^{z}=\mathbb{I}_{2}\otimes\hat{S}^{z}=\left(\begin{array}{cccc}
+0.5 & 0 & 0 & 0\\
+0 & -0.5 & 0 & 0\\
+0 & 0 & 0.5 & 0\\
+0 & 0 & 0 & -0.5
+\end{array}\right)
 \]
 
 \end_inset
